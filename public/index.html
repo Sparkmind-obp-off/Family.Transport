@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Family Transport Manager</title>
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <div>
+        <p class="eyebrow">FAMILY TRANSPORT</p>
+        <h1>Manager</h1>
+        <p class="muted">Order, jadwal, driver, dan perjalanan dalam satu tempat.</p>
+      </div>
+      <button id="refresh">Refresh</button>
+    </header>
+
+    <section class="stats">
+      <div><span>Today</span><strong id="todayCount">0</strong></div>
+      <div><span>Upcoming</span><strong id="upcomingCount">0</strong></div>
+      <div><span>Need attention</span><strong id="pendingCount">0</strong></div>
+    </section>
+
+    <section class="card">
+      <div class="section-head">
+        <h2>Tambah Order</h2>
+        <span class="muted">MVP</span>
+      </div>
+      <form id="tripForm">
+        <div class="grid">
+          <label>Customer<input name="customerName" required></label>
+          <label>WhatsApp<input name="customerWhatsapp" placeholder="08..."></label>
+          <label>Tanggal<input name="tripDate" type="date" required></label>
+          <label>Jam<input name="tripTime" type="time" required></label>
+          <label>Pickup<input name="pickup" required></label>
+          <label>Tujuan<input name="destination" required></label>
+          <label>Penumpang<input name="passengers" type="number" min="1" value="1"></label>
+          <label>Harga<input name="price" type="number" min="0" placeholder="Opsional"></label>
+        </div>
+        <label>Catatan<textarea name="notes" rows="2"></textarea></label>
+        <button class="primary" type="submit">Simpan Order</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <div class="section-head">
+        <h2>Trips</h2>
+        <span id="message" class="muted"></span>
+      </div>
+      <div id="trips"></div>
+    </section>
+  </main>
+<script>
+const statusLabels = {
+  PENDING: "Pending", CONFIRMED: "Confirmed", ASSIGNED: "Assigned",
+  ON_TRIP: "On Trip", COMPLETED: "Completed", CANCELLED: "Cancelled"
+};
+
+async function loadTrips() {
+  const res = await fetch("/api/trips");
+  const trips = await res.json();
+  const today = new Date().toISOString().slice(0,10);
+  document.getElementById("todayCount").textContent = trips.filter(t => t.trip_date === today).length;
+  document.getElementById("upcomingCount").textContent = trips.filter(t => t.trip_date >= today && t.status !== "COMPLETED" && t.status !== "CANCELLED").length;
+  document.getElementById("pendingCount").textContent = trips.filter(t => ["PENDING","CONFIRMED"].includes(t.status)).length;
+
+  const box = document.getElementById("trips");
+  box.innerHTML = trips.length ? trips.map(t => {
+    const wa = t.customer_whatsapp ? "https://wa.me/" + t.customer_whatsapp.replace(/\D/g,"") : null;
+    return `
+      <article class="trip">
+        <div>
+          <strong>${t.trip_time} · ${t.trip_date}</strong>
+          <h3>${escapeHtml(t.pickup)} → ${escapeHtml(t.destination)}</h3>
+          <p>${escapeHtml(t.customer_name)} · ${t.passengers} pax</p>
+          <p class="muted">${escapeHtml(t.vehicle_name || "Vehicle belum dipilih")} · ${escapeHtml(t.driver_name || "Driver belum dipilih")}</p>
+        </div>
+        <div class="actions">
+          <select onchange="setStatus('${t.id}', this.value)">
+            ${Object.keys(statusLabels).map(s => `<option value="${s}" ${s===t.status?"selected":""}>${statusLabels[s]}</option>`).join("")}
+          </select>
+          ${wa ? `<a href="${wa}" target="_blank">WhatsApp</a>` : ""}
+        </div>
+      </article>
+    `;
+  }).join("") : '<p class="muted">Belum ada order.</p>';
+}
+
+async function setStatus(id, status) {
+  await fetch("/api/trips/" + id, {method:"PATCH", headers:{"content-type":"application/json"}, body:JSON.stringify({status})});
+  loadTrips();
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+}
+
+document.getElementById("tripForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(e.target));
+  const res = await fetch("/api/trips", {method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify(data)});
+  if (!res.ok) {
+    const err = await res.json();
+    document.getElementById("message").textContent = err.error || "Gagal menyimpan.";
+    return;
+  }
+  e.target.reset();
+  document.getElementById("message").textContent = "Order tersimpan.";
+  loadTrips();
+});
+
+document.getElementById("refresh").onclick = loadTrips;
+loadTrips();
+</script>
+</body>
+</html>
