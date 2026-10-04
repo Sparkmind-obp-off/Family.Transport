@@ -15,7 +15,10 @@ function node(tag, content, className) {
 function button(title, action, className) {
   const b = node('button', title, className); b.type = 'button'; b.addEventListener('click', () => safely(action)); return b;
 }
-function notify(message, error = false) { $('message').textContent = message; $('message').className = error ? 'notice error' : 'notice'; }
+function notify(message, error = false) {
+  $('message').textContent = message; $('message').className = error ? 'notice error' : 'notice';
+  if (error && $('editor').open) { $('editor-error').textContent = message; $('editor-error').hidden = false; }
+}
 async function safely(action) { try { await action(); } catch (error) { notify(error.message || 'Operasi gagal.', true); } }
 async function api(path, method = 'GET', body) {
   const response = await fetch('/api/' + path, { method, headers: body ? { 'Content-Type': 'application/json', 'X-Requested-With': 'FamilyTransport' } : {}, body: body ? JSON.stringify(body) : undefined });
@@ -48,6 +51,11 @@ function pagination(container, offset, more, change) {
   if (offset) container.append(button('Sebelumnya', () => change(Math.max(0, offset - pageSize))));
   if (more) container.append(button('Berikutnya', () => change(offset + pageSize)));
 }
+function resetTripFilters() {
+  $('filters').reset();
+  // Hidden input .value updates its default value, so form.reset() alone cannot clear it.
+  $('filters').elements.attention.value = ''; $('filters').elements.open.value = '';
+}
 async function dashboard() {
   const date = today(); $('current-date').textContent = new Intl.DateTimeFormat('id-ID', { dateStyle: 'full' }).format(new Date());
   const [summary, daily, attention, upcoming] = await Promise.all([
@@ -58,14 +66,19 @@ async function dashboard() {
   for (const [key, result] of [['today', daily], ['attention', attention], ['upcoming', upcoming]]) {
     const box = $(key + '-trips'); renderTrips(box, result.data);
     if (result.has_more) box.append(button('Lihat daftar lengkap', () => {
-      $('filters').reset(); if (key === 'today') { $('filters').elements.from.value = date; $('filters').elements.to.value = date; }
-      if (key === 'upcoming') $('filters').elements.from.value = tomorrow();
+      resetTripFilters(); if (key === 'today') { $('filters').elements.from.value = date; $('filters').elements.to.value = date; }
+      if (key === 'attention') $('filters').elements.attention.value = date;
+      if (key === 'upcoming') { $('filters').elements.from.value = tomorrow(); $('filters').elements.open.value = '1'; }
       return navigate('trips');
     }));
   }
 }
 async function trips() {
   const params = new URLSearchParams();
+  const attention = $('filters').elements.attention.value;
+  const open = $('filters').elements.open.value;
+  $('trip-filter-context').textContent = attention ? 'Perlu tindakan: trip belum lengkap atau jadwal sudah lewat.' : open ? 'Mendatang: hanya trip yang belum selesai atau dibatalkan.' : '';
+  $('trip-filter-context').hidden = !attention && !open;
   for (const [key, value] of new FormData($('filters'))) if (value) params.set(key, value);
   params.set('limit', pageSize); params.set('offset', tripOffset);
   const result = await api('trips?' + params); renderTrips($('trip-list'), result.data);
@@ -100,7 +113,7 @@ async function reload() {
   finally { $('refresh').disabled = false; }
 }
 function openEditor(title) {
-  $('editor-title').textContent = title; $('editor-content').replaceChildren(); if (!$('editor').open) $('editor').showModal(); return $('editor-content');
+  $('editor-title').textContent = title; $('editor-error').hidden = true; $('editor-error').textContent = ''; $('editor-content').replaceChildren(); if (!$('editor').open) $('editor').showModal(); return $('editor-content');
 }
 function field(form, name, label, options = {}) {
   const wrap = node('label', label); const input = document.createElement(options.options ? 'select' : options.area ? 'textarea' : 'input');
@@ -206,5 +219,5 @@ $('new-entity').addEventListener('click', () => editEntity(view));
 $('close-editor').addEventListener('click', () => $('editor').close());
 $('filters').elements.from.value = today();
 $('filters').addEventListener('submit', event => { event.preventDefault(); tripOffset = 0; safely(trips); });
-$('reset-filters').addEventListener('click', () => { $('filters').reset(); tripOffset = 0; safely(trips); });
+$('reset-filters').addEventListener('click', () => { resetTripFilters(); tripOffset = 0; safely(trips); });
 safely(reload);

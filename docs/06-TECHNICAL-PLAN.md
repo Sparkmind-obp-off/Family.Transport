@@ -3,12 +3,14 @@
 ## Architecture
 Cloudflare-first full-stack web application.
 
-Recommended baseline:
-- Frontend: React + TypeScript
-- Backend/API: Cloudflare Workers
-- Database: Cloudflare D1
-- Hosting: Cloudflare Pages/Workers as appropriate
-- Repository: GitHub
+Implemented baseline (preserving the existing lightweight scaffold):
+- Frontend: semantic HTML + CSS + plain JavaScript DOM APIs, no large UI framework
+- Backend/API: TypeScript Cloudflare Worker
+- Database: Cloudflare D1 with additive migrations and assignment integrity guards
+- Hosting: Cloudflare Pages Assets + bundled Worker, BYOK account
+- Repository: GitHub; verified tests and deployment on pushes to main
+
+React was an earlier recommendation, not an MVP requirement. It was not introduced because the existing static frontend meets the small mobile-first operational scope with less runtime overhead. No persistent background server, marketplace collections, or external database was added; the operational entities remain customers, drivers, vehicles, and trips.
 
 ## Principles
 - Keep infrastructure cheap and simple.

@@ -35,7 +35,9 @@
     </section>
     <section id="trips-view" hidden aria-labelledby="trips-title" class="card">
       <h2 id="trips-title">Daftar perjalanan</h2>
+      <p id="trip-filter-context" class="muted" role="status" hidden></p>
       <form id="filters" class="grid filters">
+        <input name="attention" type="hidden" value="" hidden><input name="open" type="hidden" value="" hidden>
         <label>Dari tanggal<input name="from" type="date"></label><label>Sampai tanggal<input name="to" type="date"></label>
         <label>Status<select name="status"><option value="">Semua status</option><option>PENDING</option><option>CONFIRMED</option><option>ASSIGNED</option><option>ON_TRIP</option><option>COMPLETED</option><option>CANCELLED</option></select></label>
         <label>Cari nama / rute<input name="q" maxlength="100" placeholder="Nama atau tujuan"></label>
@@ -49,6 +51,6 @@
     </section>
     <footer>Internal Family Transport · Waktu mengikuti perangkat operator · Harga dalam rupiah</footer>
   </main>
-  <dialog id="editor" aria-labelledby="editor-title"><header class="section-head"><h2 id="editor-title">Detail trip</h2><button id="close-editor" type="button" aria-label="Tutup">Tutup</button></header><div id="editor-content"></div></dialog>
+  <dialog id="editor" aria-labelledby="editor-title"><header class="section-head"><h2 id="editor-title">Detail trip</h2><button id="close-editor" type="button" aria-label="Tutup">Tutup</button></header><p id="editor-error" class="notice error" role="alert" hidden></p><div id="editor-content"></div></dialog>
 </body>
 </html>

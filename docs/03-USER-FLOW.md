@@ -6,9 +6,9 @@
 3. Create new order
 4. Enter customer and trip details
 5. Save as Pending
-6. Coordinate vehicle/driver through WhatsApp
-7. Assign vehicle and driver
-8. Mark Confirmed / Assigned
+6. Coordinate availability through WhatsApp, then mark Confirmed
+7. Assign active driver and vehicle (either can be saved first)
+8. Complete assignment automatically marks Assigned; retained resources are revalidated
 9. On trip day, mark On Trip
 10. After completion, mark Completed
 
