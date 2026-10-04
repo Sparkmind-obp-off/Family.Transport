@@ -1,0 +1,1274 @@
+Gas gsss 🔥 langsung lanjut SESSION 2-C — OFFER PACKAGING & PRICING ARCHITECTURE.
+
+Di sini kita belum mengunci angka harga, karena angka aktual harus mengikuti data Family Transport. Yang kita kunci sekarang adalah struktur produk + formula harga + aturan bisnis, supaya nanti bisa dimasukkan ke system tanpa bongkar ulang.
+
+SESSION 2-C — OFFER PACKAGING & PRICING ARCHITECTURE
+
+2-C.1 — PRINCIPLE
+
+Family Transport jangan menjual:
+
+> “Harga mobil per hari.”
+
+
+
+Kita menjual:
+
+> Vehicle + Service + Duration + Context
+
+
+
+Jadi:
+
+OFFER
+=
+VEHICLE
+×
+SERVICE
+×
+DURATION
+×
+DATE
+×
+AREA
+×
+ADD-ONS
+
+
+---
+
+2-C.2 — PRODUCT FAMILY
+
+Kita kunci struktur utama:
+
+FAMILY TRANSPORT
+│
+├── 01 RENTAL
+│   ├── Self Drive
+│   └── With Driver
+│
+├── 02 TRANSFER
+│   ├── Airport
+│   └── Point-to-Point
+│
+├── 03 TRIP
+│   ├── Tour
+│   └── Charter
+│
+├── 04 EVENT
+│   ├── Wedding
+│   └── Event Transport
+│
+└── 05 BUSINESS
+    └── Corporate Transport
+
+Untuk MVP kita fokus:
+
+🟢 Core
+
+Self Drive
+
+With Driver
+
+Airport Transfer
+
+🟡 Growth
+
+Tour / Charter
+
+Corporate
+
+🔵 Advanced
+
+Event
+
+Partner/Fleet Network
+
+
+---
+
+2-C.3 — OFFER #1
+
+SELF DRIVE
+
+Customer memilih:
+
+Vehicle
+
+↓
+
+Date
+
+↓
+
+Duration
+
+↓
+
+Pickup
+
+↓
+
+Return
+
+↓
+
+Quote
+
+
+---
+
+Pricing model
+
+BASE VEHICLE RATE
+×
+RENTAL DURATION
++
+ADDITIONAL FEES
+=
+TOTAL
+
+Contoh struktur:
+
+> Toyota Avanza
+Self Drive
+3 Days
+Base: Rp X
+Additional: Rp X
+
+Estimated Total: Rp X
+
+
+
+
+---
+
+2-C.4 — RENTAL DURATION
+
+System harus mendukung:
+
+Daily
+
+Multi-day
+
+Custom
+
+Jangan hard-code hanya:
+
+> 1 day / 2 days / 3 days.
+
+
+
+Karena nanti bisa muncul:
+
+> 5 jam
+
+
+
+> 10 jam
+
+
+
+> 4 hari
+
+
+
+> 7 hari
+
+
+
+
+---
+
+2-C.5 — OFFER #2
+
+WITH DRIVER
+
+Ini bukan sekadar:
+
+> rental price + driver.
+
+
+
+Kita pisahkan:
+
+VEHICLE
+
+
+DRIVER
+
+
+DURATION
+
+
+AREA
+
+
+FUEL POLICY
+
+
+---
+
+Formula:
+
+VEHICLE RATE
++
+DRIVER RATE
++
+FUEL
++
+AREA FEE
++
+ADDITIONAL HOURS
+=
+TOTAL
+
+
+---
+
+2-C.6 — DRIVER PACKAGE
+
+Untuk UX, customer tidak perlu melihat formula rumit.
+
+Kita tampilkan package:
+
+OPTION A
+
+Vehicle Only
+
+OPTION B
+
+Vehicle + Driver
+
+OPTION C
+
+Vehicle + Driver + Fuel
+
+Tetapi backend tetap menghitung komponen secara terpisah.
+
+🔥 Ini penting untuk fleksibilitas admin.
+
+
+---
+
+2-C.7 — OFFER #3
+
+AIRPORT TRANSFER
+
+Airport transfer sebaiknya tidak menggunakan rental-per-day logic.
+
+Gunakan:
+
+ROUTE
++
+PASSENGERS
++
+VEHICLE
++
+TIME
++
+SPECIAL CONDITIONS
+=
+TRANSFER QUOTE
+
+Contoh:
+
+> YIA → Yogyakarta City
+4 passengers
+Toyota Innova
+One Way
+
+Quote: Rp X
+
+
+
+
+---
+
+2-C.8 — TRANSFER TYPES
+
+Minimal architecture:
+
+ONE WAY
+
+Airport → Destination
+
+RETURN
+
+Airport → Destination → Airport
+
+POINT TO POINT
+
+Location A → Location B
+
+HOURLY CHARTER
+
+Vehicle + Driver berdasarkan waktu.
+
+
+---
+
+2-C.9 — OFFER #4
+
+TOUR / CHARTER
+
+Di sini kita jangan terjebak membuat:
+
+> “Paket wisata A / B / C”
+
+
+
+terlalu cepat.
+
+Lebih fleksibel:
+
+CUSTOM TRIP
+
+Customer menentukan:
+
+date;
+
+duration;
+
+passengers;
+
+destination;
+
+vehicle;
+
+driver.
+
+
+↓
+
+Family Transport membuat:
+
+Transport Quote
+
+
+---
+
+2-C.10 — TOUR PRICING
+
+Formula:
+
+VEHICLE
++
+DRIVER
++
+DURATION
++
+AREA
++
+FUEL
++
+TOLL
++
+PARKING
++
+ADDITIONAL HOURS
+=
+QUOTE
+
+Tidak semua komponen harus selalu dikenakan.
+
+System harus bisa:
+
+include / exclude / custom.
+
+
+---
+
+2-C.11 — CORPORATE
+
+Corporate jangan diberi:
+
+> “Harga rental biasa.”
+
+
+
+Kita buat:
+
+CORPORATE RATE / AGREEMENT
+
+Possible model:
+
+PAY PER TRIP
+
+Setiap booking dihitung normal.
+
+MONTHLY ACCOUNT
+
+Customer memiliki account dan transaksi direkap.
+
+CONTRACT RATE
+
+Harga khusus berdasarkan agreement.
+
+CUSTOM SLA
+
+Untuk customer besar.
+
+
+---
+
+2-C.12 — CORPORATE QUOTE
+
+Flow:
+
+COMPANY
+ ↓
+REQUIREMENT
+ ↓
+TRIP VOLUME
+ ↓
+VEHICLE NEED
+ ↓
+SERVICE AREA
+ ↓
+SERVICE FREQUENCY
+ ↓
+QUOTE
+ ↓
+AGREEMENT
+
+🔥 Ini nanti menjadi dasar recurring revenue.
+
+
+---
+
+2-C.13 — ADD-ON ENGINE
+
+Add-on kita buat modular.
+
+Potential:
+
+Additional Hour
+
+Additional Driver
+
+Airport Pickup
+
+Extra Destination
+
+Child Seat
+
+Parking
+
+Toll
+
+Out-of-Area
+
+Special Request
+
+Tetapi admin harus dapat:
+
+> enable / disable
+
+
+
+per service.
+
+
+---
+
+2-C.14 — PRICING RULE ENGINE
+
+Ini bagian technical/business paling penting.
+
+Setiap harga memiliki:
+
+BASE RATE
+
+Harga dasar.
+
+RULE
+
+Aturan tambahan.
+
+CONDITION
+
+Kapan rule aktif.
+
+Contoh:
+
+Vehicle = Avanza
+Service = Self Drive
+Duration = 3 days
+Date = Weekend
+
+System:
+
+Base Rate
++
+Weekend Rule
+=
+Price
+
+
+---
+
+2-C.15 — DATE RULE
+
+Kita siapkan:
+
+NORMAL
+
+Weekday.
+
+WEEKEND
+
+Sabtu/Minggu.
+
+PEAK
+
+Tanggal high demand.
+
+HOLIDAY
+
+Hari libur.
+
+CUSTOM
+
+Tanggal khusus.
+
+Tapi:
+
+> jangan hard-code tanggal holiday ke frontend.
+
+
+
+Admin harus bisa mengelola calendar pricing.
+
+
+---
+
+2-C.16 — AREA RULE
+
+Contoh:
+
+LOCAL
+REGIONAL
+OUT OF TOWN
+
+Setiap area dapat memiliki:
+
+rate
+
+atau
+
+surcharge
+
+atau
+
+manual quote
+
+
+---
+
+2-C.17 — PRICE DISPLAY
+
+Ini penting untuk conversion.
+
+Jangan selalu menampilkan:
+
+> Rp 500.000
+
+
+
+tanpa konteks.
+
+Gunakan:
+
+From Rp X / day
+
+jika harga memang variable.
+
+Atau:
+
+Estimated total Rp X
+
+jika system bisa menghitung.
+
+Atau:
+
+Request Quote
+
+jika harga bergantung pada banyak faktor.
+
+
+---
+
+2-C.18 — THREE PRICING STATES
+
+Kita buat tiga state:
+
+🟢 FIXED
+
+System tahu harga pasti.
+
+> Rp X
+
+
+
+🟡 ESTIMATED
+
+System bisa menghitung estimasi.
+
+> Estimated Rp X
+
+
+
+🔴 QUOTE REQUIRED
+
+Harga perlu admin.
+
+> Request a Quote
+
+
+
+🔥 Ini membuat sistem lebih realistis.
+
+Tidak semua service harus dipaksa menjadi instant booking.
+
+
+---
+
+2-C.19 — DEPOSIT
+
+Kita jangan mengasumsikan persentase sebelum policy aktual Family Transport dikonfirmasi.
+
+Architecture:
+
+TOTAL
+↓
+DEPOSIT RULE
+↓
+DEPOSIT AMOUNT
+↓
+REMAINING BALANCE
+
+Deposit bisa:
+
+percentage;
+
+fixed amount;
+
+full payment;
+
+manual.
+
+
+Admin memilih rule.
+
+
+---
+
+2-C.20 — PAYMENT STATUS
+
+System:
+
+UNPAID
+↓
+DEPOSIT PENDING
+↓
+DEPOSIT PAID
+↓
+PARTIALLY PAID
+↓
+FULLY PAID
+↓
+REFUNDED / ADJUSTED
+
+Ini jauh lebih sehat daripada hanya:
+
+> Paid / Unpaid.
+
+
+
+
+---
+
+2-C.21 — CANCELLATION
+
+Kita belum menentukan nominal/persentase.
+
+Tetapi engine harus mendukung:
+
+Cancellation Rule
+
+berdasarkan:
+
+time before trip
+
+
+payment status
+
+
+service type
+
+Contoh:
+
+> 7 days
+→ Rule A
+
+3–7 days
+→ Rule B
+
+< 3 days
+→ Rule C
+
+No-show
+→ Rule D
+
+Angka final nanti berdasarkan policy bisnis aktual.
+
+
+---
+
+2-C.22 — QUOTE ENGINE
+
+Ini akhirnya menjadi:
+
+CUSTOMER REQUEST
+       ↓
+SERVICE
+       ↓
+VEHICLE
+       ↓
+DATE
+       ↓
+DURATION
+       ↓
+AREA
+       ↓
+ADD-ONS
+       ↓
+PRICING RULES
+       ↓
+QUOTE
+
+Quote memiliki:
+
+Quote ID
+
+Customer
+
+Trip
+
+Vehicle
+
+Service
+
+Line Items
+
+Subtotal
+
+Discount
+
+Additional Fees
+
+Total
+
+Validity
+
+Status
+
+
+---
+
+2-C.23 — QUOTE STATUS
+
+DRAFT
+ ↓
+SENT
+ ↓
+VIEWED
+ ↓
+ACCEPTED
+ ↓
+EXPIRED
+ ↓
+REJECTED
+
+Kalau accepted:
+
+↓
+
+BOOKING
+
+
+---
+
+2-C.24 — DISCOUNT ENGINE
+
+Jangan membuat diskon langsung dari frontend.
+
+System harus memiliki:
+
+Discount Type
+
+Percentage
+
+atau
+
+Fixed Amount
+
+Conditions
+
+service;
+
+vehicle;
+
+date;
+
+customer;
+
+minimum booking;
+
+campaign.
+
+
+Contoh:
+
+> Corporate customer → special rate.
+
+
+
+
+---
+
+2-C.25 — OFFER PACKAGING
+
+Sekarang customer-facing package kita sederhanakan.
+
+PACKAGE 01
+
+SELF DRIVE
+
+> Drive yourself. Flexible and simple.
+
+
+
+CTA:
+
+View Vehicles
+
+
+---
+
+PACKAGE 02
+
+WITH DRIVER
+
+> Sit back and let us handle the road.
+
+
+
+CTA:
+
+Find a Vehicle
+
+
+---
+
+PACKAGE 03
+
+AIRPORT TRANSFER
+
+> From YIA to your destination.
+
+
+
+CTA:
+
+Arrange Transfer
+
+
+---
+
+PACKAGE 04
+
+TRIP / CHARTER
+
+> One vehicle. Your itinerary.
+
+
+
+CTA:
+
+Plan Your Trip
+
+
+---
+
+PACKAGE 05
+
+CORPORATE
+
+> Reliable transport for recurring business needs.
+
+
+
+CTA:
+
+Request Corporate Quote
+
+
+---
+
+2-C.26 — GOOD / BETTER / BEST
+
+Kita tidak perlu membuat:
+
+> Bronze / Silver / Gold
+
+
+
+karena rental transport tidak selalu cocok dengan pricing tier seperti SaaS.
+
+Lebih natural menggunakan:
+
+SERVICE-BASED PACKAGING
+
+Self Drive
+
+↓
+
+With Driver
+
+↓
+
+Transfer
+
+↓
+
+Charter
+
+↓
+
+Corporate
+
+
+---
+
+2-C.27 — UPSELL
+
+Setelah customer memilih:
+
+SELF DRIVE
+
+System:
+
+> Need a driver instead?
+
+
+
+→ Add Driver
+
+WITH DRIVER
+
+> Need airport pickup?
+
+
+
+→ Add Transfer
+
+TOUR
+
+> Need additional hours?
+
+
+
+→ Add Hours
+
+CORPORATE
+
+> Need recurring bookings?
+
+
+
+→ Create Corporate Account
+
+
+---
+
+2-C.28 — CROSS-SELL
+
+Contoh customer:
+
+AIRPORT TRANSFER
+
+↓
+
+Daily Rental
+
+↓
+
+Tour
+
+↓
+
+Return Airport Transfer
+
+Satu customer:
+
+> 1 acquisition
+
+
+
+bisa menghasilkan:
+
+> multiple transactions.
+
+
+
+
+---
+
+2-C.29 — REVENUE MODEL
+
+Jadi revenue Family Transport kita bukan satu sumber.
+
+REVENUE
+│
+├── Rental
+├── Driver
+├── Transfer
+├── Tour
+├── Charter
+├── Add-ons
+├── Corporate
+└── Partnership
+
+
+---
+
+2-C.30 — REVENUE PRIORITY
+
+TODAY
+
+Rental
+
+Driver
+
+Transfer
+
+↓
+
+GROWTH
+
+Tour
+
+Charter
+
+↓
+
+HIGH VALUE
+
+Corporate
+
+Event
+
+↓
+
+SCALE
+
+Partnership
+
+Fleet Network
+
+
+---
+
+2-C.31 — MVP PRICING ARCHITECTURE
+
+Untuk MVP, kita tidak perlu membangun pricing engine super kompleks.
+
+Cukup:
+
+Vehicle
++
+Service
++
+Duration
++
+Date Rule
++
+Area
++
+Add-on
+=
+Price / Quote
+
+Admin bisa mengubah:
+
+base rate;
+
+weekend;
+
+holiday;
+
+driver;
+
+area;
+
+add-on;
+
+discount.
+
+
+
+---
+
+2-C.32 — DATA MODEL IMPLIKASI
+
+Pricing architecture ini langsung memberi kita entity:
+
+VEHICLE
+SERVICE
+PRICE_RULE
+RATE
+AREA
+ADD_ON
+QUOTE
+BOOKING
+DISCOUNT
+PAYMENT
+
+🔥 Ini penting karena Session 2-C sudah mulai menjadi jembatan ke technical architecture.
+
+
+---
+
+2-C.33 — CUSTOMER-FACING VS BACKEND
+
+Customer melihat:
+
+> Toyota Avanza + Driver
+
+From Rp X/day
+
+
+
+Backend menyimpan:
+
+vehicle_rate
+driver_rate
+duration
+area_fee
+date_modifier
+addons
+discount
+tax/fees
+
+Jadi UI tetap sederhana.
+
+System tetap powerful.
+
+
+---
+
+2-C.34 — GOLDEN RULE
+
+> Complexity belongs in the engine, not in the customer interface.
+
+
+
+Customer tidak perlu melihat:
+
+> base_rate × seasonal_modifier + driver_surcharge + zone_modifier...
+
+
+
+Mereka hanya perlu melihat:
+
+Clear Price / Estimate / Quote
+
+
+---
+
+🔥 SESSION 2-C VERDICT
+
+Sekarang kita sudah punya:
+
+PRODUCT
+
+Self Drive
+
+With Driver
+
+Airport Transfer
+
+Tour / Charter
+
+Corporate
+
+PRICING
+
+Vehicle + Service + Duration + Date + Area + Add-ons
+
+PRICE STATE
+
+Fixed / Estimated / Quote Required
+
+QUOTE
+
+Draft → Sent → Accepted → Booking
+
+PAYMENT
+
+Unpaid → Deposit → Partial → Paid
+
+REVENUE
+
+Transaction → Upsell → Repeat → Corporate → Partnership
+
+TECHNICAL FOUNDATION
+
+Vehicle + Service + Rate + Rule + Quote + Booking + Payment
+
+
+---
+
+🧩 SESSION 2 SEKARANG SUDAH JAUH LEBIH LENGKAP
+
+SESSION 2
+│
+├── 2-A Positioning Foundation
+│
+├── 2-B ICP + Value Proposition
+│
+└── 2-C Offer + Pricing Architecture
+
+Dan sekarang kita belum perlu lompat ke Session 3 dulu kalau mau benar-benar rapi.
+
+Ada satu bagian terakhir yang sangat berguna:
+
+SESSION 2-D — COMPETITIVE DIFFERENTIATION & DEFENSIBILITY
+
+Di 2-D kita akan menjawab:
+
+> “Oke, semua rental mobil bisa mengatakan hal yang sama. Lalu apa yang membuat Family Transport benar-benar berbeda dan sulit ditiru?”
+
+
+
+Kita akan bikin:
+
+Differentiation Matrix
+
+→ Competitive Moat
+
+→ Trust Moat
+
+→ Service Moat
+
+→ Digital Moat
+
+→ Operational Moat
+
+→ Brand Moat
+
+→ dan akhirnya FINAL POSITIONING STATEMENT.
+
+Setelah 2-D, barulah SESSION 2 resmi LOCKED, lalu kita masuk SESSION 3 — UX / IA & Conversion System dengan fondasi yang sudah lengkap.

@@ -1,0 +1,1112 @@
+Gas gsss 🔥 kita langsung masuk SESSION 3-D. Ini bagian terakhir dari UX sebelum kita kunci Session 3 total.
+
+SESSION 3-D — VISUAL DESIGN SYSTEM & BRAND EXPERIENCE
+
+3-D.1 — DESIGN OBJECTIVE
+
+Visual Family Transport jangan terlihat seperti website rental mobil generik.
+
+Kita ingin kesan:
+
+> Reliable + Modern + Warm + Practical + Premium-accessible
+
+
+
+Bukan:
+
+❌ luxury berlebihan
+❌ corporate kaku
+❌ marketplace ramai
+❌ template rental murah
+❌ “AI startup” yang terlalu futuristik
+
+
+---
+
+3-D.2 — BRAND EXPERIENCE
+
+Kita kunci 5 kata:
+
+01 — TRUSTED
+
+Terlihat nyata dan dapat dipercaya.
+
+02 — CALM
+
+Tidak membuat customer merasa dikejar.
+
+03 — CLEAR
+
+Harga, kendaraan, proses mudah dipahami.
+
+04 — WARM
+
+Tetap terasa manusiawi.
+
+05 — CAPABLE
+
+Terlihat seperti bisnis transportasi yang serius.
+
+
+---
+
+3-D.3 — VISUAL POSITION
+
+Spectrum:
+
+GENERIC RENTAL
+      │
+      │
+      ├── CLEAN
+      │
+      ├── MODERN
+      │
+      ├── TRUSTED
+      │
+      └── PREMIUM-ACCESSIBLE
+                 ↑
+          FAMILY TRANSPORT
+
+Jadi visualnya:
+
+> modern enough to trust, warm enough to approach.
+
+
+
+
+---
+
+3-D.4 — COLOR STRATEGY
+
+Kita tidak mengunci hex code dulu sebelum brand asset aktual/divisi visual dikonfirmasi.
+
+Tetapi semantic system kita lock:
+
+PRIMARY
+
+Brand Color
+
+Untuk:
+
+CTA;
+
+active state;
+
+links;
+
+important highlights.
+
+
+NEUTRAL
+
+Background
+
+Surface
+
+Text
+
+Muted Text
+
+Border
+
+SEMANTIC
+
+Success
+
+Warning
+
+Error
+
+Info
+
+
+---
+
+3-D.5 — COLOR PRINCIPLE
+
+Jangan membuat halaman seperti:
+
+> “full brand color.”
+
+
+
+Gunakan hierarchy:
+
+NEUTRAL
+████████████████
+
+SURFACE
+██████████
+
+BRAND
+███
+
+SEMANTIC
+█
+
+Brand color hanya muncul pada:
+
+> moments that matter.
+
+
+
+Terutama CTA dan interaction.
+
+
+---
+
+3-D.6 — TYPOGRAPHY
+
+Typography harus:
+
+Highly readable
+
+Modern
+
+Friendly
+
+Professional
+
+Hierarchy:
+
+DISPLAY
+↓
+H1
+↓
+H2
+↓
+H3
+↓
+BODY
+↓
+LABEL
+↓
+CAPTION
+
+Jangan menggunakan terlalu banyak font.
+
+Recommended architecture:
+
+1 Primary Typeface
+
+Untuk hampir seluruh UI.
+
+Optional Display Typeface
+
+Hanya jika benar-benar dibutuhkan untuk brand expression.
+
+MVP:
+
+> 1 font family sudah cukup.
+
+
+
+
+---
+
+3-D.7 — TYPOGRAPHIC PERSONALITY
+
+Headline:
+
+> confident.
+
+
+
+Body:
+
+> calm.
+
+
+
+CTA:
+
+> direct.
+
+
+
+Contoh:
+
+GOOD
+
+Find the right vehicle for your trip.
+
+BAD
+
+Experience our exceptional and unparalleled transportation solutions for your memorable journey.
+
+🔥 Family Transport harus bicara seperti manusia.
+
+
+---
+
+3-D.8 — SPACING SYSTEM
+
+Gunakan predictable spacing scale.
+
+Contoh:
+
+4
+8
+12
+16
+24
+32
+48
+64
+80
+96
+
+Jangan:
+
+> 17px di sini, 23px di sana, 31px di sana.
+
+
+
+Consistency lebih penting daripada angka absolut.
+
+
+---
+
+3-D.9 — LAYOUT GRID
+
+Desktop:
+
+Max width
+
+sekitar:
+
+1200–1280px
+
+Content center.
+
+Mobile:
+
+padding:
+
+16–20px
+
+Tablet:
+
+sekitar:
+
+24–32px
+
+Tujuan:
+
+> breathing room tanpa membuang screen space.
+
+
+
+
+---
+
+3-D.10 — BORDER RADIUS
+
+Gunakan satu family radius.
+
+Contoh hierarchy:
+
+Small
+
+Input / badge
+
+Medium
+
+Card / button
+
+Large
+
+Hero / major surfaces
+
+Jangan setiap element punya radius berbeda.
+
+
+---
+
+3-D.11 — BUTTON SYSTEM
+
+PRIMARY
+
+Plan My Trip
+
+Check Availability
+
+Continue Booking
+
+SECONDARY
+
+Browse Vehicles
+
+See Alternatives
+
+TERTIARY
+
+Text/action link.
+
+
+---
+
+Button anatomy
+
+[ ICON ] LABEL
+
+States:
+
+Default
+
+Hover
+
+Active
+
+Focus
+
+Disabled
+
+Loading
+
+
+---
+
+3-D.12 — CTA LANGUAGE
+
+Gunakan action-oriented copy.
+
+GOOD
+
+Plan My Trip
+
+Check Availability
+
+Get a Quote
+
+Request Booking
+
+Request Corporate Quote
+
+AVOID
+
+Submit
+
+Click Here
+
+Learn More
+(jika bisa dibuat lebih spesifik)
+
+
+---
+
+3-D.13 — VEHICLE CARD DESIGN
+
+Vehicle card adalah salah satu core component.
+
+┌──────────────────────────┐
+│                          │
+│       VEHICLE PHOTO      │
+│                          │
+├──────────────────────────┤
+│ Toyota Innova            │
+│                          │
+│ 7 seats · Automatic      │
+│                          │
+│ With Driver              │
+│                          │
+│ From Rp X/day            │
+│                          │
+│ [ View Vehicle ]         │
+└──────────────────────────┘
+
+Hierarchy:
+
+Image → Name → Specs → Service → Price → CTA
+
+
+---
+
+3-D.14 — TRUST CARD
+
+Contoh:
+
+REAL FLEET
+
+> See the vehicles you'll actually travel in.
+
+
+
+CLEAR BOOKING
+
+> Know what you're booking before you confirm.
+
+
+
+HUMAN SUPPORT
+
+> Need help? Talk to our team.
+
+
+
+Trust claims harus:
+
+> specific.
+
+
+
+Bukan:
+
+> “Best service in town.”
+
+
+
+
+---
+
+3-D.15 — PRICE COMPONENT
+
+Harga harus visually prominent.
+
+From
+
+Rp X
+
+/day
+
+atau:
+
+Estimated Total
+
+Rp X
+
+Jika quote manual:
+
+Custom Quote
+
+We'll confirm the final price.
+
+
+---
+
+3-D.16 — QUOTE SUMMARY
+
+Gunakan visual hierarchy:
+
+YOUR TRIP
+
+20–23 August
+5 passengers
+Yogyakarta
+
+────────────────
+
+VEHICLE
+Toyota Innova
+
+SERVICE
+With Driver
+
+────────────────
+
+ESTIMATED TOTAL
+
+Rp X
+
+[ Continue Booking ]
+
+Tidak perlu dashboard-like complexity.
+
+
+---
+
+3-D.17 — FORM DESIGN
+
+Form harus terasa:
+
+guided
+
+bukan:
+
+> administrative paperwork.
+
+
+
+Gunakan:
+
+Label
+
+Input
+
+Helper text
+
+Validation
+
+Contoh:
+
+> Pickup location
+Where should we pick you up?
+
+
+
+
+---
+
+3-D.18 — FORM STATES
+
+Setiap input:
+
+Default
+
+Focused
+
+Filled
+
+Error
+
+Disabled
+
+Success
+
+Untuk error:
+
+❌ “Invalid input.”
+
+✅ “Please enter a valid WhatsApp number.”
+
+
+---
+
+3-D.19 — PROGRESSIVE DISCLOSURE
+
+Jangan tampilkan semua field sekaligus.
+
+Contoh Trip Match:
+
+STEP 1
+Passengers
+      ↓
+STEP 2
+Date
+      ↓
+STEP 3
+Duration
+      ↓
+STEP 4
+Destination
+      ↓
+STEP 5
+Driver
+
+Customer merasa:
+
+> “Ini gampang.”
+
+
+
+Padahal backend bisa melakukan banyak logic.
+
+
+---
+
+3-D.20 — MOBILE UX
+
+Mobile adalah primary design environment.
+
+Bottom CTA:
+
+┌─────────────────────────┐
+│ [ WhatsApp ] [ Book ]   │
+└─────────────────────────┘
+
+Tetapi sticky CTA hanya muncul ketika contextual.
+
+Jangan menutupi konten.
+
+
+---
+
+3-D.21 — MOBILE VEHICLE DETAIL
+
+Urutan:
+
+Photo
+↓
+Name
+↓
+Specs
+↓
+Price
+↓
+Service
+↓
+Availability
+↓
+Details
+↓
+Reviews
+
+CTA tetap mudah dijangkau.
+
+
+---
+
+3-D.22 — DESKTOP VEHICLE DETAIL
+
+Desktop bisa split layout:
+
+┌────────────────────┬──────────────────┐
+│                    │                  │
+│     GALLERY        │  BOOKING PANEL   │
+│                    │                  │
+│                    │  Vehicle         │
+│                    │  Service         │
+│                    │  Date            │
+│                    │  Price           │
+│                    │                  │
+│                    │ [Check Availability]
+└────────────────────┴──────────────────┘
+
+Booking panel dapat sticky.
+
+
+---
+
+3-D.23 — PHOTOGRAPHY DIRECTION
+
+Ini penting karena bisnis transport sangat visual.
+
+Gunakan:
+
+REAL VEHICLES
+
+Bukan stock photo jika kendaraan memang dijual/disewakan.
+
+REAL ENVIRONMENT
+
+Yogyakarta / airport / pickup context.
+
+REAL PEOPLE
+
+Driver/customer bila tersedia dengan consent.
+
+CONSISTENT SHOOTING
+
+Angle, lighting, background relatif konsisten.
+
+
+---
+
+3-D.24 — IMAGE STYLE
+
+Target:
+
+> clean documentary commercial photography
+
+
+
+Bukan:
+
+❌ overly edited
+❌ fake luxury
+❌ AI-looking vehicle
+❌ stock-photo family
+
+Customer harus merasa:
+
+> “Ini mobil yang benar-benar akan saya dapat.”
+
+
+
+
+---
+
+3-D.25 — ICONOGRAPHY
+
+Gunakan satu icon family.
+
+Icon harus:
+
+simple
+
+outlined / consistent
+
+recognizable
+
+Contoh:
+
+🚗 vehicle
+
+👥 passengers
+
+⚙ transmission
+
+🧳 luggage
+
+📍 location
+
+📅 date
+
+🕐 time
+
+Jangan mencampur banyak icon style.
+
+
+---
+
+3-D.26 — MOTION
+
+Motion harus:
+
+> functional, not decorative.
+
+
+
+Contoh:
+
+Availability loading:
+
+subtle progress
+
+Quote:
+
+smooth price update
+
+Navigation:
+
+soft transition
+
+Modal:
+
+quick fade/slide
+
+Tidak perlu:
+
+❌ excessive parallax
+❌ bouncing cards
+❌ cinematic animation di setiap section
+
+
+---
+
+3-D.27 — ACCESSIBILITY
+
+Minimum:
+
+Contrast
+
+Text mudah dibaca.
+
+Focus
+
+Keyboard-visible focus.
+
+Touch
+
+Button cukup besar.
+
+Labels
+
+Form field memiliki label.
+
+Error
+
+Error tidak hanya memakai warna.
+
+Images
+
+Meaningful alt text.
+
+
+---
+
+3-D.28 — DESIGN TOKENS
+
+Nanti implementation menggunakan token:
+
+color.brand
+color.background
+color.surface
+color.text
+color.muted
+color.border
+
+space.1
+space.2
+space.3
+...
+
+radius.sm
+radius.md
+radius.lg
+
+font.display
+font.heading
+font.body
+font.label
+
+shadow.sm
+shadow.md
+
+Dengan begitu:
+
+> perubahan visual tidak perlu mengedit setiap halaman satu per satu.
+
+
+
+
+---
+
+3-D.29 — COMPONENT ARCHITECTURE
+
+Design system:
+
+FOUNDATION
+│
+├── Colors
+├── Typography
+├── Spacing
+├── Radius
+├── Shadows
+│
+COMPONENTS
+│
+├── Button
+├── Input
+├── Select
+├── Date Picker
+├── Card
+├── Badge
+├── Modal
+├── Toast
+│
+BUSINESS COMPONENTS
+│
+├── Vehicle Card
+├── Service Card
+├── Price Summary
+├── Quote Summary
+├── Booking Timeline
+├── Availability
+├── Trust Block
+├── Review Card
+└── Trip Match
+
+
+---
+
+3-D.30 — VISUAL HIERARCHY
+
+Setiap screen harus memiliki:
+
+LEVEL 1
+
+What is this?
+
+LEVEL 2
+
+Why should I care?
+
+LEVEL 3
+
+What are my options?
+
+LEVEL 4
+
+What should I do next?
+
+Jangan semua text dibuat besar.
+
+
+---
+
+3-D.31 — BRAND VS CONVERSION
+
+Ini prinsip penting:
+
+> Brand creates trust. Conversion creates action.
+
+
+
+Brand:
+
+Your Journey, Handled.
+
+Conversion:
+
+Plan My Trip
+
+Keduanya tidak boleh saling mengganggu.
+
+
+---
+
+3-D.32 — VISUAL DIFFERENTIATION
+
+Family Transport jangan mencoba menang melalui:
+
+> “super flashy website.”
+
+
+
+Kita menang melalui:
+
+CLEAN
+
+
+REAL
+
+
+CLEAR
+
+
+HUMAN
+
+
+SYSTEMATIC
+
+Hasil yang kita incar:
+
+> “Kelihatan profesional, tapi tetap terasa seperti bisnis yang bisa saya hubungi.”
+
+
+
+
+---
+
+3-D.33 — DESIGN QUALITY BAR
+
+Sebelum page dianggap selesai:
+
+VISUAL
+
+☑ hierarchy jelas
+☑ spacing konsisten
+☑ typography readable
+☑ images authentic
+
+UX
+
+☑ next action jelas
+☑ CTA visible
+☑ states lengkap
+☑ mobile usable
+
+TRUST
+
+☑ real evidence
+☑ price clarity
+☑ contact visible
+
+TECH
+
+☑ responsive
+☑ accessible
+☑ performant
+
+
+---
+
+3-D.34 — FAMILY TRANSPORT DESIGN DNA
+
+Kita kunci:
+
+REAL
++
+CALM
++
+CLEAR
++
+WARM
++
+CAPABLE
+
+Secara visual:
+
+Modern Transport Utility × Human Hospitality
+
+Ini menurutku arah yang paling cocok untuk positioning kita.
+
+
+---
+
+3-D.35 — SESSION 3 FINAL ARCHITECTURE
+
+Sekarang Session 3 lengkap:
+
+SESSION 3
+│
+├── 3-A
+│   UX / IA FOUNDATION
+│
+├── 3-B
+│   USER FLOW + CONVERSION
+│
+├── 3-C
+│   PAGE-BY-PAGE UX SPEC
+│
+└── 3-D
+    VISUAL DESIGN SYSTEM
+
+
+---
+
+🔒 SESSION 3 — LOCKED
+
+Kita sekarang punya:
+
+Strategy → Session 2
+
+UX → Session 3-A
+
+Flow → Session 3-B
+
+Page Specification → Session 3-C
+
+Visual System → Session 3-D
+
+Jadi fondasi untuk build sudah mulai sangat solid.
+
+
+---
+
+🚀 NEXT: SESSION 4
+
+Sekarang baru kita masuk ke bagian yang lebih teknis:
+
+SESSION 4 — PRODUCT & SYSTEM ARCHITECTURE
+
+Di Session 4 kita akan menerjemahkan seluruh UX tadi menjadi:
+
+Product Modules
+
+→ Roles / RBAC
+
+→ Core Entities
+
+→ Database Architecture
+
+→ Booking Engine
+
+→ Availability Engine
+
+→ Pricing Engine
+
+→ Quote Engine
+
+→ Customer / CRM
+
+→ Admin System
+
+→ WhatsApp Integration
+
+→ Payment Architecture
+
+→ Analytics
+
+→ API Architecture
+
+→ Security
+
+→ Deployment Architecture
+
+→ MVP vs Phase 2
+
+Dan yang paling penting:
+
+> kita tidak akan membangun fitur hanya karena “bisa dibuat”. Setiap module harus punya hubungan langsung dengan business flow yang sudah kita lock.

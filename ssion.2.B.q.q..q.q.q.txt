@@ -1,0 +1,843 @@
+Wkwk iya gsss 😭 bener — kita tadi lompat. Jangan langsung Session 3.
+
+Kita balik dulu dan lanjutkan SESSION 2 supaya fondasinya benar-benar selesai sebelum masuk UX.
+
+SESSION 2 — POSITIONING & OFFER ARCHITECTURE
+
+2-B — ICP + VALUE PROPOSITION + MESSAGE HIERARCHY
+
+Session 2 sebelumnya baru kita buat foundation. Sekarang kita dalami bagian 2-B.
+
+
+---
+
+2-B.1 — SIAPA CUSTOMER UTAMA?
+
+Dari Session 1, kita punya beberapa segmen:
+
+1. Tourist / Family
+
+
+2. Corporate
+
+
+3. Airport Transfer
+
+
+4. Group / Event
+
+
+5. Local Customer
+
+
+
+Tapi kita tidak boleh menjadikan semuanya sebagai #1 customer.
+
+PRIMARY ICP
+
+👨‍👩‍👧 TOURIST / FAMILY TRAVELER
+
+Terutama customer yang:
+
+datang ke Yogyakarta;
+
+bepergian 2–7 hari;
+
+2–7 orang;
+
+membutuhkan kendaraan;
+
+tidak selalu tahu kendaraan yang cocok;
+
+mencari lewat Google / Maps / referral;
+
+ingin proses cepat;
+
+takut mendapatkan layanan yang tidak sesuai.
+
+
+
+---
+
+2-B.2 — CUSTOMER JOB
+
+Customer sebenarnya tidak berpikir:
+
+> “Saya membutuhkan Toyota Innova.”
+
+
+
+Mereka berpikir:
+
+> “Saya butuh transportasi yang nyaman untuk perjalanan saya.”
+
+
+
+Jadi:
+
+Functional Job
+
+Mendapatkan kendaraan.
+
+Emotional Job
+
+Merasa aman dan tidak khawatir.
+
+Social Job
+
+Bisa membawa keluarga / teman dengan nyaman.
+
+
+---
+
+2-B.3 — CUSTOMER PAIN
+
+Kita prioritaskan pain berdasarkan dampaknya.
+
+🔴 PAIN #1
+
+Uncertainty
+
+> “Mobilnya benar-benar tersedia nggak?”
+
+
+
+🔴 PAIN #2
+
+Price uncertainty
+
+> “Total akhirnya berapa?”
+
+
+
+🔴 PAIN #3
+
+Trust
+
+> “Ini bisnis beneran atau bukan?”
+
+
+
+🔴 PAIN #4
+
+Fit
+
+> “Mobil ini cukup nggak untuk keluarga saya?”
+
+
+
+🔴 PAIN #5
+
+Process
+
+> “Booking-nya gimana?”
+
+
+
+
+---
+
+2-B.4 — DESIRED OUTCOME
+
+Customer ingin sampai pada kondisi:
+
+> “Saya tahu kendaraan yang cocok, tahu estimasi biayanya, booking-nya jelas, dan saya tinggal menjalani perjalanan.”
+
+
+
+🔥 Ini yang harus menjadi pusat UX.
+
+
+---
+
+2-B.5 — JOB-TO-BE-DONE
+
+JTBD utama:
+
+> When I plan a trip to Yogyakarta, I want to quickly find reliable transportation that fits my group and budget, so I can focus on the trip instead of worrying about transportation.
+
+
+
+Versi Indonesia:
+
+> Saat saya merencanakan perjalanan ke Yogyakarta, saya ingin mendapatkan transportasi yang terpercaya dan sesuai kebutuhan rombongan serta budget saya, sehingga saya bisa fokus menikmati perjalanan tanpa repot mengurus transportasi.
+
+
+
+
+---
+
+2-B.6 — VALUE PROPOSITION
+
+Sekarang kita bisa membuat formula:
+
+CUSTOMER
+
+
+PROBLEM
+
+
+SOLUTION
+
+
+OUTCOME
+
+Draft:
+
+> Family Transport membantu wisatawan dan keluarga menemukan transportasi yang sesuai kebutuhan perjalanan mereka di Yogyakarta, dengan pilihan kendaraan, layanan, dan proses booking yang jelas sehingga perjalanan terasa lebih mudah dan terpercaya.
+
+
+
+
+---
+
+2-B.7 — VALUE PILLARS
+
+Kita kunci menjadi 4 pillar.
+
+01 — RIGHT FIT
+
+> Kendaraan yang sesuai kebutuhan perjalanan.
+
+
+
+Bukan:
+
+> “Ini mobil kami.”
+
+
+
+Tetapi:
+
+> “Ini kendaraan yang cocok untuk perjalanan Anda.”
+
+
+
+
+---
+
+02 — CLEAR
+
+> Informasi jelas sebelum booking.
+
+
+
+Customer mengetahui:
+
+kendaraan;
+
+service;
+
+durasi;
+
+pricing/quote;
+
+terms;
+
+booking process.
+
+
+
+---
+
+03 — RELIABLE
+
+> Transportasi yang bisa diandalkan.
+
+
+
+Fokus:
+
+availability;
+
+driver;
+
+pickup;
+
+communication;
+
+execution.
+
+
+
+---
+
+04 — EASY
+
+> Dari kebutuhan sampai booking tanpa proses yang membingungkan.
+
+
+
+
+---
+
+2-B.8 — CORE VALUE PROPOSITION
+
+Jadi versi pendeknya:
+
+The right transport, without the hassle.
+
+Indonesia:
+
+Transportasi yang tepat, tanpa ribet.
+
+Ini menurutku lebih kuat sebagai core benefit statement daripada “rental mobil terpercaya”.
+
+
+---
+
+2-B.9 — BRAND PROMISE
+
+Value proposition menjelaskan benefit.
+
+Brand promise menjelaskan janji pengalaman.
+
+Kita punya:
+
+Your Journey, Handled.
+
+Indonesia:
+
+Perjalananmu, Kami Urus.
+
+Tetapi secara internal maknanya:
+
+> Kami membuat kebutuhan transportasi perjalananmu menjadi lebih mudah, jelas, dan terkoordinasi.
+
+
+
+
+---
+
+2-B.10 — MESSAGE HIERARCHY
+
+Sekarang kita buat hirarki pesan.
+
+Customer melihat website dalam hitungan detik.
+
+Jangan memberikan 20 pesan sekaligus.
+
+LEVEL 1 — WHAT
+
+Transport apa?
+
+> Rental, transfer & transport solutions in Yogyakarta.
+
+
+
+LEVEL 2 — BENEFIT
+
+Kenapa?
+
+> Easy, clear and reliable.
+
+
+
+LEVEL 3 — DIFFERENTIATOR
+
+Apa yang berbeda?
+
+> Find the transport that fits your trip.
+
+
+
+LEVEL 4 — PROOF
+
+Kenapa percaya?
+
+> Reviews, real vehicles, clear information, real business presence.
+
+
+
+LEVEL 5 — ACTION
+
+Apa yang harus dilakukan?
+
+> Plan My Trip / Browse Vehicles.
+
+
+
+
+---
+
+2-B.11 — HERO MESSAGE
+
+Draft utama:
+
+Your Journey, Handled.
+
+> Rental, transfer, and transport solutions in Yogyakarta—matched to the way you travel.
+
+
+
+CTA
+
+Plan My Trip
+
+Secondary:
+
+Browse Vehicles
+
+
+---
+
+2-B.12 — ALTERNATIVE HERO
+
+Kalau target market ternyata lebih price-driven, kita bisa memakai:
+
+Find the Right Ride for Your Yogyakarta Trip.
+
+> Choose a vehicle, tell us your needs, and we'll help you arrange the rest.
+
+
+
+CTA:
+
+Find My Transport
+
+
+---
+
+2-B.13 — ALTERNATIVE INDONESIAN
+
+Untuk audience lokal:
+
+Butuh Transportasi di Jogja?
+
+> Pilih kendaraan, ceritakan kebutuhan perjalananmu, dan kami bantu siapkan transportasi yang sesuai.
+
+
+
+CTA:
+
+Rencanakan Perjalanan
+
+
+---
+
+2-B.14 — WHICH ONE SHOULD WE USE?
+
+Untuk sekarang aku rekomendasikan:
+
+BRAND / EMOTIONAL
+
+Your Journey, Handled.
+
+
+FUNCTIONAL
+
+Transport solutions in Yogyakarta, matched to the way you travel.
+
+Karena keduanya saling melengkapi.
+
+
+---
+
+2-B.15 — OBJECTION ENGINE
+
+Sekarang kita harus menjawab alasan customer tidak membeli.
+
+“Takut mobil tidak sesuai.”
+
+→ Real photos + specs + clear vehicle details.
+
+“Takut tidak tersedia.”
+
+→ Availability/request confirmation.
+
+“Takut harga berubah.”
+
+→ Clear quote + terms.
+
+“Takut ditipu.”
+
+→ Business identity + Google profile + reviews + real contact.
+
+“Saya tidak tahu pilih mobil apa.”
+
+→ Trip Match / Recommendation.
+
+“Saya buru-buru.”
+
+→ Fast inquiry + WhatsApp context.
+
+
+---
+
+2-B.16 — TRUST MESSAGE
+
+Jangan mengatakan:
+
+> “Kami terpercaya.”
+
+
+
+Lebih baik:
+
+> See what you’re booking. Know what to expect.
+
+
+
+Kemudian buktikan melalui:
+
+Real Vehicles
+
+Real Reviews
+
+Clear Terms
+
+Business Information
+
+Responsive Support
+
+
+---
+
+2-B.17 — CTA ARCHITECTURE
+
+Sekarang kita kunci CTA berdasarkan intent.
+
+Low Intent
+
+Explore Vehicles
+
+Medium Intent
+
+Plan My Trip
+
+Price Intent
+
+Get a Quote
+
+High Intent
+
+Request Booking
+
+Corporate
+
+Request Corporate Quote
+
+Assistance
+
+Chat with Us
+
+🔥 Jadi CTA bukan dekorasi.
+
+CTA adalah decision architecture.
+
+
+---
+
+2-B.18 — WHATSAPP MESSAGE
+
+Saat customer klik WhatsApp, jangan kirim:
+
+> “Halo, saya mau rental mobil.”
+
+
+
+System sebaiknya membentuk context:
+
+> Halo Family Transport, saya ingin meminta informasi transportasi.
+
+Tanggal:
+Jumlah penumpang:
+Pickup:
+Tujuan:
+Durasi:
+Kebutuhan: Rental / Driver / Transfer / Trip
+
+
+
+Admin langsung punya informasi untuk membuat quote.
+
+
+---
+
+2-B.19 — CUSTOMER DECISION FRAMEWORK
+
+Kita bisa menyederhanakan keputusan menjadi:
+
+FIT → PRICE → TRUST → BOOK
+
+Customer harus menjawab:
+
+FIT
+
+Apakah ini cocok?
+
+PRICE
+
+Berapa?
+
+TRUST
+
+Bisa dipercaya?
+
+BOOK
+
+Bagaimana pesan?
+
+Kalau empat pertanyaan ini terjawab, conversion friction turun.
+
+
+---
+
+2-B.20 — CORPORATE MESSAGE
+
+Untuk corporate kita jangan memakai messaging tourist.
+
+Headline:
+
+Reliable Transport for Your Business.
+
+Sub:
+
+> Transport support for business trips, guest transfers, events, and recurring travel needs.
+
+
+
+CTA:
+
+Request Corporate Quote
+
+
+---
+
+2-B.21 — AIRPORT MESSAGE
+
+Headline:
+
+Arrive in Yogyakarta. Your Ride Is Ready.
+
+Sub:
+
+> Pre-arranged airport transfer from YIA to your destination.
+
+
+
+CTA:
+
+Arrange Airport Transfer
+
+
+---
+
+2-B.22 — TRIP MATCH MESSAGE
+
+Ini potential signature product:
+
+Not Sure What Vehicle You Need?
+
+> Tell us about your trip. We'll help you find the right transport.
+
+
+
+CTA:
+
+Find My Transport
+
+🔥 Ini sangat penting karena kita mengubah:
+
+vehicle-first
+
+menjadi:
+
+customer-first.
+
+
+---
+
+2-B.23 — MESSAGE SYSTEM
+
+Jadi Family Transport memiliki satu brand message, tetapi beberapa context message:
+
+FAMILY TRANSPORT
+                       │
+              YOUR JOURNEY, HANDLED
+                       │
+       ┌───────────────┼───────────────┐
+       ↓               ↓               ↓
+    TOURIST          AIRPORT        CORPORATE
+       ↓               ↓               ↓
+  RIGHT RIDE       READY RIDE     RELIABLE RIDE
+
+
+---
+
+2-B.24 — BRAND VOICE
+
+SAY
+
+> “Kami bantu pilih.”
+
+
+
+> “Berikut opsi yang sesuai.”
+
+
+
+> “Mari kita cek availability.”
+
+
+
+> “Ini estimasi untuk kebutuhan Anda.”
+
+
+
+DON'T SAY
+
+> “Pasti paling murah.”
+
+
+
+> “Dijamin terbaik.”
+
+
+
+> “Termurah se-Jogja.”
+
+
+
+> “100% guaranteed” tanpa evidence.
+
+
+
+Brand harus:
+
+Confident
+
+tetapi tidak:
+
+overclaiming.
+
+
+---
+
+2-B.25 — FINAL MESSAGE STACK V0.1
+
+BRAND
+
+FAMILY TRANSPORT
+
+TAGLINE
+
+Your Journey, Handled.
+
+CATEGORY
+
+Transport & Rental Service in Yogyakarta
+
+CORE BENEFIT
+
+The right transport, without the hassle.
+
+DIFFERENTIATOR
+
+Transport matched to your journey.
+
+PROOF
+
+Real vehicles + clear information + reviews + reliable service process.
+
+PRIMARY CTA
+
+Plan My Trip
+
+SECONDARY CTA
+
+Browse Vehicles
+
+
+---
+
+🔥 SESSION 2-B VERDICT
+
+Kita sekarang sudah mengunci:
+
+ICP
+
+→ Tourist / Family
+
+Core JTBD
+
+→ mendapatkan transportasi yang tepat tanpa repot.
+
+Core pain
+
+→ uncertainty.
+
+Desired outcome
+
+→ perjalanan terasa aman, jelas, dan mudah.
+
+Value proposition
+
+→ The right transport, without the hassle.
+
+Brand promise
+
+→ Your Journey, Handled.
+
+Differentiator
+
+→ Transport matched to your journey.
+
+Primary CTA
+
+→ Plan My Trip
+
+
+---
+
+NEXT: SESSION 2-C
+
+Sekarang baru kita lanjut:
+
+SESSION 2-C — OFFER PACKAGING & PRICING ARCHITECTURE
+
+Di sini kita akan bongkar produk Family Transport satu per satu:
+
+Self Drive
+
+→ package structure
+
+With Driver
+
+→ package structure
+
+Airport Transfer
+
+→ pricing logic
+
+Tour / Charter
+
+→ pricing logic
+
+Corporate
+
+→ contract / recurring model
+
+Add-ons
+
+→ upsell
+
+Deposit
+
+→ payment logic
+
+Cancellation
+
+→ policy architecture
+
+Quote
+
+→ bagaimana harga dihitung.
+
+Dan yang paling penting:
+
+> Kita tidak akan asal bikin harga. Kita akan membuat pricing engine yang nantinya bisa dipakai admin dan sistem.
+
+
+
+Setelah 2-C selesai, Session 2 baru benar-benar matang. Baru setelah itu kita masuk ke Session 3 — UX / IA & Conversion System.

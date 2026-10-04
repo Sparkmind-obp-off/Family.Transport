@@ -1,0 +1,1149 @@
+Gas gsss 🔥 kita lanjut SESSION 5-D — SCREEN / UX SPECIFICATION.
+
+Sekarang kita ubah user stories 5-C menjadi screen yang benar-benar buildable.
+
+SESSION 5-D — SCREEN / UX SPECIFICATION
+
+5-D.1 — SCREEN ARCHITECTURE
+
+Family Transport MVP dibagi menjadi 4 surface:
+
+PUBLIC
+├── Marketing
+├── Services
+├── Fleet
+└── Booking
+
+CUSTOMER
+├── Dashboard
+├── Bookings
+├── Quotes
+└── Profile
+
+OPERATIONS
+├── Dashboard
+├── Bookings
+├── Quotes
+├── Fleet
+├── Drivers
+├── Trips
+└── Payments
+
+SYSTEM
+├── Auth
+├── Error
+└── Notifications
+
+
+---
+
+5-D.2 — PUBLIC SCREENS
+
+ID	Screen	Route	Priority
+
+SCR-PUB-001	Homepage	/	P0
+SCR-PUB-002	Services	/services	P0
+SCR-PUB-003	Service Detail	/services/:slug	P0
+SCR-PUB-004	Vehicles	/vehicles	P0
+SCR-PUB-005	Vehicle Detail	/vehicles/:slug	P0
+SCR-PUB-006	About	/about	P0
+SCR-PUB-007	Service Area	/service-area	P0
+SCR-PUB-008	Contact	/contact	P0
+
+
+
+---
+
+5-D.3 — HOMEPAGE
+
+SCR-PUB-001
+
+Purpose
+
+Mengubah visitor menjadi booking/request.
+
+Layout
+
+HEADER
+ ↓
+HERO
+ ↓
+SERVICE OPTIONS
+ ↓
+FLEET
+ ↓
+WHY US
+ ↓
+HOW IT WORKS
+ ↓
+SERVICE AREA
+ ↓
+TRUST / REVIEWS
+ ↓
+CTA
+ ↓
+FOOTER
+
+Primary CTA
+
+> Book Transport
+
+
+
+Secondary CTA
+
+> Get a Quote
+
+
+
+Mobile
+
+CTA booking harus mudah dijangkau tanpa scrolling panjang.
+
+
+---
+
+5-D.4 — SERVICES
+
+SCR-PUB-002
+
+Header
+ ↓
+Page intro
+ ↓
+Service cards
+ ↓
+CTA
+
+Service card:
+
+Image/Icon
+Name
+Short description
+Suitable for
+Pricing indicator
+View service
+
+
+---
+
+5-D.5 — SERVICE DETAIL
+
+SCR-PUB-003
+
+Breadcrumb
+ ↓
+Hero
+ ↓
+Description
+ ↓
+What's included
+ ↓
+Suitable for
+ ↓
+Pricing
+ ↓
+FAQ
+ ↓
+CTA
+
+CTA:
+
+> Book This Service.
+
+
+
+
+---
+
+5-D.6 — VEHICLES
+
+SCR-PUB-004
+
+Vehicle catalog:
+
+Filters
+ ↓
+Vehicle Grid
+ ↓
+Pagination / Load more
+
+Filter MVP:
+
+Category
+Capacity
+Service
+
+Important:
+
+> Catalog tidak mengklaim kendaraan sedang available untuk tanggal tertentu.
+
+
+
+
+---
+
+5-D.7 — VEHICLE DETAIL
+
+SCR-PUB-005
+
+Gallery
+ ↓
+Vehicle information
+ ↓
+Capacity
+ ↓
+Features
+ ↓
+Compatible services
+ ↓
+Price indication
+ ↓
+Check Availability
+
+
+---
+
+5-D.8 — BOOKING UX
+
+Ini screen paling penting.
+
+SCR-BOOK-001
+
+Route:
+
+/book
+
+Booking wizard:
+
+01 Service
+02 Date & Time
+03 Location
+04 Passengers
+05 Vehicle
+06 Add-ons
+07 Customer
+08 Review
+09 Confirmation
+
+
+---
+
+5-D.9 — BOOKING PROGRESS
+
+Desktop:
+
+Service ─ Date ─ Location ─ Passengers ─ Vehicle ─ ...
+
+Mobile:
+
+STEP 3 OF 9
+Location
+
+Jangan memaksa progress bar horizontal panjang di layar kecil.
+
+
+---
+
+5-D.10 — STEP 1 SERVICE
+
+SCR-BOOK-STEP-01
+
+Display:
+
+What do you need?
+
+Cards:
+
+Airport Transfer
+City Transport
+Charter
+With Driver
+...
+
+States
+
+Loading
+
+> Loading services...
+
+
+
+Empty
+
+> No services available.
+
+
+
+Error
+
+> Unable to load services.
+
+
+
+
+---
+
+5-D.11 — STEP 2 DATE & TIME
+
+SCR-BOOK-STEP-02
+
+Fields:
+
+Start date
+Start time
+End date
+End time
+
+Validation:
+
+end > start
+
+Invalid:
+
+> End time must be after start time.
+
+
+
+
+---
+
+5-D.12 — STEP 3 LOCATION
+
+SCR-BOOK-STEP-03
+
+Fields:
+
+Pickup location
+Destination
+Additional stop
+
+MVP:
+
+> address/text.
+
+
+
+P1:
+
+> map autocomplete.
+
+
+
+
+---
+
+5-D.13 — STEP 4 PASSENGERS
+
+SCR-BOOK-STEP-04
+
+Controls:
+
+Adults
+Children
+Total
+
+System calculates:
+
+> total passengers.
+
+
+
+
+---
+
+5-D.14 — STEP 5 VEHICLE
+
+SCR-BOOK-STEP-05
+
+Ketika user masuk:
+
+> availability request dijalankan.
+
+
+
+Loading:
+
+> Checking available vehicles...
+
+
+
+Results:
+
+Vehicle card
+Capacity
+Features
+Price indicator
+Select
+
+
+---
+
+5-D.15 — NO VEHICLE
+
+Empty state:
+
+No vehicle available
+
+Message:
+
+> We couldn't find a suitable vehicle for your selected time.
+
+
+
+Actions:
+
+Change date
+Change time
+Change vehicle category
+Contact us
+
+🔥 Jangan hanya menampilkan halaman kosong.
+
+
+---
+
+5-D.16 — VEHICLE CONFLICT
+
+Jika vehicle dipilih tetapi berubah unavailable:
+
+This vehicle is no longer available.
+
+CTA:
+
+> Find another vehicle.
+
+
+
+
+---
+
+5-D.17 — STEP 6 ADD-ONS
+
+SCR-BOOK-STEP-06
+
+Cards:
+
+Extra Hour
+Child Seat
+Additional Driver
+...
+
+Each:
+
+Name
+Description
+Price
+Toggle
+
+
+---
+
+5-D.18 — STEP 7 CUSTOMER
+
+SCR-BOOK-STEP-07
+
+Fields:
+
+Full name *
+Phone *
+Email
+Notes
+
+Jika authenticated:
+
+> prefill profile.
+
+
+
+
+---
+
+5-D.19 — STEP 8 REVIEW
+
+Ini harus sangat clear.
+
+SCR-BOOK-STEP-08
+
+Sections:
+
+Trip
+
+Date
+Time
+Pickup
+Destination
+Passengers
+
+Service
+
+Service
+Vehicle
+
+Extras
+
+Add-ons
+
+Price
+
+Subtotal
+Extras
+Fees
+Discount
+TOTAL
+
+Setiap section:
+
+> Edit.
+
+
+
+
+---
+
+5-D.20 — PRICE STATES
+
+Review screen harus membedakan:
+
+FINAL
+
+> Total: Rp X
+
+
+
+ESTIMATED
+
+> Estimated total: Rp X
+
+
+
+QUOTE REQUIRED
+
+> Price will be confirmed by our team.
+
+
+
+Jangan menyamarkan estimated price sebagai final price.
+
+
+---
+
+5-D.21 — SUBMIT ACTION
+
+Button:
+
+> Request Booking
+
+
+
+atau:
+
+> Confirm Booking
+
+
+
+tergantung workflow.
+
+Saat clicked:
+
+button disabled
+spinner
+request sent
+
+Untuk mencegah:
+
+> double submission.
+
+
+
+
+---
+
+5-D.22 — STEP 9 CONFIRMATION
+
+SCR-BOOK-STEP-09
+
+Success state:
+
+Booking Request Received
+
+Display:
+
+Booking Code
+Service
+Date
+Vehicle
+Status
+
+CTA:
+
+View Booking
+Contact Us
+Back Home
+
+
+---
+
+5-D.23 — CUSTOMER AUTH
+
+Screens:
+
+ID	Screen	Route
+
+SCR-AUTH-001	Login	/login
+SCR-AUTH-002	Register	/register
+SCR-AUTH-003	Forgot Password	/forgot-password
+
+
+MVP authentication harus sederhana.
+
+
+---
+
+5-D.24 — CUSTOMER DASHBOARD
+
+SCR-CUS-001
+
+Route:
+
+/account
+
+Dashboard:
+
+Welcome
+ ↓
+Upcoming booking
+ ↓
+Pending quote
+ ↓
+Recent bookings
+
+
+---
+
+5-D.25 — CUSTOMER BOOKINGS
+
+SCR-CUS-002
+
+/account/bookings
+
+Tabs:
+
+Upcoming
+Past
+Cancelled
+
+Card:
+
+Booking code
+Date
+Service
+Status
+Total
+View
+
+
+---
+
+5-D.26 — BOOKING DETAIL
+
+SCR-CUS-003
+
+/account/bookings/:id
+
+Layout:
+
+Status
+ ↓
+Booking information
+ ↓
+Trip information
+ ↓
+Vehicle
+ ↓
+Driver
+ ↓
+Payment
+ ↓
+Timeline
+
+
+---
+
+5-D.27 — QUOTE SCREEN
+
+SCR-CUS-004
+
+/account/quotes/:id
+
+Display:
+
+Quote code
+Valid until
+Trip
+Vehicle
+Price breakdown
+
+CTA:
+
+> Accept Quote.
+
+
+
+If expired:
+
+> Quote Expired.
+
+
+
+
+---
+
+5-D.28 — ADMIN DASHBOARD
+
+SCR-ADM-001
+
+Route:
+
+/admin
+
+Top metrics:
+
+Today's bookings
+Upcoming trips
+Pending quotes
+Revenue
+
+Then:
+
+Upcoming trips
+Pending actions
+Recent bookings
+
+
+---
+
+5-D.29 — ADMIN NAVIGATION
+
+Dashboard
+Bookings
+Quotes
+Vehicles
+Services
+Drivers
+Trips
+Payments
+Customers
+Settings
+
+Role-based visibility.
+
+
+---
+
+5-D.30 — ADMIN BOOKINGS
+
+SCR-ADM-002
+
+/admin/bookings
+
+Table:
+
+Code
+Customer
+Date
+Service
+Vehicle
+Driver
+Status
+Payment
+Actions
+
+Filters:
+
+Date
+Status
+Service
+Vehicle
+Driver
+
+
+---
+
+5-D.31 — ADMIN BOOKING DETAIL
+
+SCR-ADM-003
+
+/admin/bookings/:id
+
+Actions:
+
+Edit
+Assign Vehicle
+Assign Driver
+Create Quote
+Confirm
+Cancel
+Record Payment
+
+Dangerous actions harus:
+
+> confirmation dialog.
+
+
+
+
+---
+
+5-D.32 — VEHICLE ADMIN
+
+SCR-ADM-004
+
+/admin/vehicles
+
+Actions:
+
+Create
+Edit
+Deactivate
+
+Vehicle status:
+
+ACTIVE
+INACTIVE
+MAINTENANCE
+
+
+---
+
+5-D.33 — DRIVER ADMIN
+
+SCR-ADM-005
+
+/admin/drivers
+
+Display:
+
+Name
+Phone
+Status
+Current trip
+Availability
+
+
+---
+
+5-D.34 — TRIP ADMIN
+
+SCR-ADM-006
+
+/admin/trips
+
+Statuses:
+
+SCHEDULED
+DRIVER_ASSIGNED
+EN_ROUTE
+PICKED_UP
+IN_PROGRESS
+COMPLETED
+CANCELLED
+
+
+---
+
+5-D.35 — PAYMENT ADMIN
+
+SCR-ADM-007
+
+/admin/payments
+
+Display:
+
+Booking
+Customer
+Amount
+Method
+Reference
+Status
+Paid at
+
+
+---
+
+5-D.36 — GLOBAL UI STATES
+
+Setiap screen harus memiliki minimal:
+
+Loading
+
+Skeleton / spinner
+
+Empty
+
+No data
+Helpful explanation
+Action
+
+Error
+
+What happened
+Retry
+Alternative action
+
+Success
+
+Clear confirmation
+Next action
+
+
+---
+
+5-D.37 — RESPONSIVE RULE
+
+Mobile bukan:
+
+> desktop diperkecil.
+
+
+
+Untuk mobile:
+
+single column
+large tap targets
+sticky primary CTA when useful
+short forms
+progressive disclosure
+bottom navigation where appropriate
+
+
+---
+
+5-D.38 — FORM UX RULE
+
+Jangan menampilkan semua field sekaligus.
+
+Gunakan:
+
+> progressive disclosure.
+
+
+
+Customer hanya melihat informasi yang relevan pada step tersebut.
+
+
+---
+
+5-D.39 — ERROR UX
+
+Error harus menjelaskan:
+
+WHAT
+
+Apa yang terjadi?
+
+WHY
+
+Kenapa?
+
+WHAT NEXT
+
+Apa yang harus dilakukan?
+
+Contoh buruk:
+
+> Error 400.
+
+
+
+Contoh baik:
+
+> This vehicle is no longer available for your selected time. Choose another vehicle or change your schedule.
+
+
+
+
+---
+
+5-D.40 — PERMISSION UX
+
+Jika user tidak punya permission:
+
+> Jangan menampilkan action yang tidak bisa digunakan.
+
+
+
+Backend tetap melakukan authorization.
+
+UI hiding:
+
+> convenience.
+
+
+
+Backend authorization:
+
+> security.
+
+
+
+
+---
+
+5-D.41 — MOBILE BOOKING
+
+Untuk mobile, bottom action:
+
+────────────────────
+Back        Continue
+────────────────────
+
+Pada final:
+
+────────────────────
+      Confirm
+────────────────────
+
+Button harus:
+
+> thumb-friendly.
+
+
+
+
+---
+
+5-D.42 — UX PRINCIPLE
+
+Family Transport UX harus:
+
+SIMPLE
+
+Customer tidak perlu memahami sistem internal.
+
+CLEAR
+
+Harga/status tidak ambigu.
+
+TRUSTED
+
+Tidak ada klaim availability palsu.
+
+FAST
+
+Booking flow sesingkat mungkin.
+
+HUMAN
+
+Customer selalu punya jalur:
+
+> Contact Family Transport.
+
+
+
+
+---
+
+5-D.43 — SCREEN INVENTORY MVP
+
+Total surface utama:
+
+PUBLIC
+8 screens
+
+AUTH
+3 screens
+
+CUSTOMER
+4 screens
+
+ADMIN
+7+ screens
+
+BOOKING
+9 core steps
+
+SYSTEM
+error / loading / success states
+
+
+---
+
+5-D.44 — GOLDEN UX FLOW
+
+Ini flow yang nanti kita jadikan reference implementation:
+
+HOME
+ ↓
+SERVICE
+ ↓
+BOOK
+ ↓
+DATE
+ ↓
+LOCATION
+ ↓
+PASSENGERS
+ ↓
+AVAILABILITY
+ ↓
+VEHICLE
+ ↓
+ADD-ONS
+ ↓
+CUSTOMER
+ ↓
+REVIEW
+ ↓
+QUOTE
+ ↓
+CONFIRM
+ ↓
+BOOKING DETAIL
+
+🔥 Ini adalah backbone UX Family Transport.
+
+
+---
+
+🔒 SESSION 5-D LOCKED
+
+Sekarang kita sudah punya:
+
+✅ Screen architecture
+✅ Routes
+✅ Booking wizard
+✅ Screen responsibilities
+✅ Components
+✅ States
+✅ Validation behavior
+✅ Mobile behavior
+✅ Error UX
+✅ Admin UX
+✅ Customer UX
+✅ Golden UX flow
+
+
+---
+
+🚀 NEXT — SESSION 5-E
+
+Berikutnya kita masuk bagian yang lebih teknis:
+
+API CONTRACT + BACKEND BEHAVIOR
+
+Kita akan menentukan endpoint seperti:
+
+POST /api/booking/availability
+POST /api/bookings
+GET  /api/bookings/:id
+POST /api/quotes
+POST /api/quotes/:id/accept
+POST /api/payments
+POST /api/trips/:id/assign-driver
+
+Dan untuk setiap endpoint:
+
+request schema → response schema → validation → authorization → business rules → error codes → idempotency → transaction boundary.
+
+Jadi setelah 5-E, kita sudah bisa bergerak dari UX specification menuju real engineering specification.

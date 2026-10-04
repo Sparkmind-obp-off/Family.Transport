@@ -1,0 +1,694 @@
+Gas gsss 🔥 kita lanjut SESSION 5-H — SECURITY + RELIABILITY + BUSINESS RULE ENGINE.
+Ini adalah layer yang menjaga Family Transport supaya bukan cuma bisa jalan, tapi juga nggak gampang rusak, dimanipulasi, atau double-booking.
+SESSION 5-H — SECURITY & RELIABILITY SPEC v1.0
+5-H.1 — SECURITY PRINCIPLE
+Kita kunci:
+Never trust the client.
+Apa pun yang datang dari browser dianggap untrusted input.
+Browser
+   ↓
+UNTRUSTED
+   ↓
+Validation
+   ↓
+Authentication
+   ↓
+Authorization
+   ↓
+Business Rules
+   ↓
+Database
+Frontend hanya membantu UX.
+Backend adalah authority.
+5-H.2 — SECURITY LAYERS
+Family Transport memakai 8 layer:
+1. Authentication
+2. Authorization
+3. Input Validation
+4. Business Rule Enforcement
+5. Database Integrity
+6. Concurrency Protection
+7. Rate Limiting
+8. Audit & Monitoring
+Tidak boleh mengandalkan satu layer saja.
+5-H.3 — AUTHENTICATION
+Login:
+phone/email
+     ↓
+credential verification
+     ↓
+session creation
+     ↓
+secure cookie
+Session cookie:
+HttpOnly
+Secure
+SameSite
+Password:
+hanya disimpan sebagai secure password hash.
+Tidak pernah:
+plain password
+5-H.4 — SESSION SECURITY
+Session memiliki:
+session_id
+user_id
+created_at
+expires_at
+revoked_at
+Logout:
+session → revoked
+Jika user logout:
+session lama tidak boleh tetap valid.
+5-H.5 — PASSWORD POLICY
+Minimum:
+minimum length
+breach-resistant hashing
+login throttling
+Jangan membuat rule absurd seperti:
+harus punya 1 huruf kapital + 1 simbol + 1 angka
+jika tidak ada business reason.
+Fokus:
+password panjang + hashing kuat + rate limiting.
+5-H.6 — AUTHORIZATION
+Authentication:
+"Siapa kamu?"
+Authorization:
+"Kamu boleh melakukan apa?"
+Flow:
+IDENTITY
+   ↓
+ROLE
+   ↓
+PERMISSION
+   ↓
+RESOURCE OWNERSHIP
+5-H.7 — RBAC
+Roles:
+CUSTOMER
+OPERATOR
+ADMIN
+OWNER
+Permission contoh:
+booking.create
+booking.read
+booking.update
+booking.cancel
+
+vehicle.read
+vehicle.manage
+
+driver.read
+driver.manage
+
+payment.read
+payment.manage
+
+pricing.read
+pricing.manage
+5-H.8 — RESOURCE OWNERSHIP
+Contoh:
+Customer A memiliki:
+booking_001
+Customer B meminta:
+GET /bookings/booking_001
+Response:
+403
+atau resource masking sesuai security policy.
+Bukan:
+200
+5-H.9 — IDOR PROTECTION
+Jangan percaya:
+GET /bookings/123
+hanya karena ID valid.
+Backend harus memastikan:
+booking.customer_id
+        =
+authenticated_user.id
+untuk customer access.
+5-H.10 — INPUT VALIDATION
+Semua input divalidasi server-side.
+Contoh:
+passengers
+start_at
+end_at
+service_id
+vehicle_id
+phone
+email
+Validation:
+type
+format
+range
+required
+business constraints
+5-H.11 — ZOD BOUNDARY
+Flow:
+HTTP Request
+      ↓
+Zod schema
+      ↓
+Validated DTO
+      ↓
+Use Case
+Domain tidak menerima raw request body.
+5-H.12 — PRICE TAMPERING
+🔥 Critical.
+Client mengirim:
+{
+  "total": 50000
+}
+Backend:
+IGNORE.
+Harga dihitung server.
+request
+ ↓
+pricing engine
+ ↓
+server-calculated total
+Client tidak pernah menjadi source of truth untuk price.
+5-H.13 — DISCOUNT TAMPERING
+Client tidak boleh bebas mengirim:
+discount = 90%
+Backend menentukan:
+eligible promotion
+promotion rules
+maximum discount
+expiry
+usage limit
+5-H.14 — AVAILABILITY SECURITY
+Jangan percaya:
+available = true
+dari frontend.
+Availability selalu:
+server-side calculation
+dan:
+dicek ulang saat resource benar-benar di-reserve.
+5-H.15 — DOUBLE BOOKING
+Ini salah satu risiko terbesar.
+Scenario:
+09:00: Customer A checks vehicle X
+09:01: Customer B checks vehicle X
+09:02: A books
+09:02: B books
+Tanpa concurrency protection:
+A = SUCCESS
+B = SUCCESS
+🚨 Salah.
+5-H.16 — CORRECT BEHAVIOR
+A
+ ↓
+reserve/check
+ ↓
+SUCCESS
+
+B
+ ↓
+recheck
+ ↓
+CONFLICT
+Result:
+409 RESOURCE_UNAVAILABLE
+5-H.17 — BOOKING RESERVATION MODEL
+Kita bedakan:
+availability check
+dengan:
+resource reservation
+Check:
+"Apakah sekarang tersedia?"
+Reservation:
+"Saya sedang mengambil resource ini untuk transaksi."
+Ini dua operation berbeda.
+5-H.18 — TRANSACTION BOUNDARY
+Critical booking operation:
+BEGIN
+ ↓
+validate
+ ↓
+recheck availability
+ ↓
+calculate price
+ ↓
+create booking
+ ↓
+reserve resource
+ ↓
+commit
+Jika gagal:
+ROLLBACK
+5-H.19 — IDEMPOTENCY
+Untuk create transaction:
+Idempotency-Key
+Contoh:
+abc-123
+Jika client mengirim request dua kali karena network retry:
+same key
+Backend:
+return existing transaction.
+Bukan membuat booking kedua.
+5-H.20 — IDEMPOTENCY TABLE
+Bisa dibuat:
+idempotency_keys
+----------------
+key
+user_id
+endpoint
+request_hash
+response_json
+created_at
+expires_at
+Constraint:
+UNIQUE(key, user_id, endpoint)
+5-H.21 — STATE MACHINE
+Booking:
+DRAFT
+ ↓
+PENDING
+ ↓
+QUOTED
+ ↓
+CONFIRMED
+ ↓
+COMPLETED
+Cancellation:
+PENDING → CANCELLED
+QUOTED → CANCELLED
+CONFIRMED → CANCELLED
+Invalid:
+COMPLETED → PENDING
+Backend reject.
+5-H.22 — STATE TRANSITION AUTHORITY
+Frontend boleh:
+request transition.
+Frontend tidak boleh:
+decide transition.
+Contoh:
+PATCH /booking/status
+Backend menentukan:
+current state
+requested state
+actor permission
+business rule
+5-H.23 — PAYMENT INTEGRITY
+Payment amount harus:
+server calculated
+Bukan:
+client supplied
+Payment:
+booking
+ ↓
+amount due
+ ↓
+payment
+Server mengecek:
+amount <= outstanding balance
+sesuai payment policy.
+5-H.24 — PAYMENT IDEMPOTENCY
+Payment webhook bisa dikirim lebih dari sekali.
+Maka:
+provider_transaction_id
+harus unique.
+Jika webhook sama datang dua kali:
+first → process
+second → ignore safely
+5-H.25 — WEBHOOK SECURITY
+Webhook:
+provider
+ ↓
+signature verification
+ ↓
+payload validation
+ ↓
+idempotency check
+ ↓
+process
+Jangan menerima:
+POST /webhook
+hanya karena endpoint diketahui publik.
+5-H.26 — RATE LIMITING
+Rate limit berdasarkan endpoint.
+Login
+Ketat.
+Public catalog
+Lebih longgar.
+Availability
+Medium.
+Booking
+Lebih ketat.
+Admin
+User-based + IP-based strategy.
+5-H.27 — ABUSE PROTECTION
+Potential abuse:
+thousands availability checks
+fake bookings
+login brute force
+quote spam
+notification spam
+Protection:
+rate limit
+captcha/challenge when needed
+idempotency
+authentication
+monitoring
+5-H.28 — CSRF
+Jika authentication memakai cookie:
+CSRF protection wajib dipertimbangkan untuk state-changing requests.
+Strategy:
+SameSite cookie
++
+CSRF token where needed
++
+origin checks
+5-H.29 — CORS
+Jangan:
+Access-Control-Allow-Origin: *
+untuk authenticated APIs secara sembarangan.
+Production:
+allowlist trusted origins.
+5-H.30 — SECURITY HEADERS
+Web app minimal mempertimbangkan:
+Content-Security-Policy
+X-Content-Type-Options
+Referrer-Policy
+Permissions-Policy
+Strict-Transport-Security
+Header policy disesuaikan dengan deployment.
+5-H.31 — SQL INJECTION
+Gunakan:
+parameterized queries / ORM query builder.
+Jangan concatenate:
+"SELECT ... WHERE id = " + userInput
+5-H.32 — XSS
+User-generated content harus di-escape/sanitize.
+Contoh:
+customer notes
+booking notes
+admin descriptions
+Jangan render arbitrary HTML dari customer.
+5-H.33 — FILE UPLOAD SECURITY
+Vehicle images / documents:
+validate MIME
+validate extension
+limit file size
+generate safe filename
+store outside executable path
+R2 object key:
+generated UUID
+bukan filename mentah user.
+5-H.34 — SENSITIVE DATA
+Jangan menyimpan data sensitif jika tidak diperlukan.
+Principle:
+collect minimum necessary data.
+Contoh:
+Customer booking mungkin membutuhkan:
+name
+phone
+pickup
+destination
+passenger count
+Tidak otomatis membutuhkan:
+unrelated personal data
+5-H.35 — AUDIT
+Sensitive actions dicatat:
+login
+logout
+booking.created
+booking.confirmed
+booking.cancelled
+vehicle.assigned
+driver.assigned
+price.override
+payment.recorded
+user.role.changed
+5-H.36 — AUDIT IMMUTABILITY
+Audit log:
+append-only.
+Admin tidak boleh:
+DELETE audit_log
+melalui normal application interface.
+5-H.37 — PRICE OVERRIDE
+Admin mungkin membutuhkan manual override.
+Maka:
+price_override
+wajib punya:
+actor
+old_value
+new_value
+reason
+timestamp
+Tidak boleh:
+admin mengubah total tanpa jejak.
+5-H.38 — BUSINESS RULE ENGINE
+Sekarang kita pisahkan:
+TECHNICAL VALIDATION
+dan:
+BUSINESS VALIDATION
+Contoh:
+Technical:
+passengers harus integer.
+Business:
+vehicle capacity harus >= passengers.
+5-H.39 — AVAILABILITY RULE ENGINE
+isVehicleEligible()
+checks:
+vehicle.active
+capacity sufficient
+service compatible
+time available
+maintenance clear
+driver/resource constraints
+5-H.40 — BOOKING RULE ENGINE
+canCreateBooking()
+checks:
+service exists
+service active
+date valid
+passenger count valid
+availability exists
+customer allowed
+5-H.41 — QUOTE RULE ENGINE
+canAcceptQuote()
+checks:
+quote exists
+quote belongs to booking
+quote not expired
+quote not rejected
+booking still eligible
+resource still available
+5-H.42 — PAYMENT RULE ENGINE
+canRecordPayment()
+checks:
+booking exists
+amount > 0
+amount <= outstanding balance
+currency matches
+payment state valid
+5-H.43 — TRIP RULE ENGINE
+canStartTrip()
+checks:
+booking confirmed
+vehicle assigned
+driver assigned
+trip scheduled
+required operational conditions met
+5-H.44 — FAILURE MODES
+Kita harus mendesain ketika sesuatu gagal.
+Database unavailable
+request
+ ↓
+DB failure
+ ↓
+safe error
+ ↓
+no fake success
+Jangan response:
+booking created
+kalau sebenarnya belum tersimpan.
+5-H.45 — PAYMENT PROVIDER DOWN
+Jika payment provider down:
+booking tidak otomatis dianggap paid.
+Status:
+PAYMENT_PENDING
+dan retry mechanism dapat digunakan.
+5-H.46 — NOTIFICATION FAILURE
+Jika WhatsApp gagal:
+booking = CONFIRMED
+WhatsApp = FAILED
+🔥 Booking tidak dibatalkan hanya karena notification gagal.
+Notification adalah:
+secondary side effect.
+5-H.47 — EVENT RETRY
+Event handler yang gagal:
+event
+ ↓
+handler
+ ↓
+failure
+ ↓
+retry
+ ↓
+retry
+ ↓
+dead-letter / failed state
+Jangan kehilangan event secara diam-diam.
+5-H.48 — BACKUP STRATEGY
+Database production harus memiliki:
+automated backup
+retention policy
+restore procedure
+Backup tanpa restore test:
+belum bisa dianggap reliable.
+5-H.49 — RECOVERY
+Target MVP:
+RPO
+Recovery Point Objective
+
+RTO
+Recovery Time Objective
+Kita akan menentukan angka final setelah deployment plan.
+Prinsip:
+tahu berapa banyak data yang boleh hilang dan berapa lama system boleh down.
+5-H.50 — BUSINESS CONTINUITY
+Jika system down:
+Customer masih harus punya jalur:
+WhatsApp
+Phone
+untuk emergency/manual booking.
+System digital:
+mempercepat operasi.
+Bukan satu-satunya titik kehidupan bisnis.
+5-H.51 — SECURITY TEST MATRIX
+Sebelum production:
+AUTH
+├── invalid login
+├── session expiry
+├── logout
+└── brute force
+
+RBAC
+├── customer → admin endpoint
+├── operator → restricted endpoint
+└── ownership bypass
+
+BOOKING
+├── double booking
+├── expired quote
+├── invalid transition
+└── price tampering
+
+PAYMENT
+├── duplicate webhook
+├── fake amount
+└── invalid payment state
+
+INPUT
+├── SQL injection
+├── XSS
+├── malformed payload
+└── oversized input
+5-H.52 — GOLDEN SECURITY TEST
+Test paling penting:
+Test 1
+Dua customer booking vehicle yang sama pada waktu overlapping.
+Expected:
+ONE SUCCESS
+ONE CONFLICT
+Test 2
+Customer mencoba mengakses booking customer lain.
+Expected:
+DENIED
+Test 3
+Customer mengubah:
+total = 1
+Expected:
+SERVER IGNORES CLIENT PRICE
+Test 4
+Payment webhook dikirim dua kali.
+Expected:
+ONE PAYMENT EFFECT
+Test 5
+Notification provider mati.
+Expected:
+BOOKING REMAINS VALID
+5-H.53 — RELIABILITY PRINCIPLE
+Kita kunci:
+A failed side effect must not corrupt the primary transaction.
+Contoh:
+Booking
+  ↓
+SUCCESS
+
+WhatsApp
+  ↓
+FAILED
+Result:
+Booking = CONFIRMED
+Notification = FAILED
+bukan:
+Booking = CANCELLED
+5-H.54 — SECURITY PRINCIPLE
+Dan:
+A successful-looking client request is not evidence of a successful business transaction.
+Hanya server/database transaction yang menentukan.
+5-H.55 — FINAL TRUST MODEL
+USER
+ ↓
+UNTRUSTED REQUEST
+ ↓
+AUTHENTICATION
+ ↓
+AUTHORIZATION
+ ↓
+VALIDATION
+ ↓
+BUSINESS RULES
+ ↓
+TRANSACTION
+ ↓
+DATABASE
+ ↓
+EVENT
+ ↓
+SIDE EFFECT
+Ini adalah security + reliability backbone.
+🔒 SESSION 5-H — LOCKED
+Sekarang Family Transport sudah punya:
+✅ Authentication model
+✅ Session security
+✅ RBAC
+✅ Ownership protection
+✅ IDOR protection
+✅ Input validation
+✅ Price tampering protection
+✅ Availability protection
+✅ Double-booking protection
+✅ Idempotency
+✅ State machine
+✅ Payment integrity
+✅ Webhook security
+✅ Rate limiting
+✅ CSRF/CORS strategy
+✅ XSS/SQLi protection
+✅ File upload security
+✅ Audit model
+✅ Business rule engine
+✅ Failure modes
+✅ Retry strategy
+✅ Backup/recovery principles
+✅ Security test matrix
+🚀 NEXT: SESSION 5-I
+Kita masuk ke OBSERVABILITY + ANALYTICS + OPERATIONS CONTROL.
+Di sana kita kunci:
+LOGGING
+METRICS
+ERROR TRACKING
+HEALTH CHECK
+ALERTING
+BUSINESS ANALYTICS
+BOOKING FUNNEL
+REVENUE METRICS
+FLEET UTILIZATION
+DRIVER PERFORMANCE
+CUSTOMER METRICS
+ADMIN DASHBOARD
+Dan yang paling penting:
+bagaimana owner Family Transport bisa tahu bisnisnya sehat atau sedang bermasalah hanya dari dashboard.

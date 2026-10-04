@@ -1,0 +1,1134 @@
+Gas gsss 🔥 langsung lanjut.
+
+SESSION 5-C — USER STORIES + ACCEPTANCE CRITERIA
+
+Sekarang kita turunkan Feature Inventory 5-B menjadi perilaku user yang bisa dites.
+
+Prinsip:
+
+> User Story menjelaskan kebutuhan. Acceptance Criteria menentukan kapan kebutuhan itu dianggap benar-benar selesai.
+
+
+
+
+---
+
+5-C.1 — FORMAT STANDARD
+
+Setiap story:
+
+ID
+Actor
+Goal
+User Story
+Business Context
+Acceptance Criteria
+Dependencies
+Priority
+
+Acceptance Criteria kita tulis dengan:
+
+GIVEN
+WHEN
+THEN
+
+
+---
+
+5-C.2 — CUSTOMER DISCOVERY
+
+US-CUS-001 — View Homepage
+
+Story
+
+> Sebagai customer, saya ingin memahami layanan Family Transport dengan cepat, sehingga saya tahu apakah layanan ini cocok untuk kebutuhan perjalanan saya.
+
+
+
+Acceptance Criteria
+
+GIVEN customer membuka homepage
+WHEN halaman selesai dimuat
+THEN customer dapat melihat:
+- layanan utama
+- fleet/service options
+- service area
+- alasan memilih Family Transport
+- primary CTA booking
+
+Dan:
+
+WHEN customer menekan "Book Transport"
+THEN customer diarahkan ke booking flow.
+
+
+---
+
+5-C.3 — SERVICE DISCOVERY
+
+US-CUS-002 — View Services
+
+> Sebagai customer, saya ingin melihat jenis layanan transport yang tersedia, sehingga saya dapat memilih layanan yang sesuai.
+
+
+
+GIVEN services aktif tersedia
+WHEN customer membuka service catalog
+THEN hanya service aktif yang ditampilkan.
+
+WHEN customer memilih service
+THEN system membuka service detail.
+
+
+---
+
+5-C.4 — SERVICE DETAIL
+
+US-CUS-003
+
+> Sebagai customer, saya ingin memahami detail sebuah layanan sebelum melakukan booking.
+
+
+
+System harus menampilkan:
+
+name
+description
+suitable_for
+pricing_type
+requirements
+CTA
+
+Jika service tidak aktif:
+
+THEN customer tidak dapat membuat booking baru
+
+
+---
+
+5-C.5 — VEHICLE DISCOVERY
+
+US-CUS-004 — Vehicle Catalog
+
+> Sebagai customer, saya ingin melihat kendaraan yang tersedia, sehingga saya bisa memilih kendaraan yang sesuai kebutuhan.
+
+
+
+GIVEN vehicle aktif
+WHEN catalog dibuka
+THEN vehicle aktif dapat ditampilkan.
+
+Namun:
+
+> catalog ≠ availability.
+
+
+
+Catalog hanya menunjukkan fleet.
+
+
+---
+
+5-C.6 — VEHICLE DETAIL
+
+US-CUS-005
+
+> Sebagai customer, saya ingin melihat detail kendaraan sebelum memilihnya.
+
+
+
+Minimum:
+
+photo
+name
+category
+capacity
+features
+service compatibility
+pricing indication
+
+CTA:
+
+> Check Availability.
+
+
+
+
+---
+
+5-C.7 — START BOOKING
+
+US-CUS-006 — Start Booking
+
+> Sebagai customer, saya ingin memulai booking dari website, sehingga saya dapat meminta transport tanpa harus menghubungi operator terlebih dahulu.
+
+
+
+GIVEN customer berada di halaman service/vehicle
+WHEN customer menekan booking CTA
+THEN booking wizard terbuka
+AND service/vehicle preference dapat dibawa ke wizard.
+
+
+---
+
+5-C.8 — SELECT SERVICE
+
+US-CUS-007
+
+> Sebagai customer, saya ingin memilih jenis layanan yang saya perlukan.
+
+
+
+GIVEN customer berada pada Step 1
+WHEN customer memilih service
+THEN service tersimpan pada booking draft.
+
+Jika service inactive:
+
+THEN service tidak dapat dipilih.
+
+
+---
+
+5-C.9 — SELECT DATE & TIME
+
+US-CUS-008
+
+> Sebagai customer, saya ingin menentukan waktu perjalanan.
+
+
+
+GIVEN customer berada pada Step 2
+WHEN customer memasukkan start dan end
+THEN system memvalidasi waktu.
+
+Jika:
+
+end <= start
+
+maka:
+
+> ❌ invalid request.
+
+
+
+
+---
+
+5-C.10 — LOCATION
+
+US-CUS-009
+
+> Sebagai customer, saya ingin memasukkan pickup dan destination.
+
+
+
+GIVEN customer berada pada Step 3
+WHEN pickup dan destination diisi
+THEN data tersimpan ke booking draft.
+
+MVP:
+
+> text/address input.
+
+
+
+
+---
+
+5-C.11 — PASSENGERS
+
+US-CUS-010
+
+> Sebagai customer, saya ingin menentukan jumlah penumpang sehingga system dapat mencarikan kendaraan yang cukup.
+
+
+
+GIVEN passengers = 7
+WHEN availability dijalankan
+THEN vehicle dengan capacity < 7 tidak boleh muncul.
+
+🔥 Ini business rule, bukan sekadar UI filter.
+
+
+---
+
+5-C.12 — AVAILABILITY
+
+US-CUS-011 — Check Availability
+
+> Sebagai customer, saya ingin mengetahui kendaraan yang tersedia pada waktu perjalanan saya.
+
+
+
+GIVEN request valid
+WHEN customer melakukan availability check
+THEN system mencari kendaraan eligible.
+
+System harus mengecek:
+
+active
+service compatibility
+capacity
+booking conflicts
+maintenance
+driver availability jika diperlukan
+
+
+---
+
+5-C.13 — NO AVAILABILITY
+
+US-CUS-012
+
+GIVEN tidak ada kendaraan eligible
+WHEN availability check selesai
+THEN system menampilkan:
+"No vehicle available for this request."
+
+System tidak boleh:
+
+> menampilkan kendaraan unavailable seolah tersedia.
+
+
+
+
+---
+
+5-C.14 — VEHICLE SELECTION
+
+US-CUS-013
+
+> Sebagai customer, saya ingin memilih salah satu kendaraan yang tersedia.
+
+
+
+GIVEN vehicle tersedia
+WHEN customer memilih vehicle
+THEN vehicle_id disimpan pada booking draft.
+
+Jika vehicle menjadi unavailable sebelum finalization:
+
+> selection harus direvalidate.
+
+
+
+
+---
+
+5-C.15 — ADD-ONS
+
+US-CUS-014
+
+> Sebagai customer, saya ingin menambahkan kebutuhan tambahan.
+
+
+
+GIVEN add-on aktif
+WHEN customer memilih add-on
+THEN add-on ditambahkan ke booking draft.
+
+Harga:
+
+> dihitung server-side.
+
+
+
+
+---
+
+5-C.16 — CUSTOMER INFORMATION
+
+US-CUS-015
+
+> Sebagai customer, saya ingin memasukkan informasi kontak untuk menerima konfirmasi.
+
+
+
+Required:
+
+name
+phone
+
+Recommended:
+
+email
+
+Jika phone invalid:
+
+> booking tidak boleh diteruskan.
+
+
+
+
+---
+
+5-C.17 — REVIEW BOOKING
+
+US-CUS-016
+
+> Sebagai customer, saya ingin memeriksa seluruh detail sebelum mengirim booking.
+
+
+
+Review harus menampilkan:
+
+service
+date
+time
+pickup
+destination
+passengers
+vehicle
+addons
+price
+
+Customer dapat:
+
+> kembali mengubah informasi.
+
+
+
+
+---
+
+5-C.18 — PRICE CALCULATION
+
+US-CUS-017
+
+> Sebagai customer, saya ingin mengetahui harga berdasarkan request saya.
+
+
+
+GIVEN request valid
+WHEN pricing engine dijalankan
+THEN system menghitung harga berdasarkan pricing rules.
+
+Frontend tidak boleh menentukan total.
+
+
+---
+
+5-C.19 — PRICE BREAKDOWN
+
+US-CUS-018
+
+Customer dapat melihat:
+
+base
+extras
+fees
+discount
+total
+
+Jika harga bukan final:
+
+price_state = ESTIMATED
+
+atau:
+
+QUOTE_REQUIRED
+
+
+---
+
+5-C.20 — QUOTE GENERATION
+
+US-CUS-019
+
+> Sebagai customer, saya ingin mendapatkan quote yang jelas untuk request saya.
+
+
+
+GIVEN request dapat diberi harga
+WHEN quote dibuat
+THEN system menghasilkan:
+quote_code
+price_snapshot
+valid_until
+status
+
+
+---
+
+5-C.21 — QUOTE EXPIRATION
+
+US-CUS-020
+
+GIVEN quote sudah melewati valid_until
+WHEN customer mencoba menerima quote
+THEN system menolak acceptance
+AND status menjadi EXPIRED.
+
+
+---
+
+5-C.22 — ACCEPT QUOTE
+
+US-CUS-021
+
+> Sebagai customer, saya ingin menerima quote agar perjalanan dapat dikonfirmasi.
+
+
+
+Flow:
+
+Accept
+ ↓
+Revalidate availability
+ ↓
+Validate quote
+ ↓
+Create reservation
+ ↓
+Create/confirm booking
+
+
+---
+
+5-C.23 — STALE AVAILABILITY
+
+US-CUS-022
+
+Scenario:
+
+Customer melihat:
+Vehicle A available
+
+Kemudian customer menunggu.
+
+Customer klik:
+
+> Confirm.
+
+
+
+Ternyata Vehicle A sudah dibooking orang lain.
+
+Expected:
+
+THEN system rejects confirmation
+AND informs customer
+AND offers available alternatives.
+
+🔥 Ini wajib dites.
+
+
+---
+
+5-C.24 — BOOKING CONFIRMATION
+
+US-CUS-023
+
+GIVEN quote accepted
+AND resource available
+WHEN transaction succeeds
+THEN booking dibuat
+AND booking_code dihasilkan
+AND customer mendapat confirmation.
+
+
+---
+
+5-C.25 — IDEMPOTENT BOOKING
+
+US-CUS-024
+
+Scenario:
+
+Customer menekan tombol:
+
+> Confirm
+
+
+
+dua kali.
+
+Expected:
+
+GIVEN same idempotency key
+WHEN request dikirim ulang
+THEN system tidak membuat duplicate booking.
+
+🔥 Critical acceptance test.
+
+
+---
+
+5-C.26 — CUSTOMER LOGIN
+
+US-CUS-025
+
+> Sebagai customer, saya ingin login sehingga saya dapat melihat booking saya.
+
+
+
+GIVEN credentials valid
+WHEN login dilakukan
+THEN session dibuat
+AND customer diarahkan ke dashboard.
+
+Invalid credentials:
+
+> generic authentication error.
+
+
+
+
+---
+
+5-C.27 — CUSTOMER BOOKING HISTORY
+
+US-CUS-026
+
+GIVEN customer authenticated
+WHEN membuka booking history
+THEN hanya booking milik customer tersebut yang ditampilkan.
+
+Customer:
+
+> tidak boleh membaca booking customer lain.
+
+
+
+
+---
+
+5-C.28 — BOOKING DETAIL
+
+US-CUS-027
+
+Customer dapat melihat:
+
+booking code
+service
+trip
+vehicle
+driver (if allowed)
+payment
+status
+price
+
+
+---
+
+5-C.29 — ADMIN LOGIN
+
+US-ADM-001
+
+> Sebagai admin, saya ingin login secara aman sehingga saya dapat mengelola operasi transport.
+
+
+
+GIVEN user memiliki admin permission
+WHEN login berhasil
+THEN admin dashboard dapat diakses.
+
+Customer mencoba endpoint admin:
+
+> ❌ 403.
+
+
+
+
+---
+
+5-C.30 — ADMIN BOOKING LIST
+
+US-ADM-002
+
+> Sebagai operator, saya ingin melihat seluruh booking agar saya dapat mengelola perjalanan.
+
+
+
+Table:
+
+booking code
+customer
+date
+service
+vehicle
+status
+payment
+
+Filter:
+
+date
+status
+vehicle
+service
+
+
+---
+
+5-C.31 — ADMIN BOOKING DETAIL
+
+US-ADM-003
+
+Admin dapat:
+
+view
+edit
+assign vehicle
+assign driver
+change status
+record payment
+add note
+cancel
+
+Sensitive changes:
+
+> audit log.
+
+
+
+
+---
+
+5-C.32 — VEHICLE MANAGEMENT
+
+US-ADM-004
+
+> Sebagai admin, saya ingin mengelola fleet.
+
+
+
+Admin dapat:
+
+create
+edit
+activate
+deactivate
+upload photos
+set capacity
+map service
+set rate
+
+
+---
+
+5-C.33 — VEHICLE DEACTIVATION
+
+US-ADM-005
+
+GIVEN vehicle memiliki historical bookings
+WHEN admin deactivates vehicle
+THEN historical booking tetap dapat dibaca
+AND vehicle tidak muncul sebagai available.
+
+🔥 Jangan hard-delete vehicle yang sudah pernah digunakan transaksi.
+
+
+---
+
+5-C.34 — DRIVER ASSIGNMENT
+
+US-ADM-006
+
+> Sebagai operator, saya ingin menugaskan driver pada trip.
+
+
+
+GIVEN driver active
+AND driver available
+WHEN operator assigns driver
+THEN driver assignment dibuat.
+
+Jika driver conflict:
+
+> assignment ditolak.
+
+
+
+
+---
+
+5-C.35 — TRIP STATUS
+
+US-ADM-007
+
+Operator dapat mengubah:
+
+SCHEDULED
+DRIVER_ASSIGNED
+EN_ROUTE
+PICKED_UP
+IN_PROGRESS
+COMPLETED
+CANCELLED
+
+Invalid transition:
+
+> rejected.
+
+
+
+
+---
+
+5-C.36 — PAYMENT RECORDING
+
+US-ADM-008
+
+> Sebagai operator, saya ingin mencatat pembayaran yang diterima.
+
+
+
+System:
+
+payment amount
+method
+reference
+paid_at
+
+Tidak boleh:
+
+> client menentukan payment status sendiri.
+
+
+
+
+---
+
+5-C.37 — AUDIT
+
+US-ADM-009
+
+GIVEN admin melakukan perubahan sensitif
+WHEN perubahan berhasil
+THEN audit record dibuat.
+
+Minimal:
+
+actor
+action
+entity
+entity_id
+timestamp
+
+
+---
+
+5-C.38 — NOTIFICATION
+
+US-COM-001
+
+Booking dibuat:
+
+booking.created
+ ↓
+notification
+
+Customer menerima:
+
+> booking code + summary.
+
+
+
+
+---
+
+5-C.39 — QUOTE NOTIFICATION
+
+quote.created
+ ↓
+customer notification
+
+Customer dapat membuka quote.
+
+
+---
+
+5-C.40 — PAYMENT NOTIFICATION
+
+Jika payment confirmed:
+
+payment.received
+ ↓
+notification
+
+Customer mendapatkan:
+
+> payment confirmation.
+
+
+
+
+---
+
+5-C.41 — SECURITY ACCEPTANCE
+
+US-SEC-001
+
+Tidak ada endpoint sensitif yang hanya bergantung pada frontend role check.
+
+GIVEN customer mengetahui URL admin
+WHEN customer request endpoint admin
+THEN backend returns 403.
+
+
+---
+
+5-C.42 — PRICE TAMPERING
+
+US-SEC-002
+
+Scenario:
+
+Customer mengubah request:
+
+total = 1000
+
+Expected:
+
+THEN server ignores client-provided total
+AND recalculates price.
+
+🔥 Critical.
+
+
+---
+
+5-C.43 — AVAILABILITY TAMPERING
+
+Customer mengirim:
+
+vehicle_id = unavailable_vehicle
+
+Expected:
+
+THEN server revalidates
+AND rejects transaction.
+
+
+---
+
+5-C.44 — DOUBLE BOOKING
+
+US-SEC-003
+
+Dua request datang hampir bersamaan.
+
+Request A ─┐
+           ├── same vehicle
+Request B ─┘
+
+Expected:
+
+ONLY ONE CONFIRMED RESOURCE
+
+Request lainnya:
+
+> 409 CONFLICT.
+
+
+
+
+---
+
+5-C.45 — PAYMENT WEBHOOK
+
+Jika payment gateway digunakan:
+
+GIVEN webhook signature invalid
+WHEN webhook diterima
+THEN event rejected.
+
+Jika webhook dikirim dua kali:
+
+THEN payment tidak dicatat dua kali.
+
+
+---
+
+5-C.46 — COMPLETE END-TO-END STORY
+
+Ini Golden User Story.
+
+US-E2E-001
+
+> Sebagai customer, saya ingin memesan transport sampai perjalanan selesai.
+
+
+
+Flow:
+
+Visit website
+ ↓
+Choose service
+ ↓
+Choose date
+ ↓
+Enter location
+ ↓
+Enter passengers
+ ↓
+Check availability
+ ↓
+Select vehicle
+ ↓
+Add add-ons
+ ↓
+Enter contact
+ ↓
+Review
+ ↓
+Get quote
+ ↓
+Accept
+ ↓
+Booking confirmed
+ ↓
+Payment
+ ↓
+Driver assigned
+ ↓
+Trip
+ ↓
+Completed
+
+Acceptance:
+
+GIVEN valid customer request
+WHEN customer completes booking flow
+THEN confirmed booking exists
+AND vehicle is reserved
+AND payment state is tracked
+AND trip can be operated
+AND final trip can be marked COMPLETED.
+
+🔥 Kalau E2E ini berhasil, MVP CORE HIDUP.
+
+
+---
+
+5-C.47 — CRITICAL EDGE CASE MATRIX
+
+Kita wajib test minimal:
+
+Scenario	Expected
+
+Invalid date	Reject
+End before start	Reject
+Passenger > capacity	Reject
+Vehicle inactive	Reject
+Vehicle already booked	Reject
+Maintenance conflict	Reject
+Driver conflict	Reject
+Quote expired	Reject
+Price tampered	Reject
+Unauthorized admin API	403
+Duplicate booking request	No duplicate
+Payment webhook duplicate	No duplicate
+Payment webhook invalid	Reject
+Vehicle deactivated	Existing history preserved
+
+
+
+---
+
+5-C.48 — ACCEPTANCE PHILOSOPHY
+
+Kita tidak akan menggunakan:
+
+> “Looks good.”
+
+
+
+Sebagai definition of done.
+
+Feature dianggap selesai jika:
+
+FUNCTIONAL
++
+SECURE
++
+VALIDATED
++
+ERROR HANDLED
++
+AUDITABLE
++
+TESTED
+
+
+---
+
+5-C.49 — DEFINITION OF DONE
+
+Setiap P0 feature harus:
+
+☑ implementation selesai
+☑ schema/API selesai
+☑ validation selesai
+☑ permission selesai
+☑ happy path test
+☑ failure path test
+☑ security test jika applicable
+☑ mobile responsive
+☑ error state
+☑ loading state
+☑ empty state
+☑ audit jika sensitif
+
+
+---
+
+5-C.50 — SESSION 5-C VERDICT
+
+Sekarang kita sudah mengubah:
+
+> Feature → User Need → Behavior → Testable Acceptance
+
+
+
+Kita punya foundation untuk:
+
+CUSTOMER STORIES
+ADMIN STORIES
+SECURITY STORIES
+END-TO-END STORY
+EDGE CASES
+DEFINITION OF DONE
+
+🔒 5-C = LOCKED
+
+
+---
+
+🚀 NEXT — SESSION 5-D
+
+Berikutnya kita masuk ke:
+
+SCREEN / UX SPECIFICATION
+
+Bukan lagi sekadar sitemap.
+
+Kita akan mendefinisikan setiap screen:
+
+SCREEN ID
+Purpose
+Route
+Actor
+Entry Point
+Layout
+Components
+Data
+Actions
+States
+Validation
+Permissions
+Responsive Behavior
+
+Contohnya:
+
+> SCR-BOOK-01 — Booking Wizard
+
+
+
+akan kita pecah Step 1 sampai Step 9, termasuk:
+
+loading state → empty state → error → unavailable → validation → mobile UX → CTA behavior.
+
+Jadi setelah 5-D, developer/coding agent sudah bisa mulai membangun UI berdasarkan specification, bukan menebak-nebak.

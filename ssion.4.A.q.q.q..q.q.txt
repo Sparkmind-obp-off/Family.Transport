@@ -1,0 +1,1520 @@
+Gas gsss 🔥 langsung masuk SESSION 4 — PRODUCT & SYSTEM ARCHITECTURE.
+
+Di sini kita mulai mengubah semua hasil riset + strategy + UX menjadi blueprint sistem yang benar-benar bisa dibangun.
+
+SESSION 4 — FAMILY TRANSPORT
+
+PRODUCT & SYSTEM ARCHITECTURE
+
+Core principle
+
+> Business logic first → system second → UI third.
+
+
+
+Jadi kita tidak mulai dari:
+
+> “Mau pakai framework apa?”
+
+
+
+Kita mulai dari:
+
+> “Sistem apa yang Family Transport sebenarnya butuhkan?”
+
+
+
+
+---
+
+4.1 — SYSTEM NORTH STAR
+
+Seluruh platform berputar pada satu objek utama:
+
+TRIP / BOOKING
+
+Customer punya kebutuhan perjalanan.
+
+System:
+
+TRIP
+ ↓
+MATCH
+ ↓
+VEHICLE
+ ↓
+SERVICE
+ ↓
+AVAILABILITY
+ ↓
+PRICE
+ ↓
+QUOTE
+ ↓
+BOOKING
+ ↓
+PAYMENT
+ ↓
+OPERATION
+ ↓
+COMPLETION
+
+Jadi booking bukan sekadar form.
+
+Booking adalah pusat koordinasi antara:
+
+Customer ↔ Vehicle ↔ Driver ↔ Price ↔ Operation ↔ Payment
+
+
+---
+
+4.2 — PRODUCT MODULE MAP
+
+Family Transport OS kita pecah menjadi:
+
+FAMILY TRANSPORT SYSTEM
+│
+├── PUBLIC EXPERIENCE
+│   ├── Website
+│   ├── Fleet
+│   ├── Services
+│   ├── Trip Match
+│   └── Booking
+│
+├── CUSTOMER
+│   ├── Profile
+│   ├── Bookings
+│   ├── Quotes
+│   └── Communication
+│
+├── BOOKING
+│   ├── Request
+│   ├── Availability
+│   ├── Quote
+│   ├── Confirmation
+│   └── Cancellation
+│
+├── FLEET
+│   ├── Vehicles
+│   ├── Availability
+│   ├── Maintenance
+│   └── Utilization
+│
+├── PRICING
+│   ├── Rates
+│   ├── Rules
+│   ├── Add-ons
+│   └── Discounts
+│
+├── OPERATIONS
+│   ├── Driver
+│   ├── Assignment
+│   ├── Schedule
+│   └── Trip
+│
+├── CRM
+│   ├── Customers
+│   ├── History
+│   └── Follow-up
+│
+├── PAYMENT
+│   ├── Deposit
+│   ├── Payment
+│   └── Refund
+│
+└── ANALYTICS
+    ├── Funnel
+    ├── Revenue
+    ├── Fleet
+    └── Customer
+
+
+---
+
+4.3 — ACTOR MODEL
+
+Kita minimal punya:
+
+CUSTOMER
+
+Mencari transportasi dan membuat booking.
+
+ADMIN
+
+Mengelola keseluruhan bisnis.
+
+OPERATOR
+
+Menangani booking dan operational coordination.
+
+DRIVER
+
+Menjalankan trip.
+
+OWNER / MANAGER
+
+Melihat bisnis, revenue, fleet, dan performance.
+
+
+---
+
+4.4 — RBAC
+
+Jangan langsung membuat 20 role.
+
+MVP:
+
+OWNER
+ADMIN
+OPERATOR
+DRIVER
+CUSTOMER
+
+
+---
+
+4.5 — OWNER
+
+Akses:
+
+Everything
+
+termasuk:
+
+pricing;
+
+reports;
+
+users;
+
+fleet;
+
+settings;
+
+financial data.
+
+
+
+---
+
+4.6 — ADMIN
+
+Operational management:
+
+bookings;
+
+customers;
+
+vehicles;
+
+quotes;
+
+pricing;
+
+communication.
+
+
+Tidak harus punya akses penuh ke system settings.
+
+
+---
+
+4.7 — OPERATOR
+
+Fokus:
+
+> daily operations
+
+
+
+Akses:
+
+booking;
+
+availability;
+
+customer;
+
+quote;
+
+driver assignment.
+
+
+Tidak perlu:
+
+> pricing master / financial settings.
+
+
+
+
+---
+
+4.8 — DRIVER
+
+Hanya melihat:
+
+assigned trips;
+
+customer;
+
+pickup;
+
+destination;
+
+schedule;
+
+notes;
+
+trip status.
+
+
+
+---
+
+4.9 — CUSTOMER
+
+MVP bahkan tidak wajib memiliki account penuh.
+
+Bisa:
+
+Guest Booking
+
+
+Booking ID
+
+Kemudian Phase 2:
+
+Customer Account
+
+Ini penting agar MVP tidak berat.
+
+
+---
+
+4.10 — CORE DOMAIN ENTITIES
+
+Sekarang database foundation:
+
+USER
+USER_PROFILE
+
+CUSTOMER
+BOOKING
+TRIP
+
+VEHICLE
+VEHICLE_CATEGORY
+DRIVER
+
+SERVICE
+RATE
+PRICING_RULE
+ADD_ON
+
+QUOTE
+QUOTE_ITEM
+
+PAYMENT
+REFUND
+
+AVAILABILITY
+MAINTENANCE
+
+REVIEW
+
+AUDIT_LOG
+
+
+---
+
+4.11 — USER VS CUSTOMER
+
+Jangan mencampur:
+
+> authentication
+
+
+
+dengan:
+
+> business customer.
+
+
+
+USER
+
+adalah identity/login.
+
+CUSTOMER
+
+adalah business entity.
+
+Satu customer nantinya bisa:
+
+> punya beberapa user/contact.
+
+
+
+Ini akan sangat berguna untuk corporate.
+
+
+---
+
+4.12 — CUSTOMER MODEL
+
+CUSTOMER
+│
+├── Personal Information
+├── Contact
+├── Preferences
+├── Booking History
+├── Quotes
+├── Payments
+└── Notes
+
+Corporate:
+
+COMPANY
+ ↓
+CONTACTS
+ ↓
+BOOKINGS
+
+Kita siapkan architecture-nya meskipun MVP belum membutuhkan semua corporate features.
+
+
+---
+
+4.13 — VEHICLE MODEL
+
+Vehicle:
+
+id
+registration
+brand
+model
+year
+category
+seats
+transmission
+luggage_capacity
+status
+active
+
+Tambahan:
+
+photos
+
+features
+
+service eligibility
+
+
+---
+
+4.14 — VEHICLE STATUS
+
+AVAILABLE
+RESERVED
+ACTIVE
+MAINTENANCE
+BLOCKED
+INACTIVE
+
+Ini bukan sekadar UI badge.
+
+Status memengaruhi:
+
+> availability engine.
+
+
+
+
+---
+
+4.15 — SERVICE MODEL
+
+SELF_DRIVE
+WITH_DRIVER
+DRIVER_FUEL
+AIRPORT_TRANSFER
+POINT_TO_POINT
+CHARTER
+CORPORATE
+
+Tetapi service catalog harus configurable.
+
+Admin dapat:
+
+> activate / deactivate service.
+
+
+
+
+---
+
+4.16 — BOOKING MODEL
+
+Booking core:
+
+booking_id
+customer_id
+service_id
+vehicle_id
+start_at
+end_at
+pickup_location
+destination
+passengers
+status
+price_snapshot
+notes
+created_at
+
+🔥 price_snapshot sangat penting.
+
+Karena harga bisa berubah setelah booking dibuat.
+
+Booking lama tidak boleh ikut berubah.
+
+
+---
+
+4.17 — TRIP VS BOOKING
+
+Kita pisahkan:
+
+BOOKING
+
+Commercial transaction.
+
+TRIP
+
+Operational execution.
+
+Contoh:
+
+Booking:
+
+> FT-123
+
+
+
+Trip:
+
+> YIA → Hotel → Dinner → Hotel
+
+
+
+Satu booking dapat memiliki:
+
+> one atau multiple operational segments.
+
+
+
+Ini akan berguna ketika sistem berkembang.
+
+
+---
+
+4.18 — QUOTE MODEL
+
+Quote:
+
+quote_id
+customer_id
+booking_request_id
+status
+subtotal
+discount
+fees
+total
+currency
+valid_until
+created_at
+
+Quote items:
+
+vehicle
+driver
+fuel
+addon
+fee
+discount
+
+
+---
+
+4.19 — PRICE SNAPSHOT
+
+Ketika quote diterima:
+
+CURRENT PRICING
+       ↓
+CALCULATE
+       ↓
+QUOTE
+       ↓
+CUSTOMER ACCEPTS
+       ↓
+BOOKING
+       ↓
+SNAPSHOT
+
+Harga booking tidak bergantung pada live pricing lagi.
+
+🔥 Ini wajib.
+
+
+---
+
+4.20 — PRICING ENGINE
+
+Input:
+
+VEHICLE
+SERVICE
+DATE
+DURATION
+AREA
+ADDONS
+CUSTOMER TYPE
+
+Output:
+
+PRICE BREAKDOWN
++
+TOTAL
++
+PRICE STATE
+
+Price state:
+
+FIXED
+
+ESTIMATED
+
+QUOTE_REQUIRED
+
+
+---
+
+4.21 — AVAILABILITY ENGINE
+
+Availability tidak boleh hanya:
+
+> vehicle.status === available
+
+
+
+Karena vehicle bisa:
+
+> available sekarang
+
+
+
+tetapi sudah dibooking untuk tanggal depan.
+
+Formula:
+
+VEHICLE ACTIVE
++
+NO CONFLICTING BOOKING
++
+NO MAINTENANCE
++
+SERVICE COMPATIBLE
+=
+AVAILABLE
+
+
+---
+
+4.22 — AVAILABILITY CONFLICT
+
+Contoh:
+
+Booking A:
+
+20–22 August
+
+Booking B:
+
+21–23 August
+
+System harus mendeteksi overlap.
+
+Booking B:
+
+> CONFLICT
+
+
+
+Jangan sampai dua customer mendapatkan mobil yang sama.
+
+
+---
+
+4.23 — MAINTENANCE BLOCK
+
+Vehicle:
+
+> Toyota Innova
+
+
+
+Maintenance:
+
+22 August.
+
+Customer:
+
+> 20–23 August.
+
+
+
+Availability:
+
+NOT AVAILABLE
+
+Karena maintenance overlap.
+
+
+---
+
+4.24 — DRIVER AVAILABILITY
+
+Untuk service with driver:
+
+Vehicle available saja tidak cukup.
+
+Harus:
+
+VEHICLE AVAILABLE
++
+DRIVER AVAILABLE
+=
+SERVICE AVAILABLE
+
+Ini akan menjadi bagian dari operations engine.
+
+
+---
+
+4.25 — DRIVER ASSIGNMENT
+
+Flow:
+
+CONFIRMED BOOKING
+↓
+CHECK DRIVER
+↓
+ASSIGN
+↓
+DRIVER NOTIFIED
+↓
+TRIP
+
+Driver dapat:
+
+> Accept / Assigned / Completed.
+
+
+
+
+---
+
+4.26 — BOOKING STATE MACHINE
+
+System-level:
+
+DRAFT
+ ↓
+REQUESTED
+ ↓
+REVIEWING
+ ↓
+QUOTED
+ ↓
+CUSTOMER_ACCEPTED
+ ↓
+CONFIRMED
+ ↓
+PAYMENT_PENDING
+ ↓
+PAID
+ ↓
+ACTIVE
+ ↓
+COMPLETED
+
+Exit states:
+
+CANCELLED
+
+REJECTED
+
+EXPIRED
+
+
+---
+
+4.27 — PAYMENT STATE
+
+Pisahkan dari booking state.
+
+UNPAID
+ ↓
+PAYMENT_PENDING
+ ↓
+PARTIALLY_PAID
+ ↓
+PAID
+
+Possible:
+
+REFUNDED
+
+PARTIALLY_REFUNDED
+
+
+---
+
+4.28 — OPERATIONS STATE
+
+Trip:
+
+SCHEDULED
+ ↓
+DRIVER_ASSIGNED
+ ↓
+DRIVER_EN_ROUTE
+ ↓
+PICKED_UP
+ ↓
+IN_PROGRESS
+ ↓
+COMPLETED
+
+Ini berbeda dari payment.
+
+🔥 Jangan campur tiga state:
+
+Booking
+
+Payment
+
+Trip
+
+
+---
+
+4.29 — COMMUNICATION LAYER
+
+System harus dapat menghasilkan:
+
+Booking notification
+
+Quote notification
+
+Payment instruction
+
+Confirmation
+
+Trip reminder
+
+Completion
+
+Channel awal:
+
+WhatsApp
+
+Email:
+
+> optional.
+
+
+
+
+---
+
+4.30 — WHATSAPP ARCHITECTURE
+
+MVP:
+
+SYSTEM
+ ↓
+GENERATE MESSAGE
+ ↓
+WHATSAPP LINK
+ ↓
+CUSTOMER / ADMIN
+
+Phase 2:
+
+SYSTEM
+ ↓
+WHATSAPP API
+ ↓
+AUTOMATED MESSAGE
+ ↓
+WEBHOOK
+ ↓
+MESSAGE STATUS
+
+Jangan langsung membangun WhatsApp API kompleks kalau volume belum membutuhkan.
+
+
+---
+
+4.31 — NOTIFICATION ENGINE
+
+Centralized:
+
+EVENT
+ ↓
+NOTIFICATION RULE
+ ↓
+CHANNEL
+ ↓
+MESSAGE
+ ↓
+DELIVERY
+
+Contoh:
+
+booking.confirmed
+
+↓
+
+WhatsApp
+
+↓
+
+Confirmation message.
+
+
+---
+
+4.32 — CRM
+
+CRM MVP:
+
+CUSTOMER
+ ↓
+BOOKINGS
+ ↓
+TRIPS
+ ↓
+QUOTES
+ ↓
+NOTES
+ ↓
+LAST CONTACT
+
+Future:
+
+segments
+
+campaigns
+
+automated follow-up
+
+
+---
+
+4.33 — REVIEW SYSTEM
+
+After completed trip:
+
+TRIP COMPLETED
+ ↓
+REVIEW REQUEST
+ ↓
+CUSTOMER REVIEW
+ ↓
+RATING
+ ↓
+INTERNAL RECORD
+
+Public review integration dapat menjadi Phase 2.
+
+
+---
+
+4.34 — ANALYTICS ARCHITECTURE
+
+Events:
+
+USER
+ ↓
+SESSION
+ ↓
+EVENT
+ ↓
+FUNNEL
+ ↓
+CONVERSION
+
+Core events:
+
+view_vehicle
+
+check_availability
+
+generate_quote
+
+start_booking
+
+submit_booking
+
+booking_confirmed
+
+payment_received
+
+trip_completed
+
+
+---
+
+4.35 — ADMIN MODULE MAP
+
+ADMIN
+│
+├── Dashboard
+├── Bookings
+├── Quotes
+├── Customers
+├── Vehicles
+├── Drivers
+├── Pricing
+├── Availability
+├── Payments
+├── Reviews
+├── Analytics
+└── Settings
+
+MVP bisa menyembunyikan module yang belum digunakan.
+
+
+---
+
+4.36 — API DOMAIN MAP
+
+Jangan membuat satu API besar yang semuanya campur.
+
+Pisahkan domain:
+
+/api/vehicles
+/api/services
+/api/availability
+/api/pricing
+/api/quotes
+/api/bookings
+/api/payments
+/api/customers
+/api/drivers
+/api/reviews
+
+Ini membuat system lebih mudah dikembangkan.
+
+
+---
+
+4.37 — SECURITY
+
+Minimum:
+
+Authentication
+
+Secure session.
+
+Authorization
+
+RBAC.
+
+Validation
+
+Server-side.
+
+Audit
+
+Sensitive changes recorded.
+
+Secrets
+
+Environment / secret store.
+
+Rate Limit
+
+Public booking endpoints.
+
+Abuse protection
+
+Form + API protection.
+
+
+---
+
+4.38 — DATA OWNERSHIP
+
+Customer data:
+
+> restricted.
+
+
+
+Payment:
+
+> restricted.
+
+
+
+Pricing:
+
+> admin/owner.
+
+
+
+Driver data:
+
+> operational users only.
+
+
+
+Audit logs:
+
+> privileged access.
+
+
+
+
+---
+
+4.39 — MVP ARCHITECTURE
+
+Untuk MVP kita tidak perlu microservices.
+
+Recommended:
+
+MODULAR MONOLITH
+
+WEB APP
+                ↓
+          APPLICATION API
+                ↓
+       ┌────────┴────────┐
+       ↓                 ↓
+    DOMAIN            DATABASE
+    MODULES
+
+Domain modules tetap terpisah secara code.
+
+Tetapi deployment tetap sederhana.
+
+
+---
+
+4.40 — RECOMMENDED STACK
+
+Karena target kita adalah system yang relatif ringan dan scalable:
+
+Frontend
+
+Next.js / React
+
+Backend
+
+TypeScript
+
+Database
+
+PostgreSQL
+
+Auth
+
+Session-based / managed auth.
+
+Storage
+
+Object storage untuk vehicle images.
+
+Notifications
+
+WhatsApp link initially.
+
+Analytics
+
+GA4 + internal events.
+
+Hosting
+
+Cloud platform.
+
+
+---
+
+4.41 — IMPORTANT
+
+Stack final belum kita lock.
+
+Kenapa?
+
+Karena Session 4 baru sedang menentukan:
+
+> architecture.
+
+
+
+Bukan langsung:
+
+> “pakai framework X karena populer.”
+
+
+
+Kita akan memilih stack berdasarkan:
+
+cost
+
+maintainability
+
+developer velocity
+
+deployment
+
+security
+
+future scale
+
+
+---
+
+4.42 — DOMAIN ARCHITECTURE
+
+Kode ideal:
+
+src/
+│
+├── modules/
+│   ├── customers/
+│   ├── vehicles/
+│   ├── services/
+│   ├── availability/
+│   ├── pricing/
+│   ├── quotes/
+│   ├── bookings/
+│   ├── payments/
+│   ├── drivers/
+│   └── reviews/
+│
+├── shared/
+│   ├── auth/
+│   ├── validation/
+│   ├── notifications/
+│   ├── audit/
+│   └── utils/
+│
+└── infrastructure/
+
+
+---
+
+4.43 — SYSTEM OF RECORD
+
+Kita tentukan source of truth:
+
+Vehicle
+
+→ Vehicle database.
+
+Availability
+
+→ Booking + maintenance data.
+
+Price
+
+→ Pricing engine / quote snapshot.
+
+Customer
+
+→ CRM database.
+
+Payment
+
+→ Payment records.
+
+Trip
+
+→ Operations.
+
+Tidak boleh:
+
+> frontend menjadi source of truth.
+
+
+
+
+---
+
+4.44 — SINGLE SOURCE OF TRUTH
+
+Contoh:
+
+Customer melihat:
+
+> Avanza available.
+
+
+
+Frontend tidak boleh memutuskan sendiri.
+
+Frontend meminta:
+
+Availability API
+
+Backend mengecek:
+
+booking
+
+maintenance
+
+status
+
+service
+
+↓
+
+baru return:
+
+> available.
+
+
+
+
+---
+
+4.45 — SYSTEM EVENT MODEL
+
+Kita mulai memikirkan event:
+
+booking.created
+booking.quoted
+booking.accepted
+booking.confirmed
+payment.created
+payment.received
+driver.assigned
+trip.started
+trip.completed
+
+Ini akan membantu:
+
+notifications
+
+analytics
+
+audit
+
+automation
+
+tanpa membuat logic saling berantakan.
+
+
+---
+
+4.46 — MVP VS FUTURE
+
+MVP
+
+✅ Website
+✅ Fleet
+✅ Services
+✅ Availability
+✅ Pricing
+✅ Quote
+✅ Booking
+✅ WhatsApp handoff
+✅ Admin
+✅ Customer records
+✅ Basic payment records
+✅ Analytics
+
+PHASE 2
+
+🔵 Customer account
+🔵 Payment gateway
+🔵 WhatsApp API
+🔵 Driver portal
+🔵 Automated reminders
+🔵 Reviews
+🔵 Corporate account
+
+PHASE 3
+
+🟣 Partner fleet
+🟣 Dynamic pricing
+🟣 Advanced CRM
+🟣 Demand forecasting
+🟣 Fleet intelligence
+🟣 Automated matching
+
+
+---
+
+4.47 — WHAT WE DO NOT BUILD YET
+
+🔥 Ini penting supaya project tidak melebar.
+
+Jangan MVP langsung membuat:
+
+❌ Native mobile app
+
+❌ Full AI chatbot
+
+❌ Complex marketplace
+
+❌ Partner marketplace
+
+❌ Dynamic pricing AI
+
+❌ Full accounting system
+
+❌ Loyalty program
+
+❌ Complex payment orchestration
+
+❌ Driver GPS tracking
+
+❌ Multi-country support
+
+Semua itu future capability, bukan MVP requirement.
+
+
+---
+
+4.48 — CORE SYSTEM LOOP
+
+Akhirnya seluruh architecture dapat direduksi menjadi:
+
+CUSTOMER
+   ↓
+REQUEST
+   ↓
+MATCH
+   ↓
+AVAILABILITY
+   ↓
+PRICE
+   ↓
+QUOTE
+   ↓
+BOOKING
+   ↓
+PAYMENT
+   ↓
+ASSIGN
+   ↓
+TRIP
+   ↓
+COMPLETION
+   ↓
+CRM
+
+🔥 Ini adalah backbone Family Transport OS.
+
+
+---
+
+4.49 — SESSION 4 VERDICT
+
+Kita sekarang sudah menentukan blueprint:
+
+✅ Product modules
+✅ Actors
+✅ RBAC
+✅ Domain entities
+✅ Customer model
+✅ Vehicle model
+✅ Service model
+✅ Booking architecture
+✅ Trip architecture
+✅ Quote architecture
+✅ Pricing engine
+✅ Availability engine
+✅ Driver assignment
+✅ Payment state
+✅ Operations state
+✅ Notification layer
+✅ CRM
+✅ Reviews
+✅ Analytics
+✅ API domains
+✅ Security foundation
+✅ Modular monolith direction
+✅ MVP scope
+✅ Future roadmap
+
+
+---
+
+🔥 TAPI SESSION 4 BELUM LOCK TOTAL
+
+Ada 3 bagian technical yang harus kita bedah berikutnya supaya architecture benar-benar siap dibangun:
+
+SESSION 4-B
+
+DATABASE / ERD ARCHITECTURE
+
+Kita akan menentukan relasi:
+
+Customer → Booking → Trip → Vehicle → Driver → Quote → Payment
+
+sampai field-field penting dan ownership.
+
+↓
+
+SESSION 4-C
+
+BOOKING + AVAILABILITY + PRICING ENGINE
+
+Ini bagian paling kritis secara logic.
+
+Kita akan membangun rule:
+
+> bagaimana system menentukan kendaraan tersedia, menghitung harga, mencegah double booking, membuat quote, dan mengubah quote menjadi confirmed booking.
+
+
+
+↓
+
+SESSION 4-D
+
+API + SECURITY + DEPLOYMENT ARCHITECTURE
+
+Baru kita kunci:
+
+API contract
+
+authentication
+
+RBAC
+
+validation
+
+database access
+
+secrets
+
+logging
+
+deployment
+
+backup
+
+monitoring
+
+Setelah 4-B → 4-C → 4-D, baru:
+
+🔒 SESSION 4 = LOCKED
+
+dan kita bisa masuk ke SESSION 5 — MVP PRODUCT SPECIFICATION, yaitu blueprint yang jauh lebih siap untuk langsung dibuild.

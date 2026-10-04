@@ -1,0 +1,1335 @@
+Gas gsss 🔥 langsung lanjut SESSION 4-B — DATABASE / ERD ARCHITECTURE.
+
+Di sini kita mulai mengunci struktur data Family Transport. Prinsipnya:
+
+> Database harus mengikuti business reality, bukan mengikuti tampilan website.
+
+
+
+
+---
+
+SESSION 4-B — DATABASE / ERD ARCHITECTURE
+
+4-B.1 — DATABASE OBJECTIVE
+
+Database harus mampu menjawab:
+
+siapa customer?
+
+booking apa yang dibuat?
+
+perjalanan kapan?
+
+kendaraan apa?
+
+driver siapa?
+
+harga dari mana?
+
+quote berapa?
+
+sudah bayar atau belum?
+
+kendaraan tersedia atau tidak?
+
+siapa yang mengubah data?
+
+apa yang terjadi sepanjang lifecycle booking?
+
+
+Core relationship:
+
+CUSTOMER
+   ↓
+BOOKING
+   ↓
+TRIP
+   ├── VEHICLE
+   └── DRIVER
+
+BOOKING
+   ├── QUOTE
+   └── PAYMENT
+
+
+---
+
+4-B.2 — CORE ENTITY MAP
+
+Kita pecah database menjadi 6 domain.
+
+IDENTITY
+├── users
+└── user_profiles
+
+CUSTOMER
+├── customers
+└── customer_contacts
+
+FLEET
+├── vehicles
+├── vehicle_categories
+├── vehicle_photos
+└── maintenance_blocks
+
+BOOKING
+├── bookings
+├── booking_items
+├── trips
+└── trip_stops
+
+PRICING
+├── quotes
+├── quote_items
+├── rates
+├── pricing_rules
+└── add_ons
+
+PAYMENT
+├── payments
+└── refunds
+
+Tambahan cross-domain:
+
+reviews
+notifications
+audit_logs
+
+
+---
+
+4-B.3 — USERS
+
+users adalah identity/authentication.
+
+users
+──────────────
+id
+email
+phone
+password_hash / auth_provider
+role
+status
+created_at
+updated_at
+last_login_at
+
+Catatan:
+
+Jangan menyimpan password plaintext.
+
+Kalau menggunakan managed authentication, field authentication tertentu dapat dikelola provider.
+
+
+---
+
+4-B.4 — USER PROFILES
+
+Pisahkan data profile dari identity.
+
+user_profiles
+────────────────
+id
+user_id
+first_name
+last_name
+display_name
+avatar_url
+created_at
+updated_at
+
+Relationship:
+
+users 1 ─── 1 user_profiles
+
+
+---
+
+4-B.5 — CUSTOMERS
+
+Customer adalah business entity, bukan sekadar user.
+
+customers
+────────────────
+id
+customer_type
+display_name
+email
+phone
+company_id
+notes
+status
+created_at
+updated_at
+
+customer_type:
+
+INDIVIDUAL
+CORPORATE
+
+MVP bisa fokus:
+
+> INDIVIDUAL
+
+
+
+tetapi schema sudah siap untuk corporate.
+
+
+---
+
+4-B.6 — COMPANIES
+
+Untuk future corporate:
+
+companies
+────────────────
+id
+name
+legal_name
+email
+phone
+address
+tax_identifier
+status
+created_at
+updated_at
+
+Relationship:
+
+company
+   │
+   └── customers
+
+Tidak perlu membangun seluruh corporate workflow di MVP.
+
+
+---
+
+4-B.7 — VEHICLE CATEGORIES
+
+Contoh:
+
+vehicle_categories
+────────────────
+id
+name
+slug
+description
+active
+
+Contoh data:
+
+MPV
+SUV
+CITY_CAR
+VAN
+
+
+---
+
+4-B.8 — VEHICLES
+
+Ini entity penting.
+
+vehicles
+────────────────
+id
+category_id
+brand
+model
+variant
+year
+registration_number
+color
+seats
+transmission
+luggage_capacity
+status
+active
+created_at
+updated_at
+
+Status:
+
+AVAILABLE
+RESERVED
+ACTIVE
+MAINTENANCE
+BLOCKED
+INACTIVE
+
+
+---
+
+4-B.9 — VEHICLE PHOTOS
+
+Jangan menyimpan banyak URL dalam satu kolom.
+
+Gunakan table:
+
+vehicle_photos
+────────────────
+id
+vehicle_id
+url
+alt_text
+sort_order
+is_primary
+created_at
+
+Relationship:
+
+vehicle 1 ─── N photos
+
+Ini jauh lebih scalable.
+
+
+---
+
+4-B.10 — SERVICES
+
+services
+────────────────
+id
+name
+slug
+description
+service_type
+active
+created_at
+updated_at
+
+Contoh:
+
+SELF_DRIVE
+WITH_DRIVER
+AIRPORT_TRANSFER
+POINT_TO_POINT
+CHARTER
+CORPORATE
+
+
+---
+
+4-B.11 — VEHICLE ↔ SERVICE
+
+Tidak semua kendaraan pasti cocok untuk semua service.
+
+Karena itu:
+
+vehicle_services
+────────────────
+vehicle_id
+service_id
+active
+
+Relationship:
+
+VEHICLE N ─── N SERVICE
+
+🔥 Ini penting untuk availability engine.
+
+
+---
+
+4-B.12 — BOOKINGS
+
+Booking adalah commercial request/transaction.
+
+bookings
+────────────────────
+id
+booking_code
+customer_id
+service_id
+status
+start_at
+end_at
+pickup_location
+destination
+passengers
+currency
+subtotal
+discount
+fees
+total
+price_snapshot
+notes
+created_at
+updated_at
+
+booking_code contoh:
+
+> FT-2026-000123
+
+
+
+
+---
+
+4-B.13 — BOOKING ITEM
+
+Kenapa tidak langsung taruh vehicle_id di booking?
+
+Karena architecture kita sebaiknya siap untuk:
+
+> satu booking memiliki beberapa item.
+
+
+
+booking_items
+────────────────
+id
+booking_id
+vehicle_id
+description
+quantity
+unit_price
+subtotal
+metadata
+
+Untuk MVP biasanya:
+
+> 1 booking → 1 primary vehicle
+
+
+
+Tetapi schema tidak membatasi future expansion.
+
+
+---
+
+4-B.14 — BOOKING SNAPSHOT
+
+Saat customer melakukan booking, data penting jangan hanya mengandalkan master records.
+
+Misalnya:
+
+Hari ini:
+
+> Toyota Innova = Rp500k
+
+
+
+Bulan depan:
+
+> Toyota Innova = Rp600k
+
+
+
+Booking lama harus tetap:
+
+> Rp500k.
+
+
+
+Karena itu kita simpan:
+
+price_snapshot
+vehicle_snapshot
+service_snapshot
+
+atau struktur snapshot JSON yang tervalidasi.
+
+🔥 Historical truth > current master data.
+
+
+---
+
+4-B.15 — TRIPS
+
+Booking dan trip dipisahkan.
+
+trips
+────────────────
+id
+booking_id
+status
+vehicle_id
+driver_id
+scheduled_start
+scheduled_end
+actual_start
+actual_end
+notes
+created_at
+updated_at
+
+Relationship:
+
+booking 1 ─── N trips
+
+MVP bisa menggunakan:
+
+> 1 booking = 1 trip.
+
+
+
+Tapi architecture siap multi-trip.
+
+
+---
+
+4-B.16 — TRIP STOPS
+
+Untuk perjalanan multi-stop:
+
+trip_stops
+────────────────
+id
+trip_id
+sequence
+stop_type
+location
+scheduled_at
+actual_at
+notes
+
+Contoh:
+
+1 — PICKUP — Hotel
+2 — STOP — Malioboro
+3 — STOP — Prambanan
+4 — DROPOFF — Hotel
+
+Ini membuat architecture jauh lebih fleksibel.
+
+
+---
+
+4-B.17 — DRIVERS
+
+drivers
+────────────────
+id
+user_id
+name
+phone
+license_number
+license_expiry
+status
+notes
+created_at
+updated_at
+
+Driver bisa memiliki login melalui:
+
+user_id
+
+tetapi data operational tetap berada di drivers.
+
+
+---
+
+4-B.18 — DRIVER ASSIGNMENT
+
+Jangan langsung membuat:
+
+driver_id sebagai satu-satunya sumber assignment.
+
+Untuk architecture yang lebih baik:
+
+trip_driver_assignments
+──────────────────────
+id
+trip_id
+driver_id
+assigned_at
+unassigned_at
+status
+notes
+
+Kenapa?
+
+Karena nanti bisa terjadi:
+
+> Driver A diganti Driver B.
+
+
+
+History tetap ada.
+
+
+---
+
+4-B.19 — MAINTENANCE BLOCK
+
+Kendaraan bisa unavailable karena maintenance.
+
+maintenance_blocks
+────────────────
+id
+vehicle_id
+start_at
+end_at
+reason
+status
+created_at
+updated_at
+
+Availability engine membaca data ini.
+
+
+---
+
+4-B.20 — AVAILABILITY
+
+Kita tidak perlu menyimpan available = true/false sebagai source of truth.
+
+Availability adalah derived state.
+
+System menghitung dari:
+
+vehicle active
++
+service compatible
++
+booking conflict = false
++
+maintenance conflict = false
+
+Jadi:
+
+Availability = COMPUTED
+
+bukan data manual yang gampang stale.
+
+
+---
+
+4-B.21 — QUOTES
+
+quotes
+────────────────
+id
+quote_code
+booking_id
+customer_id
+status
+currency
+subtotal
+discount
+fees
+total
+valid_until
+notes
+created_at
+updated_at
+
+Status:
+
+DRAFT
+SENT
+VIEWED
+ACCEPTED
+REJECTED
+EXPIRED
+CANCELLED
+
+
+---
+
+4-B.22 — QUOTE ITEMS
+
+quote_items
+────────────────
+id
+quote_id
+item_type
+description
+quantity
+unit_price
+subtotal
+metadata
+
+Contoh:
+
+VEHICLE
+Rp 1.500.000
+
+DRIVER
+Rp 500.000
+
+AIRPORT_FEE
+Rp 100.000
+
+
+---
+
+4-B.23 — RATES
+
+Master pricing:
+
+rates
+────────────────
+id
+vehicle_id
+service_id
+billing_unit
+amount
+currency
+active_from
+active_until
+active
+created_at
+updated_at
+
+Billing unit:
+
+DAY
+HOUR
+TRIP
+ROUTE
+CUSTOM
+
+
+---
+
+4-B.24 — PRICING RULES
+
+Harga tidak selalu:
+
+> rate × duration.
+
+
+
+Karena bisa ada:
+
+weekend;
+
+high season;
+
+airport fee;
+
+area fee;
+
+minimum duration;
+
+special service.
+
+
+Maka:
+
+pricing_rules
+────────────────
+id
+name
+rule_type
+conditions
+adjustment_type
+adjustment_value
+priority
+active
+
+conditions bisa berupa structured JSON pada MVP jika belum membutuhkan rule engine kompleks.
+
+
+---
+
+4-B.25 — ADD-ONS
+
+add_ons
+────────────────
+id
+name
+description
+pricing_type
+price
+active
+
+Contoh:
+
+Child Seat
+
+Additional Driver
+
+Extra Hour
+
+Airport Parking
+
+
+---
+
+4-B.26 — PAYMENTS
+
+Pisahkan payment dari booking.
+
+payments
+────────────────
+id
+booking_id
+payment_reference
+method
+status
+amount
+currency
+paid_at
+provider
+provider_reference
+created_at
+updated_at
+
+Status:
+
+PENDING
+PROCESSING
+PARTIALLY_PAID
+PAID
+FAILED
+CANCELLED
+REFUNDED
+
+
+---
+
+4-B.27 — REFUNDS
+
+refunds
+────────────────
+id
+payment_id
+amount
+reason
+status
+processed_at
+created_at
+
+Jangan menghapus payment ketika refund terjadi.
+
+Payment history harus tetap immutable secara historis.
+
+
+---
+
+4-B.28 — REVIEWS
+
+reviews
+────────────────
+id
+booking_id
+customer_id
+rating
+title
+content
+status
+created_at
+
+Relationship:
+
+booking 1 ─── 0..1 review
+
+MVP:
+
+> satu completed booking dapat memiliki satu review.
+
+
+
+
+---
+
+4-B.29 — NOTIFICATIONS
+
+notifications
+────────────────
+id
+recipient_type
+recipient_id
+channel
+event_type
+status
+subject
+message
+sent_at
+created_at
+
+Channel:
+
+WHATSAPP
+EMAIL
+SMS
+IN_APP
+
+MVP:
+
+> WHATSAPP / manual handoff.
+
+
+
+
+---
+
+4-B.30 — AUDIT LOG
+
+Untuk perubahan sensitif:
+
+audit_logs
+────────────────
+id
+actor_user_id
+action
+entity_type
+entity_id
+old_value
+new_value
+ip_address
+created_at
+
+Contoh:
+
+> Admin mengubah harga Innova dari Rp500k → Rp550k.
+
+
+
+Harus dapat diketahui:
+
+who
+
+what
+
+when
+
+
+---
+
+4-B.31 — MASTER ERD
+
+Secara konseptual:
+
+USERS
+                      │
+             ┌────────┴────────┐
+             ↓                 ↓
+        USER_PROFILES       DRIVERS
+                               │
+                               ↓
+                         DRIVER_ASSIGNMENT
+                               │
+                               ↓
+CUSTOMERS ───────────────→ BOOKINGS
+    │                         │
+    │                         ├──── QUOTES
+    │                         │       │
+    │                         │       └── QUOTE_ITEMS
+    │                         │
+    │                         ├──── PAYMENTS
+    │                         │
+    │                         └──── TRIPS
+    │                                │
+    │                                ├── TRIP_STOPS
+    │                                │
+    │                                └── VEHICLE
+    │
+    └──── REVIEWS
+
+
+VEHICLES
+   │
+   ├── VEHICLE_PHOTOS
+   ├── VEHICLE_SERVICES ─── SERVICES
+   ├── MAINTENANCE_BLOCKS
+   └── RATES
+          │
+          └── PRICING_RULES
+
+
+BOOKINGS
+   │
+   └── BOOKING_ITEMS ─── VEHICLES
+
+
+---
+
+4-B.32 — RELATIONSHIP CARDINALITY
+
+Kita lock beberapa relationship utama:
+
+User       1 ─── 1 UserProfile
+
+Customer   1 ─── N Bookings
+
+Booking    1 ─── N BookingItems
+
+Booking    1 ─── N Quotes
+
+Quote      1 ─── N QuoteItems
+
+Booking    1 ─── N Trips
+
+Trip       1 ─── N TripStops
+
+Vehicle    1 ─── N VehiclePhotos
+
+Vehicle    N ─── N Services
+
+Vehicle    1 ─── N MaintenanceBlocks
+
+Vehicle    1 ─── N Rates
+
+Booking    1 ─── N Payments
+
+Payment    1 ─── N Refunds
+
+Booking    1 ─── 0..1 Review
+
+
+---
+
+4-B.33 — DATABASE DESIGN PRINCIPLE
+
+Ada 4 prinsip yang kita lock.
+
+1. NORMALIZED MASTER DATA
+
+Vehicle, customer, service, driver tidak diduplikasi sembarangan.
+
+2. SNAPSHOT TRANSACTION DATA
+
+Harga / informasi penting saat transaksi disimpan sebagai snapshot.
+
+3. DERIVED STATE
+
+Availability dihitung dari sumber data.
+
+4. AUDITABLE HISTORY
+
+Perubahan penting tidak menghilangkan historical truth.
+
+
+---
+
+4-B.34 — SOFT DELETE
+
+Untuk business records penting:
+
+Jangan buru-buru:
+
+DELETE FROM vehicles
+
+Lebih aman:
+
+active = false
+
+atau:
+
+deleted_at
+
+Karena booking lama masih membutuhkan reference vehicle tersebut.
+
+
+---
+
+4-B.35 — TIMESTAMP STANDARD
+
+Semua timestamp database:
+
+UTC
+
+Frontend menampilkan:
+
+> timezone lokal bisnis/customer.
+
+
+
+Ini menghindari masalah timezone ketika trip melibatkan user dari wilayah berbeda.
+
+
+---
+
+4-B.36 — ID STRATEGY
+
+Gunakan internal ID yang aman untuk database.
+
+Misalnya:
+
+> UUID / UUID-like identifier.
+
+
+
+Customer-facing code terpisah:
+
+internal id:
+xxxxxxxx-xxxx-...
+
+booking_code:
+FT-2026-000123
+
+Jangan expose sequential database ID sebagai public identifier utama.
+
+
+---
+
+4-B.37 — INDEX YANG WAJIB
+
+Minimal index:
+
+users.email
+
+customers.phone
+
+bookings.booking_code
+
+bookings.customer_id
+
+bookings.start_at
+
+bookings.end_at
+
+bookings.status
+
+trips.booking_id
+
+trips.vehicle_id
+
+maintenance_blocks.vehicle_id
+
+quotes.quote_code
+
+payments.booking_id
+
+Untuk availability, index pada:
+
+> vehicle + time range
+
+
+
+akan menjadi sangat penting.
+
+
+---
+
+4-B.38 — DATA INTEGRITY
+
+Database harus menggunakan:
+
+Foreign keys
+
+Unique constraints
+
+Not-null constraints
+
+Check constraints
+
+jika applicable.
+
+Contoh:
+
+booking_code:
+
+> UNIQUE
+
+
+
+registration_number:
+
+> UNIQUE
+
+
+
+quote_code:
+
+> UNIQUE
+
+
+
+
+---
+
+4-B.39 — DOUBLE BOOKING PROTECTION
+
+Ini salah satu bagian paling kritis.
+
+Tidak cukup:
+
+Frontend check
+
+Tidak cukup:
+
+API check
+
+Database / transaction layer juga harus melindungi.
+
+Flow:
+
+REQUEST
+ ↓
+BEGIN TRANSACTION
+ ↓
+CHECK CONFLICT
+ ↓
+LOCK / CONSTRAINT
+ ↓
+CREATE BOOKING
+ ↓
+COMMIT
+
+🔥 Karena dua customer bisa submit hampir bersamaan.
+
+
+---
+
+4-B.40 — DATA LIFECYCLE
+
+Customer:
+
+LEAD
+ ↓
+CUSTOMER
+ ↓
+BOOKING
+ ↓
+REPEAT CUSTOMER
+
+Vehicle:
+
+DRAFT
+ ↓
+ACTIVE
+ ↓
+MAINTENANCE
+ ↓
+ACTIVE
+ ↓
+INACTIVE
+
+Booking:
+
+REQUESTED
+ ↓
+QUOTED
+ ↓
+CONFIRMED
+ ↓
+PAID
+ ↓
+COMPLETED
+
+Data architecture mengikuti lifecycle tersebut.
+
+
+---
+
+4-B.41 — MVP DATABASE
+
+Kita tidak perlu membuat semua tabel di hari pertama.
+
+P0
+
+users
+user_profiles
+customers
+
+vehicles
+vehicle_categories
+vehicle_photos
+services
+vehicle_services
+
+bookings
+booking_items
+trips
+
+quotes
+quote_items
+
+rates
+payments
+
+audit_logs
+
+P1
+
+drivers
+trip_driver_assignments
+maintenance_blocks
+pricing_rules
+add_ons
+notifications
+reviews
+
+P2
+
+companies
+customer_contacts
+refunds
+advanced CRM
+
+
+---
+
+4-B.42 — DATABASE ARCHITECTURE VERDICT
+
+🔥 Core ERD sekarang sudah terbentuk.
+
+Kita sudah menentukan:
+
+✅ Identity
+✅ Customer
+✅ Corporate foundation
+✅ Fleet
+✅ Vehicle-service relationship
+✅ Booking
+✅ Booking items
+✅ Trip
+✅ Trip stops
+✅ Driver
+✅ Driver assignment
+✅ Maintenance
+✅ Quote
+✅ Quote items
+✅ Pricing
+✅ Add-ons
+✅ Payment
+✅ Refund
+✅ Review
+✅ Notification
+✅ Audit log
+✅ Snapshot strategy
+✅ Availability source of truth
+✅ ID strategy
+✅ Timestamp strategy
+✅ Index strategy
+✅ Double-booking protection
+✅ MVP/P1/P2 database scope
+
+
+---
+
+🔥 NEXT — SESSION 4-C
+
+Sekarang kita masuk ke jantung system:
+
+BOOKING + AVAILABILITY + PRICING ENGINE
+
+Di 4-C kita akan benar-benar menentukan algoritmanya:
+
+CUSTOMER REQUEST
+       ↓
+VALIDATE
+       ↓
+FIND ELIGIBLE VEHICLES
+       ↓
+CHECK DATE CONFLICT
+       ↓
+CHECK MAINTENANCE
+       ↓
+CHECK DRIVER
+       ↓
+CALCULATE PRICE
+       ↓
+GENERATE QUOTE
+       ↓
+CUSTOMER ACCEPTS
+       ↓
+CREATE BOOKING
+       ↓
+RESERVE RESOURCE
+
+Dan kita akan bedah exact business rules untuk mencegah:
+
+> double booking + salah harga + kendaraan tidak eligible + driver bentrok + quote kadaluarsa.
+
+
+
+Setelah 4-C, baru 4-D kita kunci API + Security + Deployment, lalu Session 4 resmi LOCKED.

@@ -1,0 +1,1533 @@
+Gas gsss 🔥 kita langsung masuk SESSION 4-C — BOOKING + AVAILABILITY + PRICING ENGINE.
+
+Ini bagian paling kritis dari Family Transport OS, karena kalau logic-nya salah, UI sebagus apa pun tetap menghasilkan double booking, harga salah, atau kendaraan/driver yang sebenarnya tidak tersedia.
+
+SESSION 4-C — CORE TRANSACTION ENGINE
+
+4-C.1 — CORE PRINCIPLE
+
+Kita pisahkan 3 engine:
+
+AVAILABILITY ENGINE
+        ↓
+PRICING ENGINE
+        ↓
+BOOKING ENGINE
+
+Tetapi ketiganya saling terhubung:
+
+CUSTOMER REQUEST
+       ↓
+AVAILABILITY
+       ↓
+ELIGIBLE RESOURCE
+       ↓
+PRICING
+       ↓
+QUOTE
+       ↓
+BOOKING
+
+
+---
+
+4-C.2 — CUSTOMER REQUEST
+
+Request minimum:
+
+service
+pickup
+destination
+start_at
+end_at
+passengers
+vehicle_preference?
+addons?
+
+Contoh:
+
+Service:
+With Driver
+
+Date:
+20 Aug 2026
+
+Time:
+08:00–18:00
+
+Passengers:
+5
+
+Pickup:
+Yogyakarta
+
+Destination:
+Prambanan
+
+
+---
+
+4-C.3 — REQUEST VALIDATION
+
+Sebelum system mencari kendaraan:
+
+VALIDATE
+
+☑ service aktif
+☑ tanggal valid
+☑ waktu valid
+☑ end > start
+☑ passenger > 0
+☑ pickup tersedia
+☑ destination valid
+☑ vehicle category compatible
+
+Jika gagal:
+
+> Jangan masuk availability engine.
+
+
+
+
+---
+
+4-C.4 — SERVICE ELIGIBILITY
+
+Tidak semua kendaraan cocok.
+
+Contoh:
+
+Customer:
+
+> 7 passengers.
+
+
+
+System:
+
+Vehicle A
+5 seats
+❌
+
+Vehicle B
+7 seats
+✅
+
+Vehicle C
+12 seats
+✅
+
+Filter:
+
+vehicle.seats >= passengers
+
+
+---
+
+4-C.5 — VEHICLE ELIGIBILITY
+
+Candidate vehicle harus memenuhi:
+
+ACTIVE
++
+SERVICE COMPATIBLE
++
+CAPACITY SUFFICIENT
++
+NOT BLOCKED
+
+Baru kemudian:
+
+> availability check.
+
+
+
+
+---
+
+4-C.6 — AVAILABILITY ENGINE
+
+Formula utama:
+
+AVAILABLE =
+ACTIVE
+AND SERVICE_COMPATIBLE
+AND CAPACITY_OK
+AND NO_BOOKING_CONFLICT
+AND NO_MAINTENANCE_CONFLICT
+
+Untuk with-driver:
+
++
+DRIVER_AVAILABLE
+
+
+---
+
+4-C.7 — BOOKING OVERLAP
+
+Dua interval conflict jika:
+
+existing.start < requested.end
+AND
+existing.end > requested.start
+
+Contoh:
+
+Existing:
+
+> 10:00–14:00
+
+
+
+Request:
+
+> 13:00–16:00
+
+
+
+Result:
+
+❌ CONFLICT
+
+
+---
+
+Request:
+
+> 14:00–16:00
+
+
+
+Jika sistem memakai interval [start, end):
+
+✅ AVAILABLE
+
+Ini penting supaya booking yang selesai tepat pukul 14:00 tidak bentrok dengan booking berikutnya pukul 14:00.
+
+
+---
+
+4-C.8 — MAINTENANCE CONFLICT
+
+Sama:
+
+maintenance.start < request.end
+AND
+maintenance.end > request.start
+
+Jika overlap:
+
+> vehicle unavailable.
+
+
+
+
+---
+
+4-C.9 — DRIVER CONFLICT
+
+Untuk WITH_DRIVER:
+
+DRIVER
++
+NO OVERLAPPING TRIP
++
+ACTIVE
+=
+ELIGIBLE
+
+Driver yang punya trip:
+
+> 08:00–12:00
+
+
+
+tidak bisa menerima:
+
+> 10:00–14:00.
+
+
+
+
+---
+
+4-C.10 — RESOURCE MODEL
+
+Kita sebenarnya sedang mencari:
+
+> Resource Bundle
+
+
+
+Contoh:
+
+Vehicle
++
+Driver
+
+atau:
+
+Vehicle only
+
+Jadi availability engine bukan sekadar:
+
+> “mobil tersedia?”
+
+
+
+Tetapi:
+
+> “Apakah seluruh resource yang diperlukan untuk service ini tersedia?”
+
+
+
+
+---
+
+4-C.11 — VEHICLE MATCHING
+
+Setelah filter availability, mungkin ada beberapa kandidat.
+
+Contoh:
+
+Avanza
+Innova
+Fortuner
+HiAce
+
+System kemudian melakukan ranking.
+
+
+---
+
+4-C.12 — MATCHING SCORE
+
+MVP jangan menggunakan AI dulu.
+
+Gunakan deterministic ranking:
+
+capacity fit
++
+service compatibility
++
+vehicle preference
++
+price
++
+availability
+
+Contoh:
+
+Exact capacity fit      +30
+Preferred category      +25
+Available               +20
+Lower price             +15
+Premium preference      +10
+
+Result:
+
+> Candidate ranking.
+
+
+
+
+---
+
+4-C.13 — WHY NOT AI?
+
+Karena availability dan booking adalah:
+
+> transactional truth.
+
+
+
+AI boleh:
+
+> membantu recommendation.
+
+
+
+Tetapi AI tidak boleh menjadi sumber kebenaran:
+
+> “Sepertinya mobil ini tersedia.”
+
+
+
+Availability harus deterministic.
+
+
+---
+
+4-C.14 — PRICING ENGINE
+
+Input:
+
+vehicle
+service
+duration
+route
+area
+date
+addons
+customer_type
+
+Output:
+
+base price
++
+service fee
++
+distance/area fee
++
+addons
+-
+discount
++
+tax/other fees
+=
+total
+
+
+---
+
+4-C.15 — PRICE BREAKDOWN
+
+Customer harus melihat:
+
+Vehicle rental       Rp 500.000
+Driver               Rp 250.000
+Airport fee          Rp  50.000
+Extra hour           Rp 100.000
+──────────────────────────────
+Subtotal             Rp 900.000
+Discount            -Rp  50.000
+──────────────────────────────
+TOTAL                Rp 850.000
+
+🔥 Jangan hanya menampilkan:
+
+> Rp850.000
+
+
+
+tanpa explanation jika pricing cukup kompleks.
+
+
+---
+
+4-C.16 — BILLING MODEL
+
+Pricing engine mendukung:
+
+Per Day
+
+days × daily_rate
+
+Per Hour
+
+hours × hourly_rate
+
+Per Trip
+
+fixed_trip_rate
+
+Route
+
+route_rate
+
+Custom
+
+manual_quote
+
+
+---
+
+4-C.17 — MINIMUM DURATION
+
+Contoh:
+
+Service:
+
+> With Driver
+
+
+
+Minimum:
+
+> 8 hours.
+
+
+
+Customer request:
+
+> 5 hours.
+
+
+
+System:
+
+requested = 5
+minimum = 8
+billable = 8
+
+Customer harus diberi tahu.
+
+
+---
+
+4-C.18 — EXTRA DURATION
+
+Contoh:
+
+Rate:
+
+> Rp500.000 / 8 hours
+
+
+
+Customer:
+
+> 10 hours.
+
+
+
+Pricing rule:
+
+base = 500k
+extra = 2 × hourly_extra_rate
+
+atau jika business rule berbeda:
+
+> next full-day rate.
+
+
+
+Rule harus configurable.
+
+
+---
+
+4-C.19 — AREA PRICING
+
+Contoh:
+
+Yogyakarta City
+Rp X
+
+Airport
+Rp Y
+
+Outside City
+Custom Quote
+
+Jangan hard-code logic di frontend.
+
+Simpan sebagai pricing configuration.
+
+
+---
+
+4-C.20 — ROUTE PRICING
+
+Untuk route tertentu:
+
+YIA → Yogyakarta
+Yogyakarta → Borobudur
+Yogyakarta → Semarang
+
+System bisa mempunyai:
+
+route_rate
+
+Tetapi MVP boleh menggunakan:
+
+> manual quote
+
+
+
+jika route matrix belum stabil.
+
+
+---
+
+4-C.21 — ADD-ON PRICING
+
+Contoh:
+
+Child Seat
+Rp50.000
+
+Extra Driver
+Rp100.000
+
+Extra Hour
+Rp75.000
+
+Pricing engine menambahkan berdasarkan selected add-ons.
+
+
+---
+
+4-C.22 — DISCOUNT
+
+Discount jangan langsung:
+
+> total × 90%
+
+
+
+tanpa rule.
+
+Model:
+
+discount_type
+discount_value
+minimum_spend
+valid_from
+valid_until
+usage_limit
+
+MVP bahkan bisa:
+
+> manual discount by admin.
+
+
+
+
+---
+
+4-C.23 — PRICE STATE
+
+Tidak semua request bisa dihitung otomatis.
+
+Kita punya:
+
+FIXED
+ESTIMATED
+QUOTE_REQUIRED
+
+FIXED
+
+Harga dapat dihitung deterministically.
+
+ESTIMATED
+
+System memberi estimasi.
+
+QUOTE_REQUIRED
+
+Operator harus melakukan manual pricing.
+
+
+---
+
+4-C.24 — QUOTE ENGINE
+
+Flow:
+
+REQUEST
+ ↓
+VALIDATE
+ ↓
+AVAILABILITY
+ ↓
+PRICE
+ ↓
+QUOTE
+
+Quote berisi:
+
+vehicle
+
+service
+
+date
+
+duration
+
+price breakdown
+
+terms
+
+valid_until
+
+
+---
+
+4-C.25 — QUOTE EXPIRATION
+
+Quote:
+
+> valid until 18 Aug, 18:00.
+
+
+
+Setelah itu:
+
+status = EXPIRED
+
+Customer tidak boleh otomatis mengkonfirmasi quote lama.
+
+System harus:
+
+> recalculate / revalidate.
+
+
+
+
+---
+
+4-C.26 — QUOTE ACCEPTANCE
+
+Customer:
+
+> Accept Quote
+
+
+
+System melakukan:
+
+RECHECK AVAILABILITY
+        ↓
+RECHECK PRICE
+        ↓
+COMPARE WITH QUOTE
+
+🔥 Jangan menganggap availability yang dicek 2 jam lalu masih benar.
+
+
+---
+
+4-C.27 — PRICE CHANGE
+
+Misalnya quote:
+
+> Rp800k
+
+
+
+Saat customer accept:
+
+Current pricing:
+
+> Rp850k
+
+
+
+System:
+
+Option A
+
+Honor original quote jika masih valid.
+
+Option B
+
+Require new quote.
+
+Untuk MVP kita pilih:
+
+QUOTE SNAPSHOT WINS
+
+Jika quote masih valid dan resource masih available:
+
+> customer mendapat harga quote tersebut.
+
+
+
+Ini membuat customer experience lebih trustworthy.
+
+
+---
+
+4-C.28 — BOOKING CREATION
+
+Setelah acceptance:
+
+QUOTE ACCEPTED
+       ↓
+RECHECK AVAILABILITY
+       ↓
+CREATE BOOKING
+       ↓
+SNAPSHOT PRICE
+       ↓
+RESERVE RESOURCE
+       ↓
+CONFIRMATION
+
+Semua transaksi penting harus atomic.
+
+
+---
+
+4-C.29 — TRANSACTION BOUNDARY
+
+Contoh:
+
+BEGIN
+ ↓
+check availability
+ ↓
+create booking
+ ↓
+create booking item
+ ↓
+create reservation state
+ ↓
+COMMIT
+
+Jika salah satu gagal:
+
+ROLLBACK
+
+Tidak boleh:
+
+> booking tercipta tetapi reservation gagal tanpa reconciliation.
+
+
+
+
+---
+
+4-C.30 — RESERVATION STATUS
+
+Untuk resource reservation:
+
+HELD
+CONFIRMED
+RELEASED
+EXPIRED
+
+HELD
+
+Resource sementara ditahan.
+
+CONFIRMED
+
+Booking confirmed.
+
+RELEASED
+
+Reservation dilepas.
+
+EXPIRED
+
+Hold habis waktunya.
+
+
+---
+
+4-C.31 — HOLD WINDOW
+
+Untuk checkout/payment:
+
+Customer bisa mendapatkan:
+
+> 15-minute hold.
+
+
+
+Contoh:
+
+10:00
+Customer starts booking
+
+10:00–10:15
+Vehicle HELD
+
+10:15
+Payment belum selesai
+
+→ HOLD EXPIRED
+
+Vehicle kembali:
+
+> available.
+
+
+
+Durasi sebenarnya configurable.
+
+
+---
+
+4-C.32 — PAYMENT FAILURE
+
+Jika payment gagal:
+
+PAYMENT_FAILED
+ ↓
+CHECK RETRY WINDOW
+ ↓
+IF EXPIRED
+ ↓
+RELEASE RESOURCE
+
+Tidak boleh kendaraan tetap tertahan selamanya.
+
+
+---
+
+4-C.33 — BOOKING CANCELLATION
+
+Cancellation harus mempunyai policy.
+
+Contoh:
+
+> 72h before
+Full refund
+
+24–72h
+Partial refund
+
+<24h
+Policy-based
+
+Namun angka final harus berasal dari business policy, bukan technical assumption.
+
+Engine harus configurable.
+
+
+---
+
+4-C.34 — BOOKING STATE MACHINE
+
+Final:
+
+REQUESTED
+   ↓
+REVIEWING
+   ↓
+QUOTED
+   ↓
+ACCEPTED
+   ↓
+HELD
+   ↓
+CONFIRMED
+   ↓
+ACTIVE
+   ↓
+COMPLETED
+
+Alternative:
+
+REJECTED
+CANCELLED
+EXPIRED
+
+
+---
+
+4-C.35 — PAYMENT STATE MACHINE
+
+Terpisah:
+
+UNPAID
+ ↓
+PENDING
+ ↓
+PARTIALLY_PAID
+ ↓
+PAID
+
+Failure:
+
+FAILED
+
+After payment:
+
+REFUNDED
+PARTIALLY_REFUNDED
+
+
+---
+
+4-C.36 — TRIP STATE MACHINE
+
+Terpisah lagi:
+
+SCHEDULED
+ ↓
+DRIVER_ASSIGNED
+ ↓
+EN_ROUTE
+ ↓
+PICKED_UP
+ ↓
+IN_PROGRESS
+ ↓
+COMPLETED
+
+Cancellation:
+
+CANCELLED
+
+
+---
+
+4-C.37 — THREE STATE SYSTEM
+
+Ini kita LOCK:
+
+BOOKING STATE
+     │
+     ├── commercial lifecycle
+     │
+PAYMENT STATE
+     │
+     └── financial lifecycle
+     
+TRIP STATE
+     │
+     └── operational lifecycle
+
+Jangan mencampurkan ketiganya.
+
+
+---
+
+4-C.38 — AVAILABILITY QUERY
+
+Conceptual:
+
+eligible vehicles
+      ↓
+exclude vehicles
+      ├── conflicting booking
+      ├── maintenance
+      └── blocked
+      ↓
+remaining vehicles
+      ↓
+rank
+      ↓
+return candidates
+
+
+---
+
+4-C.39 — AVAILABILITY RESPONSE
+
+Frontend mendapat:
+
+{
+  vehicle,
+  available,
+  service,
+  estimated_price,
+  price_state,
+  match_score
+}
+
+Tetapi:
+
+> frontend tidak menghitung availability.
+
+
+
+
+---
+
+4-C.40 — PRICING RESPONSE
+
+{
+  currency,
+  subtotal,
+  discounts,
+  fees,
+  total,
+  billing_unit,
+  price_state,
+  breakdown[]
+}
+
+Contoh:
+
+subtotal: 800000
+fees: 50000
+discount: 0
+total: 850000
+
+
+---
+
+4-C.41 — QUOTE RESPONSE
+
+{
+  quote_id,
+  quote_code,
+  status,
+  valid_until,
+  price_snapshot,
+  booking_summary
+}
+
+Customer dapat:
+
+> Quote FTQ-2026-0012
+
+
+
+
+---
+
+4-C.42 — IDEMPOTENCY
+
+Ini penting ketika customer menekan:
+
+> “Confirm”
+
+
+
+dua kali.
+
+Request pertama:
+
+> creates booking.
+
+
+
+Request kedua:
+
+> harus return booking yang sama.
+
+
+
+Gunakan:
+
+idempotency_key
+
+untuk mutation endpoint penting.
+
+Terutama:
+
+create booking
+
+payment
+
+refund
+
+
+---
+
+4-C.43 — RACE CONDITION
+
+Scenario:
+
+Customer A
+      ↓
+checks vehicle
+      ↓
+available
+
+Customer B
+      ↓
+checks same vehicle
+      ↓
+available
+
+Kemudian keduanya:
+
+> confirm hampir bersamaan.
+
+
+
+Solusi:
+
+transaction + locking/constraint + revalidation.
+
+Bukan hanya frontend logic.
+
+
+---
+
+4-C.44 — SOURCE OF TRUTH
+
+Availability:
+
+> database + transaction logic.
+
+
+
+Price:
+
+> pricing configuration + quote snapshot.
+
+
+
+Booking:
+
+> booking record.
+
+
+
+Payment:
+
+> payment record/provider reconciliation.
+
+
+
+Trip:
+
+> operations record.
+
+
+
+Frontend:
+
+> presentation layer.
+
+
+
+
+---
+
+4-C.45 — MANUAL OPERATOR OVERRIDE
+
+Karena bisnis nyata tidak selalu deterministic.
+
+Admin boleh:
+
+> override availability
+
+
+
+atau:
+
+> custom quote.
+
+
+
+Tetapi wajib:
+
+reason
+
+
+actor
+
+
+audit log
+
+Contoh:
+
+> Vehicle manually reserved for VIP customer.
+
+
+
+
+---
+
+4-C.46 — CUSTOM QUOTE
+
+Jika engine tidak bisa menghitung:
+
+REQUEST
+ ↓
+QUOTE_REQUIRED
+ ↓
+OPERATOR
+ ↓
+MANUAL PRICE
+ ↓
+QUOTE
+
+Jangan memaksa engine membuat angka palsu.
+
+🔥 Better “We'll confirm the price” than wrong price.
+
+
+---
+
+4-C.47 — FAILURE HANDLING
+
+Availability service error:
+
+> jangan tampilkan “available”.
+
+
+
+Tampilkan:
+
+> “We couldn't confirm availability right now.”
+
+
+
+Pricing service error:
+
+> jangan menampilkan fake price.
+
+
+
+Quote error:
+
+> retry / manual contact.
+
+
+
+Untuk transaction:
+
+> fail safely.
+
+
+
+
+---
+
+4-C.48 — ENGINE ARCHITECTURE
+
+REQUEST
+                     │
+                     ↓
+               VALIDATION
+                     │
+                     ↓
+             AVAILABILITY ENGINE
+                     │
+            ┌────────┴────────┐
+            ↓                 ↓
+       VEHICLE MATCH      DRIVER MATCH
+            │                 │
+            └────────┬────────┘
+                     ↓
+               PRICING ENGINE
+                     │
+                     ↓
+                QUOTE ENGINE
+                     │
+                     ↓
+               BOOKING ENGINE
+                     │
+             ┌───────┴────────┐
+             ↓                ↓
+        PAYMENT ENGINE    OPERATIONS
+
+
+---
+
+4-C.49 — EVENT FLOW
+
+Setelah booking:
+
+booking.created
+       ↓
+notification
+       ↓
+booking.quoted
+       ↓
+quote.accepted
+       ↓
+booking.confirmed
+       ↓
+payment.received
+       ↓
+driver.assigned
+       ↓
+trip.started
+       ↓
+trip.completed
+
+Event ini nanti menjadi foundation:
+
+> automation + analytics + notification.
+
+
+
+
+---
+
+4-C.50 — MVP RULES
+
+Untuk MVP kita sengaja membuat engine simple tetapi benar.
+
+Availability
+
+☑ vehicle status
+☑ capacity
+☑ service compatibility
+☑ booking overlap
+☑ maintenance
+☑ driver conflict untuk with-driver
+
+Pricing
+
+☑ base rate
+☑ duration
+☑ service
+☑ area/route
+☑ addons
+☑ manual override
+
+Booking
+
+☑ validation
+☑ quote
+☑ availability recheck
+☑ price snapshot
+☑ reservation
+☑ idempotency
+
+
+---
+
+4-C.51 — WHAT WE DON'T NEED YET
+
+❌ AI pricing
+
+❌ demand prediction
+
+❌ dynamic surge pricing
+
+❌ real-time GPS
+
+❌ complex route optimization
+
+❌ automated driver dispatch AI
+
+❌ marketplace inventory synchronization
+
+Semua bisa masuk:
+
+> Phase 2/3.
+
+
+
+
+---
+
+4-C.52 — GOLDEN RULE
+
+🔥 Ini yang paling penting dari Session 4-C:
+
+> NEVER TRUST A PREVIOUS AVAILABILITY CHECK.
+
+
+
+Setiap transaksi final harus:
+
+REVALIDATE
++
+TRANSACTION
++
+RESERVE
+
+Dan:
+
+> NEVER LET AI DECIDE TRANSACTIONAL TRUTH.
+
+
+
+AI boleh membantu:
+
+recommendation
+
+customer support
+
+summarization
+
+lead qualification
+
+Tetapi tidak menentukan:
+
+> apakah mobil benar-benar tersedia atau berapa harga final transaksi tanpa deterministic engine.
+
+
+
+
+---
+
+🔒 4-C VERDICT
+
+Sekarang kita sudah punya:
+
+✅ Request validation
+✅ Vehicle eligibility
+✅ Availability engine
+✅ Booking overlap logic
+✅ Maintenance conflict
+✅ Driver conflict
+✅ Resource bundle
+✅ Vehicle matching
+✅ Deterministic ranking
+✅ Pricing engine
+✅ Price breakdown
+✅ Minimum duration
+✅ Area/route pricing
+✅ Add-ons
+✅ Discount architecture
+✅ Fixed/Estimated/Quote Required
+✅ Quote engine
+✅ Quote expiration
+✅ Price snapshot
+✅ Reservation/hold
+✅ Payment interaction
+✅ Cancellation architecture
+✅ Booking state
+✅ Payment state
+✅ Trip state
+✅ Idempotency
+✅ Race-condition protection
+✅ Manual override
+✅ Custom quote
+✅ Failure handling
+✅ Event architecture
+
+
+---
+
+🚀 NEXT — SESSION 4-D
+
+Sekarang tinggal satu blok besar sebelum SESSION 4 LOCKED:
+
+API + SECURITY + DEPLOYMENT ARCHITECTURE
+
+Kita akan menentukan:
+
+Frontend
+   ↓
+API
+   ↓
+Auth
+   ↓
+RBAC
+   ↓
+Validation
+   ↓
+Domain Services
+   ↓
+Database
+
+plus:
+
+API contract
+
+authentication
+
+authorization
+
+rate limiting
+
+audit
+
+secrets
+
+logging
+
+backup
+
+monitoring
+
+environment separation
+
+CI/CD
+
+deployment
+
+rollback
+
+Setelah itu kita bisa benar-benar bilang:
+
+🔒 SESSION 4 — SYSTEM ARCHITECTURE LOCKED
+
+dan lanjut ke SESSION 5 — MVP PRODUCT SPECIFICATION.

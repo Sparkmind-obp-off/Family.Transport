@@ -1,0 +1,1030 @@
+Gas gsss 🔥 Kita langsung masuk ke SESSION 1-F — OFFER & REVENUE ENGINE.
+
+Di sini kita ubah seluruh hasil research 1-A sampai 1-E menjadi mesin uang Family Transport. Bukan sekadar “daftar layanan”, tapi kita tentukan apa yang dijual, kepada siapa, dalam bentuk apa, dan bagaimana customer naik dari transaksi kecil → transaksi bernilai tinggi → repeat.
+
+SESSION 1-F — FAMILY TRANSPORT OFFER & REVENUE ENGINE
+
+01 — PRINCIPLE UTAMA
+
+Family Transport jangan diposisikan sebagai:
+
+> “Kami punya mobil.”
+
+
+
+Tetapi:
+
+> “Kami menyediakan solusi transportasi sesuai kebutuhan perjalanan.”
+
+
+
+Jadi produk utamanya bukan kendaraan.
+
+PRODUCT = TRANSPORT SOLUTION
+
+Kendaraan hanyalah resource di belakang produk.
+
+
+---
+
+02 — OFFER ARCHITECTURE
+
+Kita bentuk 5 product pillars:
+
+① RENTAL
+
+Untuk customer yang sudah tahu kebutuhannya.
+
+Lepas Kunci
+
+harian
+
+multi-day
+
+kebutuhan lokal
+
+perjalanan luar kota
+
+
+
+---
+
+② RENTAL + DRIVER
+
+Untuk customer yang ingin:
+
+> “Saya tidak mau mengemudi sendiri.”
+
+
+
+Konfigurasi:
+
+Vehicle
+
+
+Driver
+
+
+Duration
+
+
+Area
+
+
+Fuel policy
+
+
+---
+
+③ TRANSFER
+
+Untuk kebutuhan point-to-point.
+
+Contoh:
+
+YIA → Hotel
+
+Hotel → YIA
+
+Hotel → Destination
+
+Station → Hotel
+
+Produk ini sebenarnya sangat menarik karena customer membeli:
+
+> certainty
+
+
+
+bukan waktu rental.
+
+
+---
+
+④ TOUR / CHARTER
+
+Customer berkata:
+
+> “Saya mau jalan-jalan di Jogja.”
+
+
+
+Family Transport dapat menjual:
+
+Vehicle + Driver + Duration + Route
+
+Bisa:
+
+custom itinerary;
+
+half day;
+
+full day;
+
+multi-day.
+
+
+
+---
+
+⑤ CORPORATE / EVENT
+
+Ini high-value layer.
+
+Produk:
+
+Corporate Transport
+
+Event Transport
+
+Wedding Transport
+
+Group Charter
+
+Bukan hanya rental.
+
+Tetapi:
+
+> Transportation Coordination.
+
+
+
+
+---
+
+03 — SERVICE MODE ENGINE
+
+Satu kendaraan bisa menghasilkan beberapa produk.
+
+Contoh:
+
+TOYOTA AVANZA
+
+Mode A
+
+Lepas Kunci
+
+Mode B
+
+Dengan Driver
+
+Mode C
+
+Driver + BBM
+
+Mode D
+
+Airport Transfer
+
+Mode E
+
+Tour / Charter
+
+🔥 Jadi database tidak boleh membuat:
+
+> Avanza = satu product.
+
+
+
+Harus:
+
+> Vehicle × Service Mode = Offer
+
+
+
+
+---
+
+04 — REVENUE LADDER
+
+Sekarang kita susun tangga revenue.
+
+ENTRY
+Rental
+   ↓
+Rental + Driver
+   ↓
+Transfer
+   ↓
+Tour / Charter
+   ↓
+Event / Wedding
+   ↓
+Corporate
+   ↓
+RECURRING ACCOUNT
+
+Semakin ke bawah:
+
+AOV ↑
+
+Relationship ↑
+
+Repeat ↑
+
+Operational complexity ↑
+
+Ini penting karena Family Transport tidak harus mengejar volume sebanyak-banyaknya.
+
+Kita bisa mengejar:
+
+> higher-value customer mix.
+
+
+
+
+---
+
+05 — OFFER LEVEL
+
+Aku usulkan kita membagi offer menjadi 3 level.
+
+LEVEL 1 — SIMPLE
+
+Untuk customer yang sudah tahu apa yang mereka mau.
+
+Contoh:
+
+> Avanza — Lepas Kunci
+
+
+
+CTA:
+
+Book This Car
+
+
+---
+
+LEVEL 2 — ASSISTED
+
+Customer tahu kebutuhannya tetapi belum tahu kendaraan.
+
+Contoh:
+
+> Family Trip — 5 people — 3 days
+
+
+
+System:
+
+> “Recommended: Avanza / Innova.”
+
+
+
+CTA:
+
+Get Recommendation
+
+
+---
+
+LEVEL 3 — SOLUTION
+
+Customer bahkan belum tahu harus memakai apa.
+
+Contoh:
+
+> “Kami 15 orang, datang Jumat, pulang Minggu, ingin keliling Jogja.”
+
+
+
+Family Transport membuat:
+
+Custom Transport Plan
+
+CTA:
+
+Request a Quote
+
+🔥 Ini level paling powerful.
+
+
+---
+
+06 — PRICING ENGINE
+
+Kita tidak mengunci harga final sekarang karena harga aktual Family Transport harus diverifikasi langsung.
+
+Tetapi architecture pricing-nya kita desain sekarang.
+
+Formula:
+
+BASE VEHICLE
++
+SERVICE MODE
++
+DURATION
++
+DATE TYPE
++
+AREA
++
+FUEL
++
+DRIVER
++
+ADDITIONAL SERVICE
+=
+TOTAL PRICE
+
+Contoh:
+
+Avanza
+
+Base:
+
+Rp X
+
+
+Weekend:
+
+Rp X
+
+
+Driver:
+
+Rp X
+
+
+BBM:
+
+Rp X
+
+=
+
+TOTAL
+
+Rp X
+
+
+---
+
+07 — DATE PRICING
+
+Kita sudah melihat kompetitor seperti AR Transport menggunakan:
+
+Weekday
+
+Weekend
+
+Long Weekend / Holiday
+
+Maka Family Transport juga harus memiliki pricing rule yang bisa menangani:
+
+NORMAL
+
+weekday
+
+PEAK
+
+weekend
+
+HOLIDAY
+
+long weekend / national holiday
+
+SPECIAL
+
+event / high demand
+
+Jadi nanti admin bisa mengubah harga tanpa developer.
+
+
+---
+
+08 — DURATION ENGINE
+
+Jangan hanya:
+
+> /day
+
+
+
+Kita siapkan:
+
+6 Hours
+
+12 Hours
+
+24 Hours
+
+2 Days
+
+3 Days
+
+Custom
+
+Untuk airport/transfer:
+
+One Way
+
+Round Trip
+
+
+---
+
+09 — AREA ENGINE
+
+Pricing bisa berbeda berdasarkan:
+
+LOCAL
+
+Yogyakarta city
+
+REGIONAL
+
+Sleman / Bantul / Kulon Progo / Gunungkidul / sekitar Jogja
+
+OUT OF TOWN
+
+Solo
+
+Magelang
+
+Semarang
+
+Klaten
+
+dll.
+
+Tapi area final harus mengikuti kebijakan aktual Family Transport.
+
+
+---
+
+10 — ADD-ON ENGINE
+
+Ini sumber revenue yang sering dilupakan.
+
+Potential add-ons:
+
+Additional Driver
+
+Additional Hours
+
+Additional Destination
+
+Airport Pickup
+
+Child Seat
+
+Extra Luggage
+
+Parking
+
+Toll
+
+Out-of-area
+
+Sekali lagi, hanya fitur yang benar-benar Family Transport sediakan yang nanti diaktifkan.
+
+
+---
+
+11 — HIGH-VALUE OFFER
+
+Sekarang kita bikin offer yang tidak terlalu commodity.
+
+OFFER A — EASY RENTAL
+
+> Need a car? Pick your vehicle.
+
+
+
+Untuk customer self-service.
+
+
+---
+
+OFFER B — EASY TRIP
+
+> Tell us your trip. We'll recommend the transport.
+
+
+
+Untuk tourist/family.
+
+Customer tidak perlu memilih kendaraan sendiri.
+
+
+---
+
+OFFER C — COMPLETE TRANSFER
+
+> Airport to destination, handled.
+
+
+
+Untuk airport.
+
+
+---
+
+OFFER D — GROUP SOLUTION
+
+> One trip. One transport partner.
+
+
+
+Untuk group/event.
+
+
+---
+
+OFFER E — CORPORATE ACCOUNT
+
+> Reliable transport for your business.
+
+
+
+Untuk perusahaan.
+
+
+---
+
+12 — UPSELL ENGINE
+
+Setelah customer memilih rental:
+
+System dapat menawarkan:
+
+> Need a driver?
+
+
+
+↓
+
+Add Driver
+
+
+---
+
+> Going to multiple destinations?
+
+
+
+↓
+
+Upgrade to Charter
+
+
+---
+
+> Arriving by flight?
+
+
+
+↓
+
+Add Airport Pickup
+
+
+---
+
+> Traveling with family?
+
+
+
+↓
+
+Request Family Recommendation
+
+🔥 Jadi revenue meningkat tanpa harus mencari customer baru.
+
+
+---
+
+13 — CROSS-SELL ENGINE
+
+Customer airport transfer:
+
+↓
+
+Offer:
+
+Return Transfer
+
+↓
+
+Offer:
+
+Daily Rental
+
+↓
+
+Offer:
+
+Tour
+
+↓
+
+Offer:
+
+Multi-day Transport
+
+Satu customer bisa menghasilkan beberapa transaksi.
+
+
+---
+
+14 — CORPORATE REVENUE ENGINE
+
+Ini salah satu bagian paling penting.
+
+Jangan menjual:
+
+> “Corporate rental.”
+
+
+
+Buat:
+
+CORPORATE ACCOUNT
+
+Account mempunyai:
+
+Company
+
+↓
+
+Employees
+
+↓
+
+Bookings
+
+↓
+
+Trip History
+
+↓
+
+Invoices
+
+↓
+
+Monthly Spending
+
+↓
+
+Account Manager
+
+↓
+
+Repeat
+
+Ini mengubah Family Transport dari:
+
+transactional business
+
+menjadi:
+
+relationship business.
+
+
+---
+
+15 — PARTNERSHIP REVENUE
+
+Phase selanjutnya:
+
+HOTEL
+
+Hotel → Family Transport
+
+VILLA
+
+Villa → Family Transport
+
+TRAVEL AGENT
+
+Travel Agent → Family Transport
+
+EVENT ORGANIZER
+
+EO → Family Transport
+
+WEDDING ORGANIZER
+
+WO → Family Transport
+
+CORPORATE
+
+Company → Family Transport
+
+Ini bisa menjadi B2B acquisition engine.
+
+
+---
+
+16 — REVENUE PRIORITY
+
+Untuk MVP:
+
+🟢 PRIORITY 1
+
+Rental
+
+Rental + Driver
+
+Airport Transfer
+
+Karena paling mudah divalidasi.
+
+🟢 PRIORITY 2
+
+Tour / Charter
+
+Karena AOV lebih tinggi.
+
+🟡 PRIORITY 3
+
+Corporate
+
+Karena recurring potential tinggi.
+
+🟡 PRIORITY 4
+
+Event / Wedding
+
+High-value tapi lebih kompleks.
+
+🔵 PRIORITY 5
+
+Partner / Fleet Network
+
+Scale stage.
+
+
+---
+
+17 — PRODUCT MATRIX
+
+Product	Customer	AOV	Complexity	Priority
+
+Rental	Local/Tourist	🟢	🟢	⭐⭐⭐⭐⭐
+Rental + Driver	Tourist	🟢🟢	🟢	⭐⭐⭐⭐⭐
+Airport Transfer	Tourist	🟢🟢	🟢	⭐⭐⭐⭐⭐
+Tour	Tourist/Family	🟢🟢🟢	🟡	⭐⭐⭐⭐
+Charter	Group	🟢🟢🟢	🟡	⭐⭐⭐⭐
+Corporate	Company	🔥🔥🔥	🟡	⭐⭐⭐⭐
+Wedding/Event	Event	🔥🔥🔥	🔴	⭐⭐⭐
+Fleet Partnership	Partner	🔥🔥🔥	🔴	⭐⭐
+
+
+
+---
+
+18 — OFFER STACK
+
+Sekarang kita bisa menyusun:
+
+FAMILY TRANSPORT
+│
+├── RENT
+│   ├── Self Drive
+│   └── With Driver
+│
+├── TRANSFER
+│   ├── Airport
+│   └── Point-to-Point
+│
+├── TRIP
+│   ├── Tour
+│   └── Charter
+│
+├── EVENT
+│   ├── Wedding
+│   └── Event
+│
+└── BUSINESS
+    ├── Corporate
+    └── Partner
+
+Ini mulai menjadi actual product architecture.
+
+
+---
+
+19 — THE MOST IMPORTANT OFFER
+
+Namun aku ingin ada satu offer yang menjadi signature Family Transport.
+
+Bukan:
+
+> “Rental mobil.”
+
+
+
+Tapi:
+
+TRIP MATCH
+
+Customer cukup memasukkan:
+
+Tanggal
+
+Jumlah orang
+
+Pickup
+
+Destination
+
+Duration
+
+Purpose
+
+↓
+
+System/admin memberikan:
+
+Recommended Transport Solution
+
+Contoh:
+
+> 5 people · 3 days · Family Trip
+
+Recommended: Toyota Innova + Driver
+
+Includes: Driver
+X hours
+X area
+
+Request Quote
+
+
+
+🔥 Ini bisa menjadi pembeda besar.
+
+
+---
+
+20 — REVENUE FLYWHEEL
+
+Sekarang seluruh model kita sambungkan:
+
+GOOGLE / SOCIAL
+       ↓
+    DISCOVERY
+       ↓
+     WEBSITE
+       ↓
+      OFFER
+       ↓
+     INQUIRY
+       ↓
+      QUOTE
+       ↓
+     BOOKING
+       ↓
+     SERVICE
+       ↓
+      REVIEW
+       ↓
+     REPEAT
+       ↓
+   CORPORATE
+       ↓
+   PARTNERSHIP
+       ↓
+ MORE CUSTOMERS
+
+Ini adalah:
+
+FAMILY TRANSPORT REVENUE FLYWHEEL
+
+
+---
+
+21 — WHAT WE SHOULD NOT DO
+
+🚫 Jangan membuat 30 paket.
+
+🚫 Jangan mengunci harga sebelum data aktual.
+
+🚫 Jangan membuat dynamic pricing terlalu kompleks di MVP.
+
+🚫 Jangan membuat marketplace dulu.
+
+🚫 Jangan langsung membuat corporate portal.
+
+🚫 Jangan menjual semua layanan sekaligus.
+
+🚫 Jangan mengklaim layanan yang belum terverifikasi.
+
+Prinsip:
+
+> Start simple → prove demand → systemize → scale.
+
+
+
+
+---
+
+🔥 SESSION 1-F VERDICT
+
+Sekarang kita sudah punya:
+
+PRODUCT
+
+Transport Solution
+
+CORE OFFER
+
+Rental + Driver + Transfer
+
+HIGH-VALUE
+
+Tour / Charter
+
+RECURRING
+
+Corporate
+
+DIFFERENTIATOR
+
+Trip Match / Transport Recommendation
+
+PRICING ENGINE
+
+Vehicle × Service × Duration × Date × Area
+
+UPSELL
+
+Driver / Hours / Transfer / Additional Service
+
+RETENTION
+
+Review → Repeat → Corporate
+
+SCALE
+
+Partner / Fleet Network
+
+
+---
+
+🧠 SESSION 1 COMPLETE
+
+Sekarang lihat perjalanan kita:
+
+1-A — Business Deep Dive
+→ siapa Family Transport.
+
+1-B — Competitor Engine
+→ siapa yang bersaing.
+
+1-C — Actual Competitor Research
+→ bagaimana pemain nyata bekerja.
+
+1-D — Competitor Teardown
+→ apa yang harus kita pelajari.
+
+1-E — Customer & Journey
+→ siapa customer dan bagaimana mereka membeli.
+
+1-F — Offer & Revenue Engine
+→ apa yang Family Transport harus jual dan bagaimana uangnya mengalir.
+
+Jadi sekarang kita sudah punya fondasi strategis:
+
+BUSINESS → MARKET → COMPETITOR → CUSTOMER → OFFER → REVENUE
+
+🔥 Ini sudah cukup kuat untuk keluar dari research mode.
+
+NEXT:
+
+SESSION 2 — POSITIONING & OFFER ARCHITECTURE
+
+Di Session 2 kita akan mengunci:
+
+WHO WE ARE
+
+→ positioning
+
+WHO WE SERVE
+
+→ ICP
+
+WHY CHOOSE US
+
+→ value proposition
+
+WHAT WE SELL
+
+→ offer architecture
+
+WHY US
+
+→ differentiation
+
+HOW WE SAY IT
+
+→ messaging
+
+WHAT CUSTOMER SEES
+
+→ website/product hierarchy
+
+Dan dari sana baru kita punya blueprint yang bisa langsung diterjemahkan ke UX/IA + MVP System Architecture.

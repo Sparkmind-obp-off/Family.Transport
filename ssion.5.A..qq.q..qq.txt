@@ -1,0 +1,1181 @@
+Gas gsss 🔥 langsung masuk SESSION 5 — MVP PRODUCT SPECIFICATION.
+
+Di session ini kita mulai mengubah seluruh hasil deep dive + architecture sebelumnya menjadi blueprint yang benar-benar buildable.
+
+SESSION 5 — MVP PRODUCT SPECIFICATION
+
+5-A — PRODUCT SCOPE
+
+5-A.1 Product Definition
+
+Family Transport kita posisikan sebagai:
+
+> Digital Transport Booking & Operations System
+
+
+
+Bukan sekadar website rental.
+
+System harus menghubungkan:
+
+CUSTOMER
+   ↓
+DISCOVERY
+   ↓
+REQUEST
+   ↓
+AVAILABILITY
+   ↓
+QUOTE
+   ↓
+BOOKING
+   ↓
+PAYMENT
+   ↓
+TRIP
+   ↓
+COMPLETION
+   ↓
+REPEAT
+
+
+---
+
+5-A.2 MVP OBJECTIVE
+
+MVP harus membuktikan 3 hal:
+
+1. CUSTOMER CAN BOOK
+
+Customer bisa:
+
+> menemukan layanan → request → mendapatkan quote → booking.
+
+
+
+2. BUSINESS CAN OPERATE
+
+Admin/operator bisa:
+
+> mengelola vehicle → booking → driver → trip.
+
+
+
+3. SYSTEM CAN PROTECT TRANSACTION
+
+System mampu:
+
+> availability + pricing + booking tanpa double booking.
+
+
+
+
+---
+
+5-A.3 PRIMARY USERS
+
+MVP memiliki 4 user roles:
+
+CUSTOMER
+OPERATOR
+ADMIN
+OWNER
+
+Driver untuk MVP bisa menjadi:
+
+> operational user tanpa dashboard penuh.
+
+
+
+
+---
+
+5-A.4 MVP CORE MODULES
+
+PUBLIC WEBSITE
+       │
+       ├── Services
+       ├── Vehicles
+       ├── About
+       └── Contact
+       
+BOOKING
+       │
+       ├── Request
+       ├── Availability
+       ├── Quote
+       └── Confirmation
+
+CUSTOMER
+       │
+       ├── Profile
+       ├── Bookings
+       └── Quotes
+
+ADMIN
+       │
+       ├── Dashboard
+       ├── Bookings
+       ├── Vehicles
+       ├── Customers
+       ├── Quotes
+       ├── Drivers
+       └── Payments
+
+
+---
+
+5-A.5 MVP FEATURE PRIORITY
+
+Kita gunakan:
+
+P0 = wajib
+
+P1 = penting setelah core
+
+P2 = future
+
+P0
+
+Homepage
+
+Services
+
+Vehicle catalog
+
+Vehicle detail
+
+Booking request
+
+Availability
+
+Pricing
+
+Quote
+
+Booking
+
+Customer data
+
+Admin dashboard
+
+Vehicle management
+
+Booking management
+
+Driver assignment
+
+Payment status
+
+Basic notifications
+
+
+P1
+
+Reviews
+
+Promo codes
+
+Advanced pricing rules
+
+WhatsApp automation
+
+Customer dashboard
+
+Analytics
+
+Maintenance management
+
+
+P2
+
+Driver app
+
+GPS
+
+Fleet telematics
+
+AI recommendation
+
+Dynamic pricing
+
+Corporate accounts
+
+Loyalty system
+
+
+
+---
+
+5-A.6 MVP SUCCESS CRITERIA
+
+MVP dianggap berhasil jika:
+
+Visitor
+ ↓
+Service
+ ↓
+Request
+ ↓
+Vehicle availability
+ ↓
+Price
+ ↓
+Quote
+ ↓
+Booking
+ ↓
+Payment
+ ↓
+Trip
+ ↓
+Completed
+
+dapat berjalan end-to-end.
+
+🔥 One complete transaction > 50 unfinished features.
+
+
+---
+
+5-A.7 CORE CUSTOMER JOURNEY
+
+LAND
+ ↓
+UNDERSTAND
+ ↓
+CHOOSE SERVICE
+ ↓
+SELECT DATE
+ ↓
+ENTER TRIP
+ ↓
+CHECK OPTIONS
+ ↓
+GET PRICE
+ ↓
+REQUEST / BOOK
+ ↓
+CONFIRM
+ ↓
+PAY
+ ↓
+TRAVEL
+
+
+---
+
+5-A.8 HOMEPAGE OBJECTIVE
+
+Homepage bukan sekadar:
+
+> company profile.
+
+
+
+Homepage harus menjawab cepat:
+
+WHO?
+
+Family Transport.
+
+WHAT?
+
+Transport service.
+
+WHERE?
+
+Service area.
+
+HOW?
+
+Booking/request process.
+
+CTA?
+
+> Book / Request Transport
+
+
+
+
+---
+
+5-A.9 HOMEPAGE STRUCTURE
+
+HEADER
+ ↓
+HERO
+ ↓
+SERVICE OPTIONS
+ ↓
+VEHICLE / FLEET
+ ↓
+WHY FAMILY TRANSPORT
+ ↓
+HOW IT WORKS
+ ↓
+SERVICE AREA
+ ↓
+TRUST / REVIEWS
+ ↓
+CTA
+ ↓
+FOOTER
+
+
+---
+
+5-A.10 PRIMARY CTA
+
+Jangan terlalu banyak CTA yang berbeda.
+
+Primary:
+
+Book Transport
+
+Secondary:
+
+> Get a Quote
+
+
+
+Support:
+
+> WhatsApp
+
+
+
+
+---
+
+5-A.11 SERVICE CATALOG
+
+Service card minimal:
+
+Service Name
+Description
+Starting Price / Quote
+Suitable For
+CTA
+
+Contoh:
+
+> Airport Transfer
+
+
+
+> City Transport
+
+
+
+> With Driver
+
+
+
+> Charter
+
+
+
+
+---
+
+5-A.12 VEHICLE CATALOG
+
+Card:
+
+Image
+Vehicle
+Category
+Seats
+Transmission
+Service
+Price indicator
+CTA
+
+Customer harus bisa memahami:
+
+> “Apakah kendaraan ini cocok untuk saya?”
+
+
+
+
+---
+
+5-A.13 VEHICLE DETAIL
+
+Detail:
+
+Gallery
+Vehicle Name
+Capacity
+Features
+Suitable Service
+Pricing indication
+Availability CTA
+
+CTA:
+
+> Check Availability
+
+
+
+
+---
+
+5-A.14 BOOKING WIZARD
+
+Ini core UX.
+
+Jangan membuat satu form raksasa.
+
+Gunakan progressive flow:
+
+STEP 1
+Service
+
+↓
+
+STEP 2
+Date & Time
+
+↓
+
+STEP 3
+Pickup & Destination
+
+↓
+
+STEP 4
+Passengers
+
+↓
+
+STEP 5
+Vehicle
+
+↓
+
+STEP 6
+Add-ons
+
+↓
+
+STEP 7
+Customer
+
+↓
+
+STEP 8
+Review
+
+↓
+
+STEP 9
+Quote / Booking
+
+
+---
+
+5-A.15 STEP 1 — SERVICE
+
+Customer memilih:
+
+What do you need?
+
+Options dari database.
+
+Tidak hard-code jika bisa dihindari.
+
+
+---
+
+5-A.16 STEP 2 — DATE & TIME
+
+Fields:
+
+Start date
+Start time
+End date
+End time
+
+Validation:
+
+> end > start.
+
+
+
+
+---
+
+5-A.17 STEP 3 — LOCATION
+
+Fields:
+
+Pickup
+Destination
+Additional stop?
+
+MVP:
+
+> text/address input.
+
+
+
+Advanced map routing:
+
+> P1/P2.
+
+
+
+
+---
+
+5-A.18 STEP 4 — PASSENGERS
+
+Simple:
+
+Adults
+Children
+Total passengers
+
+System otomatis:
+
+> filter vehicle capacity.
+
+
+
+
+---
+
+5-A.19 STEP 5 — VEHICLE
+
+System menampilkan:
+
+AVAILABLE VEHICLES
+
+bukan seluruh fleet.
+
+Filter:
+
+> eligible + available.
+
+
+
+
+---
+
+5-A.20 STEP 6 — ADD-ONS
+
+Customer bisa memilih:
+
+Extra Driver
+Child Seat
+Extra Hour
+Other
+
+Jika tidak ada:
+
+> Skip.
+
+
+
+
+---
+
+5-A.21 STEP 7 — CUSTOMER INFO
+
+Minimum:
+
+Name
+Phone
+Email
+Notes
+
+Phone:
+
+> required.
+
+
+
+Email:
+
+> recommended.
+
+
+
+
+---
+
+5-A.22 STEP 8 — REVIEW
+
+Summary:
+
+SERVICE
+Vehicle
+Date
+Time
+Pickup
+Destination
+Passengers
+Add-ons
+────────────────
+Price
+
+Customer harus bisa:
+
+> edit sebelum submit.
+
+
+
+
+---
+
+5-A.23 STEP 9 — QUOTE / BOOK
+
+Jika deterministic pricing:
+
+> Book Now
+
+
+
+Jika manual pricing:
+
+> Request Quote
+
+
+
+Ini penting.
+
+Jangan memaksa semua service menggunakan workflow yang sama.
+
+
+---
+
+5-A.24 PRICE DISPLAY
+
+Jika exact:
+
+> Total: Rp X
+
+
+
+Jika estimated:
+
+> Estimated from Rp X
+
+
+
+Jika manual:
+
+> Price will be confirmed
+
+
+
+🔥 Ini meningkatkan trust.
+
+
+---
+
+5-A.25 CUSTOMER BOOKING CONFIRMATION
+
+Setelah berhasil:
+
+Booking Confirmed
+
+Booking Code:
+FT-2026-000123
+
+Vehicle:
+Toyota ...
+
+Date:
+...
+
+Status:
+Confirmed
+
+CTA:
+
+> View Booking
+
+
+
+> Contact Family Transport
+
+
+
+
+---
+
+5-A.26 CUSTOMER DASHBOARD
+
+MVP sederhana:
+
+Overview
+Bookings
+Quotes
+Profile
+
+Booking card:
+
+Booking Code
+Date
+Service
+Vehicle
+Status
+Total
+
+
+---
+
+5-A.27 BOOKING DETAIL
+
+Customer melihat:
+
+Booking
+Trip
+Vehicle
+Driver
+Payment
+Price
+Timeline
+
+Driver phone hanya ditampilkan jika business policy mengizinkan.
+
+
+---
+
+5-A.28 BOOKING TIMELINE
+
+Request
+  ✓
+Quote
+  ✓
+Confirmed
+  ✓
+Paid
+  ✓
+Driver Assigned
+  ○
+Trip
+  ○
+Completed
+  ○
+
+Ini memberikan clarity.
+
+
+---
+
+5-A.29 ADMIN DASHBOARD
+
+Admin homepage:
+
+TODAY
+Bookings
+Trips
+Revenue
+Pending Quotes
+
+Kemudian:
+
+Upcoming Trips
+Pending Actions
+Recent Bookings
+
+
+---
+
+5-A.30 ADMIN BOOKING MANAGEMENT
+
+Table:
+
+Booking Code
+Customer
+Date
+Service
+Vehicle
+Status
+Payment
+Actions
+
+Filter:
+
+> status / date / vehicle / service.
+
+
+
+
+---
+
+5-A.31 BOOKING ADMIN DETAIL
+
+Admin dapat:
+
+View
+Edit
+Quote
+Confirm
+Cancel
+Assign Vehicle
+Assign Driver
+Record Payment
+Add Note
+
+Sensitive actions:
+
+> audit logged.
+
+
+
+
+---
+
+5-A.32 VEHICLE MANAGEMENT
+
+Admin:
+
+Create
+Edit
+Activate
+Deactivate
+Upload photos
+Set capacity
+Set service
+Set rate
+
+
+---
+
+5-A.33 DRIVER MANAGEMENT
+
+Admin:
+
+Create Driver
+Edit
+Status
+License
+Assign Trip
+
+MVP tidak perlu driver mobile app.
+
+
+---
+
+5-A.34 QUOTE MANAGEMENT
+
+Admin melihat:
+
+Draft
+Sent
+Viewed
+Accepted
+Rejected
+Expired
+
+Admin dapat:
+
+> manually adjust price.
+
+
+
+
+---
+
+5-A.35 PAYMENT MANAGEMENT
+
+Admin:
+
+Payment status
+Amount
+Reference
+Method
+Paid at
+
+MVP bisa mendukung:
+
+> manual payment recording.
+
+
+
+Gateway otomatis:
+
+> P1.
+
+
+
+
+---
+
+5-A.36 CUSTOMER MANAGEMENT
+
+Admin:
+
+Customer
+Phone
+Email
+Booking count
+Last booking
+Status
+
+Customer detail:
+
+> booking history.
+
+
+
+
+---
+
+5-A.37 NOTIFICATION MVP
+
+Minimal:
+
+Booking created
+
+> confirmation.
+
+
+
+Quote created
+
+> quote notification.
+
+
+
+Booking confirmed
+
+> confirmation.
+
+
+
+Payment received
+
+> receipt/status.
+
+
+
+Trip reminder
+
+> reminder.
+
+
+
+Channel pertama:
+
+WhatsApp / manual handoff
+
+Automated API:
+
+> P1.
+
+
+
+
+---
+
+5-A.38 ADMIN NOTIFICATION
+
+Admin harus mengetahui:
+
+New booking
+New quote request
+Payment received
+Cancellation
+Trip approaching
+
+
+---
+
+5-A.39 FEATURE BOUNDARIES
+
+Yang tidak boleh masuk MVP tanpa alasan kuat:
+
+❌ social login complexity
+
+❌ full CRM
+
+❌ advanced loyalty
+
+❌ AI chatbot
+
+❌ live GPS
+
+❌ route optimization
+
+❌ dynamic pricing
+
+❌ multi-company marketplace
+
+❌ driver app
+
+❌ complex corporate billing
+
+
+---
+
+5-A.40 MVP NORTH STAR
+
+Satu metric utama:
+
+COMPLETED BOOKINGS
+
+Bukan:
+
+> page views.
+
+
+
+Bukan:
+
+> number of features.
+
+
+
+Bukan:
+
+> number of dashboard widgets.
+
+
+
+North Star:
+
+> berapa banyak booking yang berhasil selesai.
+
+
+
+
+---
+
+5-A.41 CONVERSION FUNNEL
+
+Kita akan ukur:
+
+VISITOR
+ ↓
+SERVICE VIEW
+ ↓
+BOOKING START
+ ↓
+AVAILABILITY CHECK
+ ↓
+QUOTE
+ ↓
+BOOKING
+ ↓
+PAYMENT
+ ↓
+COMPLETED
+
+Setiap drop-off menjadi data untuk optimization.
+
+
+---
+
+5-A.42 MVP BUSINESS LOOP
+
+TRAFFIC
+ ↓
+BOOKING
+ ↓
+CUSTOMER
+ ↓
+TRIP
+ ↓
+REVIEW
+ ↓
+TRUST
+ ↓
+MORE TRAFFIC
+
+🔥 Jadi website bukan hanya:
+
+> digital brochure.
+
+
+
+Tetapi:
+
+LEAD → TRANSACTION → OPERATIONS → REPEAT ENGINE
+
+
+---
+
+5-A.43 MVP SCOPE LOCK
+
+IN
+
+Website
+Services
+Vehicles
+Booking
+Availability
+Pricing
+Quote
+Customer
+Admin
+Vehicle management
+Booking management
+Driver assignment
+Payment status
+Notifications
+Audit
+Analytics foundation
+
+OUT
+
+GPS
+Driver app
+AI dispatch
+Dynamic pricing
+Corporate portal
+Loyalty
+Marketplace
+Advanced CRM
+
+
+---
+
+🔒 5-A VERDICT
+
+5-A sekarang LOCKED.
+
+Kita sudah punya:
+
+> WHAT THE MVP IS
+
+
+
+dan yang sama penting:
+
+> WHAT THE MVP IS NOT.
+
+
+
+
+---
+
+NEXT → SESSION 5-B
+
+Sekarang kita pecah seluruh MVP menjadi:
+
+FEATURE INVENTORY + PRIORITY MATRIX
+
+Kita akan membuat daftar feature satu per satu:
+
+F-001 Homepage
+F-002 Service Catalog
+F-003 Vehicle Catalog
+F-004 Vehicle Detail
+F-005 Booking Wizard
+F-006 Availability Engine UI
+F-007 Pricing
+F-008 Quote
+F-009 Booking
+...
+
+lalu masing-masing diberi:
+
+ID → User → Goal → Input → Output → Business Rule → Dependency → Priority → Acceptance Criteria
+
+Dengan itu kita mulai punya real Product Specification, bukan cuma roadmap.

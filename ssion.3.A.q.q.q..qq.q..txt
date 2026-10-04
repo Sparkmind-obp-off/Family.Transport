@@ -1,0 +1,1142 @@
+Gas gsss 🔥 sekarang resmi lanjut SESSION 3.
+Kali ini kita pakai seluruh hasil Session 1 + 2 sebagai foundation, jadi UX-nya bukan sekadar “website rental mobil”, tapi Digital Transport Solution System.
+
+SESSION 3 — FAMILY TRANSPORT
+
+UX / IA & CONVERSION SYSTEM
+
+Objective
+
+Mengubah:
+
+> Positioning → Offer → Customer Intent → Website → Booking → Operations
+
+
+
+menjadi satu journey yang mulus.
+
+North Star:
+
+MAKE TRANSPORTATION EASY TO CHOOSE, EASY TO BOOK, AND EASY TO TRUST.
+
+
+---
+
+3.1 — CORE UX STRATEGY
+
+Masalah terbesar customer bukan sekadar:
+
+> “Di mana saya bisa menyewa mobil?”
+
+
+
+Tetapi:
+
+> “Transportasi apa yang paling cocok untuk perjalanan saya?”
+
+
+
+Maka UX kita punya dua entry path.
+
+PATH A — I KNOW WHAT I WANT
+
+Customer sudah tahu:
+
+> “Saya mau Avanza.”
+
+
+
+→ Fleet
+→ Vehicle
+→ Service
+→ Quote
+→ Booking
+
+PATH B — HELP ME CHOOSE
+
+Customer berkata:
+
+> “Kami 5 orang, 3 hari di Jogja. Enaknya pakai apa?”
+
+
+
+→ Trip Match
+→ Recommendation
+→ Quote
+→ Booking
+
+
+---
+
+3.2 — CORE CUSTOMER JOURNEY
+
+DISCOVER
+   ↓
+UNDERSTAND
+   ↓
+CHOOSE
+   ↓
+QUOTE
+   ↓
+BOOK
+   ↓
+CONFIRM
+   ↓
+TRAVEL
+   ↓
+REVIEW
+   ↓
+REPEAT
+
+Website harus mendukung seluruh journey, bukan hanya tahap “discover”.
+
+
+---
+
+3.3 — INFORMATION ARCHITECTURE
+
+Struktur utama:
+
+FAMILY TRANSPORT
+│
+├── HOME
+│
+├── RENTAL
+│   ├── All Vehicles
+│   ├── Self Drive
+│   └── With Driver
+│
+├── TRANSFER
+│   ├── Airport Transfer
+│   └── Point-to-Point
+│
+├── TRIP
+│   ├── Tour
+│   └── Charter
+│
+├── CORPORATE
+│
+├── ABOUT
+│
+├── FAQ
+│
+└── BOOK / GET QUOTE
+
+Tetapi ada prinsip:
+
+> Navigation ≠ Conversion Flow.
+
+
+
+Menu membantu customer explore.
+
+CTA membantu customer act.
+
+
+---
+
+3.4 — PRIMARY NAVIGATION
+
+Desktop:
+
+Logo
+
+Rental
+Transfer
+Trip
+Corporate
+
+About
+
+[Plan My Trip]
+
+Mobile:
+
+Logo
+
+Menu
+
+[Plan My Trip]
+
+Dan CTA booking dibuat sticky ketika relevan.
+
+
+---
+
+3.5 — HOMEPAGE
+
+Homepage bukan company profile.
+
+Homepage harus menjawab 5 pertanyaan:
+
+1. Ini bisnis apa?
+
+
+2. Bisa membantu saya apa?
+
+
+3. Kenapa saya harus percaya?
+
+
+4. Apa yang harus saya lakukan?
+
+
+5. Bagaimana saya booking?
+
+
+
+
+---
+
+3.6 — HERO
+
+Primary
+
+Your Journey, Handled.
+
+Subheadline:
+
+> Rental, transfer, and transport solutions in Yogyakarta—matched to the way you travel.
+
+
+
+CTA:
+
+Plan My Trip
+
+Secondary:
+
+Browse Vehicles
+
+
+---
+
+3.7 — HERO DECISION MODULE
+
+Di bawah headline:
+
+What do you need?
+
+🚗 Rent a Car
+
+Self drive / driver
+
+✈️ Airport Transfer
+
+YIA → destination
+
+🗺️ Plan a Trip
+
+Tell us your itinerary
+
+🏢 Business Transport
+
+Corporate needs
+
+Customer langsung diarahkan ke intent yang tepat.
+
+
+---
+
+3.8 — SECTION 2
+
+FIND THE RIGHT TRANSPORT
+
+Ini adalah salah satu signature UX.
+
+Input:
+
+Where?
+
+Yogyakarta / destination
+
+When?
+
+Date
+
+How long?
+
+Duration
+
+People?
+
+Passengers
+
+Need?
+
+Rental / Driver / Transfer / Trip
+
+CTA:
+
+Find My Transport
+
+
+---
+
+3.9 — TRIP MATCH
+
+Setelah submit:
+
+> Tell us a little about your trip.
+
+
+
+Contoh:
+
+5 passengers
+
+3 days
+
+Yogyakarta
+
+Family trip
+
+↓
+
+System menghasilkan:
+
+RECOMMENDED
+
+Toyota Innova + Driver
+
+7 seats
+
+Automatic
+
+Suitable for 5 passengers
+
+CTA:
+
+View Option
+
+
+---
+
+3.10 — IMPORTANT UX RULE
+
+Jangan mengatakan:
+
+> “AI recommends this.”
+
+
+
+Customer tidak peduli apakah AI yang memilih.
+
+Yang penting:
+
+> “Recommended for your trip.”
+
+
+
+AI adalah infrastructure.
+
+Customer experience adalah outcome.
+
+
+---
+
+3.11 — FLEET PAGE
+
+Customer yang sudah tahu mobilnya masuk sini.
+
+Filter:
+
+Passengers
+
+Transmission
+
+Service
+
+Price
+
+Vehicle Type
+
+
+---
+
+3.12 — VEHICLE CARD
+
+Contoh:
+
+Toyota Avanza
+
+7 Seats
+
+Automatic
+
+Self Drive / Driver
+
+From:
+
+Rp X / day
+
+CTA:
+
+View Vehicle
+
+Secondary:
+
+Ask Availability
+
+
+---
+
+3.13 — VEHICLE DETAIL
+
+Struktur:
+
+Vehicle Gallery
+↓
+Name
+↓
+Quick Specs
+↓
+Service Options
+↓
+Pricing
+↓
+Availability
+↓
+Features
+↓
+Terms
+↓
+FAQ
+↓
+Reviews
+↓
+CTA
+
+
+---
+
+3.14 — SERVICE SELECTOR
+
+Pada vehicle detail:
+
+How would you like to use it?
+
+○ Self Drive
+
+○ With Driver
+
+○ Driver + Fuel
+
+Customer tidak perlu pindah-pindah halaman.
+
+
+---
+
+3.15 — BOOKING CONFIGURATOR
+
+Setelah service:
+
+VEHICLE
+↓
+SERVICE
+↓
+DATE
+↓
+DURATION
+↓
+PICKUP
+↓
+ADD-ONS
+↓
+CUSTOMER
+↓
+QUOTE
+
+
+---
+
+3.16 — QUOTE UX
+
+Customer harus melihat:
+
+YOUR TRIP
+
+20–23 August
+
+3 Days
+
+5 passengers
+
+Yogyakarta
+
+VEHICLE
+
+Toyota Innova
+
+SERVICE
+
+With Driver
+
+PRICE
+
+Vehicle: Rp X
+
+Driver: Rp X
+
+Additional: Rp X
+
+Estimated Total: Rp X
+
+CTA:
+
+Request Booking
+
+
+---
+
+3.17 — AIRPORT TRANSFER UX
+
+Landing page:
+
+Arrive in Yogyakarta. Your Ride Is Ready.
+
+Input:
+
+Flight / arrival
+
+Pickup
+
+Destination
+
+Passengers
+
+Luggage
+
+Vehicle
+
+↓
+
+Get Transfer Quote
+
+
+---
+
+3.18 — CORPORATE UX
+
+Corporate tidak diarahkan ke normal booking.
+
+Flow:
+
+Corporate
+↓
+Business Requirement
+↓
+Contact Information
+↓
+Request Quote
+↓
+Sales Conversation
+↓
+Agreement
+↓
+Corporate Account
+
+CTA:
+
+Request Corporate Quote
+
+
+---
+
+3.19 — TRUST ARCHITECTURE
+
+Trust harus muncul sebelum CTA besar, bukan hanya di footer.
+
+TRUST BLOCK
+
+Real Vehicles
+
+Real Reviews
+
+Clear Information
+
+Responsive Support
+
+Business Presence
+
+
+---
+
+3.20 — PROOF HIERARCHY
+
+Prioritas evidence:
+
+Tier 1
+
+Google Reviews / real customer reviews
+
+Tier 2
+
+Real fleet photos
+
+Tier 3
+
+Real business information
+
+Tier 4
+
+Clear terms
+
+Tier 5
+
+Testimonials / social proof
+
+
+---
+
+3.21 — HOW IT WORKS
+
+Empat langkah:
+
+01
+
+Tell Us Your Trip
+
+02
+
+Choose Your Transport
+
+03
+
+Confirm Your Booking
+
+04
+
+Enjoy Your Journey
+
+Jangan membuat flow terlihat kompleks.
+
+
+---
+
+3.22 — WHATSAPP INTEGRATION
+
+WhatsApp bukan pengganti website.
+
+WhatsApp adalah:
+
+HUMAN ASSISTANCE LAYER
+
+Website mengumpulkan context.
+
+WhatsApp melanjutkan conversation.
+
+Contoh generated message:
+
+> Halo Family Transport, saya ingin meminta booking.
+
+Vehicle: Toyota Avanza
+Service: With Driver
+Date: 20–22 August
+Passengers: 5
+Pickup: Yogyakarta
+
+
+
+🔥 Admin langsung tahu konteks.
+
+
+---
+
+3.23 — CONVERSION CTA SYSTEM
+
+Intent	CTA
+
+Explore	Browse Vehicles
+Need help	Plan My Trip
+Price	Get a Quote
+Vehicle ready	Request Booking
+Corporate	Request Corporate Quote
+Need human help	WhatsApp Us
+
+
+Satu halaman boleh punya beberapa CTA, tetapi:
+
+> satu primary CTA.
+
+
+
+
+---
+
+3.24 — MOBILE UX
+
+Kita desain mobile-first.
+
+Bottom sticky:
+
+Plan My Trip
+
+atau contextual:
+
+Request Booking
+
+dan:
+
+WhatsApp
+
+Jangan membuat user harus scroll kembali ke atas hanya untuk booking.
+
+
+---
+
+3.25 — SEO → UX
+
+Traffic bisa datang dari:
+
+Google
+Maps
+Instagram
+WhatsApp
+Referral
+
+Tetapi landing destination harus sesuai intent.
+
+Contoh:
+
+> “rental mobil jogja”
+
+
+
+→ Rental page.
+
+> “sewa mobil jogja dengan driver”
+
+
+
+→ With Driver page.
+
+> “airport transfer YIA”
+
+
+
+→ Airport Transfer page.
+
+> “mobil untuk keluarga jogja”
+
+
+
+→ Trip Match / Family Transport landing.
+
+
+---
+
+3.26 — CONVERSION FUNNEL
+
+Sekarang full funnel:
+
+SEARCH / MAPS / SOCIAL
+          ↓
+      LANDING PAGE
+          ↓
+       TRUST
+          ↓
+      INTENT CHOICE
+          ↓
+ ┌────────┴────────┐
+ ↓                 ↓
+BROWSE             PLAN
+ ↓                 ↓
+VEHICLE          MATCH
+ ↓                 ↓
+ └────────┬────────┘
+          ↓
+        QUOTE
+          ↓
+       BOOKING
+          ↓
+       WHATSAPP
+          ↓
+      CONFIRMATION
+          ↓
+        TRIP
+          ↓
+       REVIEW
+          ↓
+        REPEAT
+
+
+---
+
+3.27 — ADMIN EXPERIENCE
+
+Customer UX hanya satu sisi.
+
+Admin:
+
+DASHBOARD
+
+New Requests
+
+Pending Quotes
+
+Today's Trips
+
+Upcoming Trips
+
+Vehicle Availability
+
+Revenue
+
+
+
+---
+
+3.28 — BOOKING MANAGEMENT
+
+Status:
+
+NEW
+↓
+REVIEWING
+↓
+QUOTED
+↓
+PENDING
+↓
+CONFIRMED
+↓
+PAID
+↓
+ACTIVE
+↓
+COMPLETED
+
+Cancelled bisa keluar dari flow kapan saja.
+
+
+---
+
+3.29 — VEHICLE OPERATIONS
+
+Setiap kendaraan:
+
+AVAILABLE
+RESERVED
+ACTIVE
+MAINTENANCE
+BLOCKED
+
+Booking tidak boleh mengambil kendaraan yang statusnya:
+
+MAINTENANCE
+
+atau:
+
+BLOCKED
+
+atau sudah:
+
+RESERVED
+
+
+---
+
+3.30 — UX → SYSTEM CONNECTION
+
+Ini yang paling penting.
+
+USER INTENT
+   ↓
+UX FLOW
+   ↓
+SERVICE
+   ↓
+VEHICLE
+   ↓
+PRICING
+   ↓
+AVAILABILITY
+   ↓
+QUOTE
+   ↓
+BOOKING
+   ↓
+OPERATIONS
+
+Jadi UX tidak berdiri sendiri.
+
+Setiap screen harus punya business logic di belakangnya.
+
+
+---
+
+3.31 — MVP SCREEN MAP
+
+PUBLIC
+
+1. Home
+
+
+2. Rental
+
+
+3. Fleet
+
+
+4. Vehicle Detail
+
+
+5. Airport Transfer
+
+
+6. Trip
+
+
+7. Corporate
+
+
+8. About
+
+
+9. FAQ
+
+
+10. Contact
+
+
+11. Quote / Booking
+
+
+
+CUSTOMER
+
+12. Booking Confirmation
+
+
+13. Booking Status
+
+
+
+ADMIN
+
+14. Dashboard
+
+
+15. Bookings
+
+
+16. Quotes
+
+
+17. Vehicles
+
+
+18. Services
+
+
+19. Pricing
+
+
+20. Customers
+
+
+21. Settings
+
+
+
+
+---
+
+3.32 — MVP USER FLOW
+
+FLOW A — SELF DRIVE
+
+Home
+↓
+Rental
+↓
+Fleet
+↓
+Vehicle
+↓
+Self Drive
+↓
+Date
+↓
+Quote
+↓
+Booking
+
+FLOW B — HELP ME CHOOSE
+
+Home
+↓
+Plan My Trip
+↓
+Trip Questions
+↓
+Recommendation
+↓
+Quote
+↓
+Booking
+
+FLOW C — AIRPORT
+
+Home
+↓
+Airport Transfer
+↓
+Trip Details
+↓
+Vehicle
+↓
+Quote
+↓
+Booking
+
+FLOW D — CORPORATE
+
+Home
+↓
+Corporate
+↓
+Requirement
+↓
+Quote Request
+↓
+Sales
+
+
+---
+
+3.33 — UX PRINCIPLES
+
+Kita kunci 7 prinsip:
+
+01 — PERSONAL
+
+Customer merasa sistem memahami kebutuhan mereka.
+
+02 — CLEAR
+
+Tidak ada informasi penting yang disembunyikan.
+
+03 — FAST
+
+Customer cepat menemukan jalan berikutnya.
+
+04 — TRUSTED
+
+Setiap klaim punya evidence.
+
+05 — PROGRESSIVE
+
+Informasi kompleks diberikan bertahap.
+
+06 — HUMAN
+
+Customer selalu bisa mendapatkan bantuan manusia.
+
+07 — CONVERSION-FOCUSED
+
+Setiap halaman punya tujuan.
+
+
+---
+
+3.34 — THE BIG UX IDEA
+
+Family Transport bukan:
+
+> CAR CATALOG
+
+
+
+Tetapi:
+
+TRANSPORT DECISION EXPERIENCE
+
+Customer tidak dipaksa:
+
+> “Pilih mobil.”
+
+
+
+Mereka diberi pilihan:
+
+> “Ceritakan perjalananmu.”
+
+
+
+Lalu sistem membantu:
+
+> “Ini transportasi yang cocok.”
+
+
+
+🔥 Ini adalah UX differentiator utama kita.
+
+
+---
+
+3.35 — SESSION 3A VERDICT
+
+Kita sudah menyelesaikan foundation UX:
+
+✅ Customer journey
+✅ IA
+✅ Navigation
+✅ Homepage architecture
+✅ Trip Match
+✅ Fleet UX
+✅ Vehicle UX
+✅ Transfer UX
+✅ Corporate UX
+✅ Booking UX
+✅ WhatsApp UX
+✅ Trust architecture
+✅ Conversion funnel
+✅ Admin flow
+✅ Mobile-first principle
+✅ SEO → landing → conversion
+✅ MVP screen map
+
+Tapi Session 3 belum selesai.
+
+Berikutnya kita masuk:
+
+SESSION 3-B — DETAILED USER FLOW & CONVERSION FUNNEL
+
+Di 3-B kita akan membedah setiap klik customer:
+
+Landing → intent → vehicle → service → date → availability → pricing → quote → WhatsApp → booking → confirmation
+
+lalu kita tentukan:
+
+friction;
+
+decision point;
+
+validation;
+
+error state;
+
+empty state;
+
+loading state;
+
+trust trigger;
+
+CTA;
+
+fallback;
+
+abandonment recovery.
+
+
+Setelah 3-B selesai, baru:
+
+3-C — PAGE-BY-PAGE UX SPEC
+
+dan akhirnya:
+
+3-D — DESIGN SYSTEM / VISUAL DIRECTION
+
+Baru setelah Session 3 LOCK, kita masuk Session 4 — Product/System Architecture.

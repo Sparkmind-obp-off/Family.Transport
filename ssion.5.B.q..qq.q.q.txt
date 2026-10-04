@@ -1,0 +1,741 @@
+Gas gsss 🔥 lanjut SESSION 5-B — FEATURE INVENTORY + PRIORITY MATRIX.
+
+Di sini kita pecah MVP Family Transport menjadi unit feature yang bisa langsung diberikan ke developer / coding agent.
+
+SESSION 5-B — FEATURE INVENTORY
+
+5-B.1 — PRIORITY SYSTEM
+
+Kita gunakan:
+
+P0 = wajib untuk MVP launch
+
+P1 = penting setelah core transaction stabil
+
+P2 = future / scale
+
+
+Rule:
+
+> P0 harus membentuk satu complete customer → booking → operation loop.
+
+
+
+
+---
+
+5-B.2 — PUBLIC WEBSITE
+
+ID	Feature	Priority
+
+F-001	Homepage	P0
+F-002	Service Catalog	P0
+F-003	Service Detail	P0
+F-004	Vehicle Catalog	P0
+F-005	Vehicle Detail	P0
+F-006	About / Trust	P0
+F-007	Service Area	P0
+F-008	Contact	P0
+F-009	FAQ	P1
+F-010	Reviews	P1
+
+
+
+---
+
+5-B.3 — BOOKING SYSTEM
+
+ID	Feature	Priority
+
+F-011	Booking Wizard	P0
+F-012	Date/Time Selection	P0
+F-013	Location Input	P0
+F-014	Passenger Input	P0
+F-015	Vehicle Eligibility	P0
+F-016	Availability Check	P0
+F-017	Vehicle Selection	P0
+F-018	Add-ons	P0
+F-019	Customer Information	P0
+F-020	Booking Review	P0
+F-021	Quote Generation	P0
+F-022	Quote Acceptance	P0
+F-023	Booking Confirmation	P0
+F-024	Booking Cancellation	P1
+F-025	Booking Modification	P1
+
+
+
+---
+
+5-B.4 — PRICING
+
+ID	Feature	Priority
+
+F-026	Base Rate	P0
+F-027	Duration Calculation	P0
+F-028	Service Pricing	P0
+F-029	Add-on Pricing	P0
+F-030	Price Breakdown	P0
+F-031	Manual Price Override	P0
+F-032	Minimum Duration	P0
+F-033	Area Pricing	P1
+F-034	Route Pricing	P1
+F-035	Discount Engine	P1
+F-036	Promo Code	P2
+F-037	Dynamic Pricing	P2
+
+
+
+---
+
+5-B.5 — CUSTOMER
+
+ID	Feature	Priority
+
+F-038	Customer Registration	P0
+F-039	Customer Login	P0
+F-040	Customer Profile	P0
+F-041	Booking History	P0
+F-042	Booking Detail	P0
+F-043	Quote History	P0
+F-044	Payment History	P1
+F-045	Review Submission	P1
+
+
+
+---
+
+5-B.6 — VEHICLE / FLEET
+
+ID	Feature	Priority
+
+F-046	Vehicle List	P0
+F-047	Vehicle Detail	P0
+F-048	Vehicle Create	P0
+F-049	Vehicle Edit	P0
+F-050	Vehicle Status	P0
+F-051	Vehicle Photos	P0
+F-052	Vehicle Category	P0
+F-053	Vehicle-Service Mapping	P0
+F-054	Vehicle Rate	P0
+F-055	Maintenance Block	P1
+F-056	Fleet Analytics	P2
+
+
+
+---
+
+5-B.7 — DRIVER / OPERATIONS
+
+ID	Feature	Priority
+
+F-057	Driver List	P0
+F-058	Driver Create	P0
+F-059	Driver Edit	P0
+F-060	Driver Status	P0
+F-061	Driver Assignment	P0
+F-062	Trip Management	P0
+F-063	Trip Status	P0
+F-064	Trip Stops	P1
+F-065	Driver Dashboard	P2
+F-066	GPS Tracking	P2
+
+
+
+---
+
+5-B.8 — QUOTE
+
+ID	Feature	Priority
+
+F-067	Quote Create	P0
+F-068	Quote Detail	P0
+F-069	Quote Status	P0
+F-070	Quote Expiration	P0
+F-071	Quote Acceptance	P0
+F-072	Manual Quote	P0
+F-073	Quote Revision	P1
+
+
+
+---
+
+5-B.9 — PAYMENT
+
+ID	Feature	Priority
+
+F-074	Payment Status	P0
+F-075	Manual Payment Recording	P0
+F-076	Payment Reference	P0
+F-077	Payment History	P1
+F-078	Online Payment Gateway	P1
+F-079	Refund	P1
+F-080	Automatic Reconciliation	P2
+
+
+
+---
+
+5-B.10 — ADMIN
+
+ID	Feature	Priority
+
+F-081	Admin Login	P0
+F-082	Admin Dashboard	P0
+F-083	Booking Management	P0
+F-084	Customer Management	P0
+F-085	Vehicle Management	P0
+F-086	Driver Management	P0
+F-087	Quote Management	P0
+F-088	Payment Management	P0
+F-089	Service Management	P0
+F-090	Pricing Management	P0
+F-091	User Management	P1
+F-092	Audit Log Viewer	P1
+F-093	Analytics Dashboard	P1
+
+
+
+---
+
+5-B.11 — NOTIFICATION
+
+ID	Feature	Priority
+
+F-094	Booking Notification	P0
+F-095	Quote Notification	P0
+F-096	Booking Confirmation	P0
+F-097	Payment Notification	P0
+F-098	Trip Reminder	P1
+F-099	WhatsApp Automation	P1
+F-100	Email Automation	P1
+
+
+
+---
+
+5-B.12 — SECURITY
+
+ID	Feature	Priority
+
+F-101	Authentication	P0
+F-102	RBAC	P0
+F-103	Permission Checks	P0
+F-104	Input Validation	P0
+F-105	Rate Limiting	P0
+F-106	Idempotency	P0
+F-107	Audit Logging	P0
+F-108	Secure Secrets	P0
+F-109	Session Security	P0
+F-110	Security Monitoring	P1
+
+
+
+---
+
+5-B.13 — ANALYTICS
+
+MVP tidak perlu membuat analytics platform besar.
+
+Foundation saja:
+
+ID	Event	Priority
+
+A-001	page_view	P0
+A-002	service_view	P0
+A-003	vehicle_view	P0
+A-004	booking_started	P0
+A-005	availability_checked	P0
+A-006	quote_created	P0
+A-007	quote_accepted	P0
+A-008	booking_created	P0
+A-009	payment_recorded	P0
+A-010	trip_completed	P0
+
+
+🔥 Ini nanti menjadi basis conversion funnel.
+
+
+---
+
+5-B.14 — CORE P0 FEATURE SET
+
+Walaupun inventory sudah mencapai banyak feature, jangan salah membaca:
+
+> P0 bukan berarti semuanya harus dibuat sekaligus dalam satu sprint.
+
+
+
+Core P0 sebenarnya:
+
+PUBLIC
+├── Homepage
+├── Services
+├── Vehicles
+└── Contact
+
+TRANSACTION
+├── Booking
+├── Availability
+├── Pricing
+├── Quote
+└── Confirmation
+
+OPERATIONS
+├── Booking Management
+├── Vehicle Management
+├── Driver Assignment
+├── Trip
+└── Payment Status
+
+FOUNDATION
+├── Auth
+├── RBAC
+├── Database
+├── Audit
+└── Analytics Events
+
+
+---
+
+5-B.15 — FEATURE DEPENDENCY
+
+Ini penting.
+
+Kita tidak boleh build berdasarkan urutan halaman.
+
+Build berdasarkan dependency.
+
+AUTH
+ ↓
+DATABASE
+ ↓
+VEHICLE
+ ↓
+SERVICE
+ ↓
+PRICING
+ ↓
+AVAILABILITY
+ ↓
+BOOKING
+ ↓
+QUOTE
+ ↓
+PAYMENT
+ ↓
+TRIP
+
+
+---
+
+5-B.16 — FEATURE DEPENDENCY GRAPH
+
+Lebih detail:
+
+VEHICLE
+   │
+   ├── CATEGORY
+   ├── SERVICE MAPPING
+   └── RATE
+        │
+        ↓
+     PRICING
+        │
+        ↓
+  AVAILABILITY
+        │
+        ↓
+     BOOKING
+        │
+   ┌────┴────┐
+   ↓         ↓
+ QUOTE    PAYMENT
+   │         │
+   └────┬────┘
+        ↓
+       TRIP
+        ↓
+    COMPLETED
+
+
+---
+
+5-B.17 — FEATURE SPEC FORMAT
+
+Mulai dari sekarang setiap feature akan punya format standar:
+
+FEATURE ID
+Name
+Purpose
+Actor
+Preconditions
+Inputs
+Business Rules
+System Behavior
+Output
+Errors
+Permissions
+Dependencies
+Acceptance Criteria
+
+Ini penting supaya nanti:
+
+> coding agent tidak menebak.
+
+
+
+
+---
+
+5-B.18 — CONTOH F-016
+
+F-016 — Availability Check
+
+Purpose
+
+Menentukan kendaraan yang benar-benar tersedia untuk request.
+
+Actor
+
+Customer / Operator.
+
+Input
+
+service_id
+start_at
+end_at
+passengers
+vehicle_category?
+
+Business Rules
+
+vehicle.active = true
+service compatible
+capacity >= passengers
+no booking overlap
+no maintenance overlap
+driver available if required
+
+Output
+
+eligible vehicles[]
+availability status
+
+Errors
+
+INVALID_DATE
+NO_VEHICLE_AVAILABLE
+SERVICE_UNAVAILABLE
+
+
+---
+
+5-B.19 — ACCEPTANCE CRITERIA F-016
+
+Feature dianggap selesai jika:
+
+✓ unavailable vehicle tidak muncul
+✓ capacity mismatch tidak muncul
+✓ maintenance conflict ditolak
+✓ booking overlap ditolak
+✓ driver conflict ditolak
+✓ valid vehicle muncul
+✓ result berasal dari server
+✓ simultaneous request tidak menyebabkan double booking
+
+🔥 Ini baru testable feature.
+
+
+---
+
+5-B.20 — CONTOH F-021
+
+F-021 — Quote Generation
+
+Actor
+
+Customer / Operator.
+
+Input
+
+booking_request
+vehicle
+service
+duration
+addons
+
+Process
+
+validate
+ ↓
+calculate base
+ ↓
+calculate extras
+ ↓
+apply discount
+ ↓
+calculate fees
+ ↓
+create snapshot
+ ↓
+generate quote
+
+Output
+
+quote_code
+subtotal
+discount
+fees
+total
+valid_until
+
+
+---
+
+5-B.21 — ACCEPTANCE CRITERIA F-021
+
+✓ price calculated server-side
+✓ breakdown visible
+✓ quote has unique code
+✓ quote has expiry
+✓ original price snapshot preserved
+✓ expired quote cannot auto-confirm
+
+
+---
+
+5-B.22 — FEATURE SIZING
+
+Kita jangan membuat feature terlalu besar.
+
+Contoh buruk:
+
+> “Build booking system.”
+
+
+
+Terlalu besar.
+
+Lebih baik:
+
+F-011 Booking Wizard
+F-012 Date/Time
+F-013 Location
+F-014 Passenger
+F-015 Eligibility
+F-016 Availability
+F-017 Vehicle Selection
+F-018 Add-ons
+F-019 Customer Info
+F-020 Review
+F-021 Quote
+F-022 Acceptance
+F-023 Confirmation
+
+Dengan begitu setiap bagian bisa:
+
+> build → test → verify.
+
+
+
+
+---
+
+5-B.23 — MVP BUILD SLICES
+
+Sekarang inventory kita potong menjadi vertical slices.
+
+SLICE 1 — FOUNDATION
+
+Auth
+Database
+RBAC
+Admin shell
+
+SLICE 2 — FLEET
+
+Vehicles
+Categories
+Services
+Rates
+Photos
+
+SLICE 3 — AVAILABILITY
+
+Availability
+Eligibility
+Conflict detection
+
+SLICE 4 — BOOKING
+
+Booking wizard
+Customer
+Review
+
+SLICE 5 — QUOTE
+
+Pricing
+Quote
+Acceptance
+
+SLICE 6 — OPERATIONS
+
+Driver
+Assignment
+Trip
+
+SLICE 7 — PAYMENT
+
+Payment status
+Manual payment
+
+SLICE 8 — POLISH
+
+Notifications
+Analytics
+Audit
+UX polish
+
+
+---
+
+5-B.24 — MVP CRITICAL PATH
+
+Kalau waktu dan resource sangat terbatas:
+
+BUILD THIS FIRST
+
+AUTH
+ ↓
+VEHICLES
+ ↓
+SERVICES
+ ↓
+AVAILABILITY
+ ↓
+PRICING
+ ↓
+BOOKING
+ ↓
+QUOTE
+ ↓
+ADMIN
+ ↓
+CONFIRMATION
+
+Setelah itu:
+
+> payment + trip.
+
+
+
+
+---
+
+5-B.25 — FEATURE PRIORITY RULE
+
+Setiap feature harus lolos pertanyaan:
+
+> Apakah feature ini membantu customer mendapatkan transport atau membantu business memenuhi booking?
+
+
+
+Jika tidak:
+
+> kemungkinan besar P1/P2.
+
+
+
+Ini menjaga MVP tetap ramping.
+
+
+---
+
+5-B.26 — FEATURE INVENTORY MASTER
+
+Secara keseluruhan kita sekarang punya:
+
+110 feature/system items + 10 analytics events
+
+Tetapi launch MVP tidak berarti harus menyelesaikan 110 item secara penuh.
+
+Yang kita launch adalah:
+
+P0 CORE TRANSACTION LOOP
+
+DISCOVER
+ ↓
+REQUEST
+ ↓
+CHECK
+ ↓
+PRICE
+ ↓
+QUOTE
+ ↓
+BOOK
+ ↓
+PAY
+ ↓
+OPERATE
+ ↓
+COMPLETE
+
+
+---
+
+🔒 5-B LOCKED
+
+Session 5-B sekarang mengunci:
+
+✅ Feature inventory
+✅ Feature IDs
+✅ P0/P1/P2
+✅ Domain grouping
+✅ Dependency graph
+✅ Feature specification format
+✅ Acceptance criteria format
+✅ Vertical build slices
+✅ Critical path
+✅ MVP feature boundary
+
+
+---
+
+🚀 NEXT — SESSION 5-C
+
+Sekarang kita masuk bagian yang lebih granular:
+
+USER STORIES + ACCEPTANCE CRITERIA
+
+Kita akan menulis dari perspektif nyata:
+
+> “Sebagai customer, saya ingin…, sehingga…”
+
+
+
+Contoh:
+
+US-CUS-001
+
+Sebagai customer,
+saya ingin memilih tanggal dan waktu perjalanan,
+sehingga saya bisa mengetahui kendaraan
+yang tersedia pada waktu tersebut.
+
+Lalu kita turunkan menjadi:
+
+Given
+When
+Then
+
+Jadi nanti bukan cuma:
+
+> “buat booking.”
+
+
+
+Tetapi benar-benar:
+
+> apa yang user lakukan + apa yang system wajib lakukan + bagaimana developer tahu bahwa feature tersebut benar.

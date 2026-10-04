@@ -1,0 +1,1273 @@
+Gas gsss 🔥 langsung lanjut SESSION 3-B.
+Sekarang kita bedah user flow + conversion funnel sampai level decision point, supaya nanti waktu masuk technical architecture kita nggak bikin sistem yang bagus tapi flow-nya ribet.
+
+SESSION 3-B — USER FLOW & CONVERSION FUNNEL
+
+3-B.1 — CORE OBJECTIVE
+
+Kita ingin mengubah:
+
+> Visitor → Qualified Lead → Quote → Booking → Customer
+
+
+
+dengan friction seminimal mungkin.
+
+North Star tetap:
+
+EASY TO CHOOSE → EASY TO BOOK → EASY TO TRUST
+
+
+---
+
+3-B.2 — MASTER FUNNEL
+
+TRAFFIC
+  ↓
+LANDING
+  ↓
+INTENT
+  ↓
+QUALIFICATION
+  ↓
+MATCH / VEHICLE
+  ↓
+AVAILABILITY
+  ↓
+PRICE / QUOTE
+  ↓
+BOOKING REQUEST
+  ↓
+CONFIRMATION
+  ↓
+PAYMENT
+  ↓
+TRIP
+  ↓
+REVIEW
+  ↓
+REPEAT
+
+Kita tidak menganggap:
+
+> Website visit = conversion.
+
+
+
+Conversion sebenarnya:
+
+Confirmed Booking
+
+
+---
+
+3-B.3 — ENTRY SOURCES
+
+Customer bisa datang dari:
+
+Google Search
+
+> “rental mobil jogja”
+
+
+
+Google Maps
+
+> Family Transport
+
+
+
+Social Media
+
+Instagram / TikTok
+
+WhatsApp
+
+Referral / existing customer
+
+Direct
+
+Mengetik domain.
+
+Masing-masing bisa memiliki intent berbeda.
+
+
+---
+
+3-B.4 — LANDING INTENT DETECTION
+
+Begitu customer masuk, system harus memahami:
+
+> “Dia sedang mencari apa?”
+
+
+
+Contoh:
+
+Search:
+
+“sewa innova jogja”
+
+→ Vehicle-first.
+
+Search:
+
+“sewa mobil jogja”
+
+→ Service-first.
+
+Search:
+
+“airport transfer yia”
+
+→ Transfer-first.
+
+Search:
+
+“transport keluarga jogja”
+
+→ Trip-first.
+
+🔥 Jadi landing page tidak boleh selalu sama.
+
+
+---
+
+3-B.5 — DECISION POINT #1
+
+Customer melihat:
+
+What do you need?
+
+Pilihan:
+
+Rent a Car
+
+Airport Transfer
+
+Plan a Trip
+
+Business Transport
+
+Jika customer tidak memilih:
+
+→ Browse Vehicles
+
+atau:
+
+→ Chat with Us
+
+Jangan membuat user dead-end.
+
+
+---
+
+3-B.6 — PATH A
+
+CUSTOMER SUDAH TAHU MOBIL
+
+Flow:
+
+Landing
+↓
+Browse Vehicles
+↓
+Filter
+↓
+Vehicle Detail
+↓
+Select Service
+↓
+Date
+↓
+Availability
+↓
+Quote
+↓
+Booking
+
+
+---
+
+3-B.7 — VEHICLE FILTER
+
+Filter utama:
+
+Passenger
+
+Transmission
+
+Service
+
+Price
+
+Vehicle Type
+
+Jangan terlalu banyak filter di MVP.
+
+Rule:
+
+> Filter hanya jika membantu decision.
+
+
+
+
+---
+
+3-B.8 — VEHICLE DETAIL DECISION
+
+Customer harus bisa menjawab:
+
+“Apakah mobil ini cocok?”
+
+Dalam satu layar:
+
+seats;
+
+transmission;
+
+luggage;
+
+photos;
+
+service;
+
+price;
+
+terms;
+
+availability/request status.
+
+
+CTA:
+
+Check Availability
+
+Bukan langsung:
+
+> Book Now
+
+
+
+Karena availability adalah decision gate.
+
+
+---
+
+3-B.9 — AVAILABILITY
+
+Customer memasukkan:
+
+Pickup date
+
+Return date
+
+Service
+
+↓
+
+System:
+
+AVAILABLE
+
+→ lanjut.
+
+NOT AVAILABLE
+
+→ jangan berhenti.
+
+Tampilkan:
+
+> This vehicle isn't available for your dates.
+
+
+
+Lalu:
+
+Recommended alternatives
+
+Avanza
+
+Innova
+
+Xpander
+
+🔥 Availability failure berubah menjadi recommendation opportunity.
+
+
+---
+
+3-B.10 — PATH B
+
+HELP ME CHOOSE
+
+Flow:
+
+Home
+↓
+Plan My Trip
+↓
+Passengers
+↓
+Date
+↓
+Duration
+↓
+Destination
+↓
+Purpose
+↓
+Service Preference
+↓
+Recommendation
+↓
+Vehicle
+↓
+Quote
+
+
+---
+
+3-B.11 — TRIP MATCH QUESTIONS
+
+Kita jangan membuat 20 pertanyaan.
+
+MVP:
+
+Q1
+
+How many people?
+
+Q2
+
+When are you traveling?
+
+Q3
+
+How long?
+
+Q4
+
+Where are you going?
+
+Q5
+
+Need a driver?
+
+Selesai.
+
+Progress:
+
+> 4 / 5
+
+
+
+Customer tahu flow-nya pendek.
+
+
+---
+
+3-B.12 — RECOMMENDATION LOGIC
+
+Contoh:
+
+Passengers
+↓
+Vehicle Capacity
+↓
+Luggage
+↓
+Trip Duration
+↓
+Service
+↓
+Availability
+↓
+Price Range
+
+Output:
+
+BEST MATCH
+
+Toyota Innova
+
+WHY?
+
+> Suitable for 5 passengers and a multi-day family trip.
+
+
+
+🔥 Jangan cuma:
+
+> “Recommended.”
+
+
+
+Berikan reason.
+
+
+---
+
+3-B.13 — RECOMMENDATION CONFIDENCE
+
+Internal system dapat memiliki:
+
+match_score
+
+Misalnya:
+
+92% fit
+
+Tetapi untuk customer MVP aku lebih menyarankan bahasa:
+
+> Best Match
+
+
+
+> Good Alternative
+
+
+
+> Budget Option
+
+
+
+Daripada angka 92% yang terlihat terlalu artificial.
+
+
+---
+
+3-B.14 — PRICE DECISION
+
+Setelah vehicle/service/date diketahui:
+
+System menentukan:
+
+FIXED
+
+> Rp X
+
+
+
+ESTIMATED
+
+> Estimated Rp X
+
+
+
+QUOTE
+
+> Request a Quote
+
+
+
+Customer harus tahu status harga.
+
+Jangan membuat harga terlihat pasti kalau sebenarnya belum final.
+
+
+---
+
+3-B.15 — QUOTE BREAKDOWN
+
+Customer melihat:
+
+Vehicle
+Rp X
+
+Driver
+Rp X
+
+Duration
+Rp X
+
+Additional
+Rp X
+
+Discount
+-Rp X
+
+────────────────
+TOTAL
+Rp X
+
+Jika estimasi:
+
+> Estimated total
+
+
+
+Jika manual:
+
+> Final price will be confirmed by our team.
+
+
+
+
+---
+
+3-B.16 — DECISION POINT #2
+
+Setelah melihat harga:
+
+ACCEPT
+
+→ Continue booking.
+
+NEED HELP
+
+→ WhatsApp.
+
+CHANGE VEHICLE
+
+→ Back to alternatives.
+
+CHANGE DATE
+
+→ Recalculate.
+
+ABANDON
+
+→ Save inquiry / recovery.
+
+
+---
+
+3-B.17 — BOOKING FORM
+
+Jangan membuat form panjang.
+
+MVP:
+
+CONTACT
+
+Name
+
+WhatsApp
+
+Email optional
+
+TRIP
+
+Pickup
+
+Destination
+
+Date
+
+Time
+
+Passengers
+
+SERVICE
+
+Vehicle
+
+Service
+
+NOTES
+
+Special request
+
+CTA:
+
+Request Booking
+
+
+---
+
+3-B.18 — FORM VALIDATION
+
+Contoh:
+
+Tanggal kembali < tanggal mulai
+
+→
+
+> Please select a valid return date.
+
+
+
+Passengers = 0
+
+→
+
+> Please enter the number of passengers.
+
+
+
+Nomor WhatsApp invalid
+
+→
+
+> Please enter a valid WhatsApp number.
+
+
+
+Validation harus langsung, bukan setelah submit semuanya.
+
+
+---
+
+3-B.19 — BOOKING CONFIRMATION
+
+Setelah submit:
+
+Booking Request Received
+
+Customer mendapat:
+
+Booking ID
+
+FT-2026-XXXXX
+
+Summary
+
+Vehicle
+
+Service
+
+Date
+
+Pickup
+
+Passengers
+
+Status
+
+Pending Confirmation
+
+CTA:
+
+Chat with Family Transport
+
+
+---
+
+3-B.20 — WHATSAPP HANDOFF
+
+System generate:
+
+> Halo Family Transport.
+
+Booking ID: FT-2026-XXXXX
+Vehicle: Toyota Innova
+Service: With Driver
+Date: 20–23 August
+Passengers: 5
+Pickup: Yogyakarta
+
+Saya ingin melanjutkan konfirmasi booking.
+
+
+
+🔥 Ini membuat WhatsApp menjadi continuation layer, bukan data-entry ulang.
+
+
+---
+
+3-B.21 — ADMIN SIDE
+
+Admin menerima:
+
+NEW BOOKING REQUEST
+
+Informasi:
+
+customer;
+
+vehicle;
+
+service;
+
+date;
+
+pickup;
+
+destination;
+
+quote;
+
+notes.
+
+
+Admin:
+
+CHECK
+
+Availability
+
+↓
+
+REVIEW
+
+Pricing
+
+↓
+
+CONFIRM
+
+↓
+
+SEND
+
+Confirmation
+
+
+---
+
+3-B.22 — BOOKING STATE MACHINE
+
+NEW
+ ↓
+REVIEWING
+ ↓
+QUOTED
+ ↓
+CUSTOMER_PENDING
+ ↓
+CONFIRMED
+ ↓
+PAYMENT_PENDING
+ ↓
+PAID
+ ↓
+ACTIVE
+ ↓
+COMPLETED
+
+Alternative:
+
+CANCELLED
+EXPIRED
+REJECTED
+
+
+---
+
+3-B.23 — PAYMENT FLOW
+
+MVP jangan memaksa full automation kalau operasional belum siap.
+
+Flow:
+
+QUOTE
+↓
+CUSTOMER ACCEPTS
+↓
+PAYMENT INSTRUCTION
+↓
+PAYMENT
+↓
+ADMIN VERIFICATION
+↓
+CONFIRMED
+
+Phase selanjutnya:
+
+> Payment Gateway → Auto verification.
+
+
+
+
+---
+
+3-B.24 — ABANDONMENT
+
+Ini penting.
+
+Customer bisa berhenti di:
+
+Vehicle
+
+→ tidak lanjut.
+
+Quote
+
+→ tidak booking.
+
+Booking Form
+
+→ form ditinggalkan.
+
+Kita simpan event:
+
+view_vehicle
+check_availability
+view_quote
+start_booking
+submit_booking
+
+Dengan analytics kita bisa melihat:
+
+> di mana customer paling banyak kabur.
+
+
+
+
+---
+
+3-B.25 — RECOVERY
+
+Misalnya customer membuat quote tetapi tidak booking.
+
+System:
+
+H+1
+
+Follow-up:
+
+> “Masih membutuhkan kendaraan untuk perjalanan Anda?”
+
+
+
+H+3
+
+Jika relevant:
+
+> “Kami siap membantu jika Anda ingin melanjutkan booking.”
+
+
+
+Tetapi harus ada consent / messaging policy yang sesuai untuk komunikasi marketing.
+
+
+---
+
+3-B.26 — ERROR STATE
+
+Jangan hanya:
+
+> Error.
+
+
+
+Contoh:
+
+Server error
+
+> Something went wrong. Please try again or contact us on WhatsApp.
+
+
+
+Availability unavailable
+
+> We couldn't confirm availability right now. Our team can check it for you.
+
+
+
+CTA:
+
+Chat with Us
+
+
+---
+
+3-B.27 — EMPTY STATE
+
+Contoh:
+
+Tidak ada kendaraan:
+
+> No vehicles match your search.
+
+
+
+Kemudian:
+
+Try another date
+
+atau
+
+See recommended vehicles
+
+atau
+
+Ask our team
+
+
+---
+
+3-B.28 — LOADING STATE
+
+Saat availability dicek:
+
+> Checking vehicle availability…
+
+
+
+Saat quote dihitung:
+
+> Preparing your estimate…
+
+
+
+Jangan membuat customer bertanya:
+
+> “Ini error atau sedang loading?”
+
+
+
+
+---
+
+3-B.29 — TRUST TRIGGERS
+
+Trust harus muncul di decision point.
+
+Vehicle
+
+Real photo.
+
+Price
+
+Clear breakdown.
+
+Booking
+
+Booking ID.
+
+Payment
+
+Clear instruction.
+
+Confirmation
+
+Written confirmation.
+
+Trip
+
+Contact information.
+
+
+---
+
+3-B.30 — CONVERSION FRICTION MAP
+
+Kita identifikasi friction:
+
+Stage	Potential Friction	Solution
+
+Landing	Tidak tahu harus klik apa	Intent choices
+Fleet	Terlalu banyak mobil	Smart filters
+Vehicle	Tidak yakin cocok	Specs + recommendation
+Availability	Mobil unavailable	Alternatives
+Price	Harga tidak jelas	Breakdown
+Booking	Form panjang	Minimal fields
+Confirmation	Takut tidak masuk	Booking ID
+Payment	Takut salah	Clear instructions
+Trip	Butuh bantuan	WhatsApp
+
+
+
+---
+
+3-B.31 — CONVERSION PRINCIPLE
+
+Setiap friction harus punya:
+
+NEXT BEST ACTION
+
+Contoh:
+
+Vehicle unavailable:
+
+❌ End.
+
+✅ Recommended alternatives.
+
+Quote too expensive:
+
+❌ End.
+
+✅ Budget alternatives.
+
+Customer unsure:
+
+❌ End.
+
+✅ WhatsApp assistance.
+
+
+---
+
+3-B.32 — MICRO-CONVERSION
+
+Tidak semua customer langsung booking.
+
+Kita ukur:
+
+Level 1
+
+Vehicle View
+
+Level 2
+
+Availability Check
+
+Level 3
+
+Quote Generated
+
+Level 4
+
+Booking Started
+
+Level 5
+
+Booking Submitted
+
+Level 6
+
+Confirmed
+
+Level 7
+
+Paid
+
+Level 8
+
+Completed
+
+🔥 Ini nantinya penting untuk GA4.
+
+
+---
+
+3-B.33 — FUNNEL METRICS
+
+Dashboard analytics:
+
+Visitors
+↓
+Intent Selection %
+↓
+Vehicle View %
+↓
+Availability Check %
+↓
+Quote %
+↓
+Booking Start %
+↓
+Booking Submit %
+↓
+Confirmed %
+↓
+Paid %
+
+Kita bisa menemukan bottleneck.
+
+Contoh:
+
+> 1.000 visitors
+300 vehicle views
+150 availability checks
+80 quotes
+20 booking
+15 confirmed
+
+
+
+Maka pertanyaannya:
+
+> Kenapa 80 quote hanya menjadi 20 booking?
+
+
+
+Itu jauh lebih berguna daripada sekadar melihat traffic.
+
+
+---
+
+3-B.34 — NORTH STAR METRIC
+
+Untuk MVP:
+
+CONFIRMED BOOKINGS
+
+Secondary:
+
+Quote-to-Booking Rate
+
+Booking-to-Confirmed Rate
+
+Repeat Booking Rate
+
+Revenue per Customer
+
+
+---
+
+3-B.35 — CUSTOMER EXPERIENCE LOOP
+
+Setelah booking selesai:
+
+COMPLETED
+↓
+THANK YOU
+↓
+REVIEW
+↓
+SAVE CUSTOMER
+↓
+NEXT TRIP
+↓
+REPEAT BOOKING
+
+
+---
+
+3-B.36 — MASTER FLOW
+
+Sekarang seluruh flow:
+
+TRAFFIC
+                       ↓
+                   LANDING
+                       ↓
+                WHAT DO YOU NEED?
+                  ↙   ↓   ↓   ↘
+               RENT TRANSFER TRIP BUSINESS
+                ↓      ↓      ↓      ↓
+             VEHICLE  ROUTE  MATCH   LEAD
+                ↓      ↓      ↓      ↓
+             SERVICE SERVICE RECOMMEND QUOTE
+                └──────┬───────┘
+                       ↓
+                  AVAILABILITY
+                       ↓
+                      PRICE
+                       ↓
+                     QUOTE
+                       ↓
+                    BOOKING
+                       ↓
+                   WHATSAPP
+                       ↓
+                  CONFIRMATION
+                       ↓
+                    PAYMENT
+                       ↓
+                      TRIP
+                       ↓
+                     REVIEW
+                       ↓
+                     CRM
+                       ↓
+                     REPEAT
+
+🔥 Ini sekarang adalah master conversion flow Family Transport.
+
+
+---
+
+3-B.37 — SESSION 3-B VERDICT
+
+Kita sudah lock:
+
+✅ Entry intent
+✅ User paths
+✅ Trip Match flow
+✅ Vehicle flow
+✅ Availability logic
+✅ Pricing/quote flow
+✅ Booking flow
+✅ WhatsApp handoff
+✅ Admin confirmation
+✅ Payment flow
+✅ Error state
+✅ Empty state
+✅ Loading state
+✅ Abandonment
+✅ Recovery
+✅ Analytics events
+✅ Conversion metrics
+✅ Repeat loop
+
+
+---
+
+NEXT — SESSION 3-C
+
+Sekarang kita bisa turun satu level lebih konkret:
+
+SESSION 3-C — PAGE-BY-PAGE UX SPECIFICATION
+
+Kita akan bedah setiap screen, bukan lagi sekadar flow.
+
+Contohnya:
+
+HOME
+
+section;
+
+component;
+
+content;
+
+CTA;
+
+interaction;
+
+trust;
+
+analytics event.
+
+
+FLEET
+
+filter;
+
+card;
+
+sorting;
+
+empty state.
+
+
+VEHICLE DETAIL
+
+gallery;
+
+specs;
+
+pricing;
+
+availability;
+
+booking CTA.
+
+
+TRIP MATCH
+
+question-by-question;
+
+progress;
+
+recommendation.
+
+
+BOOKING
+
+field;
+
+validation;
+
+summary;
+
+confirmation.
+
+
+ADMIN
+
+dashboard;
+
+booking management;
+
+vehicle management;
+
+quote management.
+
+
+Jadi setelah 3-C, kita sudah punya blueprint yang cukup detail untuk masuk ke UI Design → Technical Architecture tanpa banyak asumsi lagi.

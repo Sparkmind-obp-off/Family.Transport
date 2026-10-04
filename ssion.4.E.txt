@@ -1,0 +1,1313 @@
+Gas gsss 🔥 langsung kita tutup SESSION 4-D — API + SECURITY + DEPLOYMENT ARCHITECTURE.
+
+SESSION 4-D — API, SECURITY & DEPLOYMENT
+
+Tujuan bagian ini:
+
+> mengubah domain architecture menjadi system architecture yang aman, maintainable, dan siap dibuild.
+
+
+
+
+---
+
+4-D.1 — HIGH-LEVEL ARCHITECTURE
+
+CUSTOMER
+                       │
+                       ↓
+                 WEB APPLICATION
+                       │
+                 HTTPS / TLS
+                       │
+                       ↓
+                  API LAYER
+                       │
+        ┌──────────────┼──────────────┐
+        ↓              ↓              ↓
+      AUTH          DOMAIN         EVENTS
+                    SERVICES
+        │              │              │
+        └──────────────┼──────────────┘
+                       ↓
+                  DATABASE
+                       │
+              ┌────────┴────────┐
+              ↓                 ↓
+          FILE STORAGE      AUDIT LOG
+
+Prinsip:
+
+> Frontend tidak pernah mengakses database secara langsung.
+
+
+
+
+---
+
+4-D.2 — API DOMAIN
+
+API kita mengikuti domain business:
+
+/api/auth
+/api/customers
+/api/vehicles
+/api/services
+/api/availability
+/api/pricing
+/api/quotes
+/api/bookings
+/api/trips
+/api/drivers
+/api/payments
+/api/reviews
+/api/notifications
+/api/admin
+
+Tidak membuat:
+
+/api/doEverything
+
+🔥 Domain separation akan sangat membantu ketika system berkembang.
+
+
+---
+
+4-D.3 — PUBLIC API
+
+Endpoint yang bisa diakses tanpa login penuh:
+
+GET /vehicles
+GET /vehicles/:id
+GET /services
+POST /availability/check
+POST /quotes/request
+POST /bookings
+
+Tetapi:
+
+> public ≠ unrestricted.
+
+
+
+Semua tetap harus melalui:
+
+validation
+
+rate limiting
+
+abuse protection
+
+
+---
+
+4-D.4 — CUSTOMER API
+
+Setelah customer mempunyai authenticated session:
+
+GET /me
+GET /me/bookings
+GET /me/quotes
+GET /me/payments
+GET /me/profile
+
+Customer hanya boleh membaca:
+
+> resource miliknya sendiri.
+
+
+
+
+---
+
+4-D.5 — OPERATOR API
+
+Operator:
+
+GET /admin/bookings
+GET /admin/customers
+GET /admin/availability
+POST /admin/quotes
+PATCH /admin/bookings/:id
+POST /admin/trips/:id/assign
+
+Tetapi authorization harus diperiksa di backend.
+
+
+---
+
+4-D.6 — OWNER API
+
+Owner memiliki akses tambahan:
+
+/admin/pricing
+/admin/users
+/admin/settings
+/admin/analytics
+/admin/audit
+
+Sensitive endpoints:
+
+> OWNER-only.
+
+
+
+
+---
+
+4-D.7 — API LAYER
+
+Struktur request:
+
+HTTP REQUEST
+     ↓
+RATE LIMIT
+     ↓
+AUTHENTICATION
+     ↓
+AUTHORIZATION
+     ↓
+INPUT VALIDATION
+     ↓
+DOMAIN SERVICE
+     ↓
+DATABASE
+     ↓
+RESPONSE
+
+Jangan:
+
+> endpoint langsung menulis database tanpa domain validation.
+
+
+
+
+---
+
+4-D.8 — AUTHENTICATION
+
+Authentication menjawab:
+
+> Who are you?
+
+
+
+Pilihan:
+
+MVP
+
+Managed/session-based authentication.
+
+atau secure server-side session.
+
+Jangan menyimpan:
+
+> password plaintext.
+
+
+
+
+---
+
+4-D.9 — AUTHORIZATION
+
+Authorization menjawab:
+
+> What are you allowed to do?
+
+
+
+RBAC:
+
+OWNER
+ADMIN
+OPERATOR
+DRIVER
+CUSTOMER
+
+Contoh:
+
+Customer:
+
+GET /bookings/FT-123
+
+Backend mengecek:
+
+> booking.customer_id == current_user.customer_id
+
+
+
+Kalau bukan:
+
+403
+
+
+---
+
+4-D.10 — RBAC MATRIX
+
+Action	Owner	Admin	Operator	Driver	Customer
+
+View vehicles	✅	✅	✅	👁️	✅
+Manage vehicles	✅	✅	❌	❌	❌
+View bookings	✅	✅	✅	assigned	own
+Manage pricing	✅	✅	limited	❌	❌
+Manage users	✅	limited	❌	❌	❌
+View payments	✅	✅	limited	❌	own
+Assign driver	✅	✅	✅	❌	❌
+View audit	✅	limited	❌	❌	❌
+System settings	✅	limited	❌	❌	❌
+
+
+limited harus diterjemahkan menjadi permission yang eksplisit saat implementasi.
+
+
+---
+
+4-D.11 — PERMISSION MODEL
+
+Daripada hanya:
+
+if role === "admin"
+
+architecture sebaiknya siap:
+
+booking.read
+booking.create
+booking.update
+booking.cancel
+
+vehicle.read
+vehicle.manage
+
+pricing.read
+pricing.manage
+
+payment.read
+payment.manage
+
+driver.assign
+
+Dengan begitu nanti:
+
+> role dapat memiliki kumpulan permission.
+
+
+
+
+---
+
+4-D.12 — INPUT VALIDATION
+
+Setiap API request:
+
+REQUEST
+ ↓
+SCHEMA VALIDATION
+ ↓
+SANITIZATION
+ ↓
+DOMAIN VALIDATION
+
+Contoh:
+
+passengers = -3
+
+langsung:
+
+❌ 400 Bad Request
+
+
+---
+
+4-D.13 — SERVER-SIDE VALIDATION
+
+Jangan percaya:
+
+> browser.
+
+
+
+Customer dapat mengubah request manual.
+
+Misalnya frontend mengatakan:
+
+total = Rp500.000
+
+Backend:
+
+> tidak boleh percaya.
+
+
+
+Backend harus menghitung sendiri.
+
+🔥 Client-provided price bukan source of truth.
+
+
+---
+
+4-D.14 — PRICE SECURITY
+
+Flow benar:
+
+CLIENT
+ ↓
+REQUEST PARAMETERS
+ ↓
+SERVER
+ ↓
+PRICING ENGINE
+ ↓
+SERVER CALCULATED TOTAL
+ ↓
+QUOTE
+
+Bukan:
+
+CLIENT
+ ↓
+"total = 500000"
+ ↓
+DATABASE
+
+
+---
+
+4-D.15 — BOOKING SECURITY
+
+Booking creation:
+
+AUTH
+ ↓
+VALIDATE
+ ↓
+CHECK PERMISSION
+ ↓
+RECHECK AVAILABILITY
+ ↓
+CALCULATE PRICE
+ ↓
+TRANSACTION
+ ↓
+CREATE BOOKING
+
+Tidak boleh melewati:
+
+> availability recheck.
+
+
+
+
+---
+
+4-D.16 — IDEMPOTENCY
+
+Mutation penting:
+
+POST /bookings
+POST /payments
+POST /refunds
+
+menggunakan:
+
+Idempotency-Key
+
+Jika request dikirim dua kali:
+
+> hanya satu transaction yang tercipta.
+
+
+
+
+---
+
+4-D.17 — RATE LIMITING
+
+Public endpoint paling rentan:
+
+POST /availability/check
+POST /quotes/request
+POST /bookings
+
+Rate limit untuk:
+
+> bot abuse
+
+
+
+> spam
+
+
+
+> brute force
+
+
+
+> resource exhaustion
+
+
+
+
+---
+
+4-D.18 — BOT PROTECTION
+
+Jika traffic meningkat:
+
+WAF
++
+Rate Limit
++
+Bot Detection
+
+MVP tidak perlu over-engineer.
+
+Tetapi architecture harus siap dipasang di edge.
+
+
+---
+
+4-D.19 — CSRF
+
+Jika menggunakan cookie-based authentication:
+
+> CSRF protection wajib dipertimbangkan untuk state-changing requests.
+
+
+
+Gunakan:
+
+SameSite cookies
+
+
+CSRF strategy yang sesuai framework/auth provider.
+
+
+---
+
+4-D.20 — XSS
+
+Semua user-generated content:
+
+review;
+
+notes;
+
+customer name;
+
+messages;
+
+
+harus di-output secara aman.
+
+Jangan:
+
+> render arbitrary HTML dari user.
+
+
+
+
+---
+
+4-D.21 — SQL INJECTION
+
+Gunakan:
+
+> parameterized queries / ORM query APIs.
+
+
+
+Jangan:
+
+"SELECT * FROM bookings WHERE id = " + userInput
+
+🔥 Database access harus terparameterisasi.
+
+
+---
+
+4-D.22 — FILE UPLOAD SECURITY
+
+Vehicle photos / documents:
+
+Validasi:
+
+file type
+
+size
+
+extension
+
+content type
+
+Storage:
+
+> object storage.
+
+
+
+Jangan menyimpan arbitrary uploaded files langsung di application server.
+
+
+---
+
+4-D.23 — SECRETS
+
+Secret seperti:
+
+DATABASE_URL
+AUTH_SECRET
+PAYMENT_SECRET
+WHATSAPP_TOKEN
+
+tidak boleh:
+
+❌ GitHub repository
+
+❌ frontend bundle
+
+❌ source code
+
+Gunakan:
+
+> platform secret/environment management.
+
+
+
+
+---
+
+4-D.24 — ENVIRONMENTS
+
+Minimal:
+
+LOCAL
+  ↓
+DEVELOPMENT
+  ↓
+STAGING
+  ↓
+PRODUCTION
+
+MVP kecil bisa:
+
+> local + production
+
+
+
+tetapi architecture disiapkan untuk staging.
+
+
+---
+
+4-D.25 — DATABASE ENVIRONMENT
+
+Jangan:
+
+> development → production database.
+
+
+
+Setiap environment harus memiliki database/resource isolation yang jelas.
+
+
+---
+
+4-D.26 — LOGGING
+
+System harus mencatat:
+
+timestamp
+request_id
+user_id
+action
+endpoint
+status
+duration
+error
+
+Jangan log:
+
+❌ password
+
+❌ payment secrets
+
+❌ auth tokens
+
+❌ unnecessary personal data
+
+
+---
+
+4-D.27 — ERROR HANDLING
+
+API jangan mengirim stack trace ke customer.
+
+Internal:
+
+> detailed error.
+
+
+
+Public:
+
+{
+  "error": {
+    "code": "BOOKING_UNAVAILABLE",
+    "message": "The selected vehicle is no longer available."
+  }
+}
+
+
+---
+
+4-D.28 — ERROR CODES
+
+Standardize:
+
+VALIDATION_ERROR
+UNAUTHORIZED
+FORBIDDEN
+NOT_FOUND
+CONFLICT
+BOOKING_UNAVAILABLE
+QUOTE_EXPIRED
+PAYMENT_FAILED
+RATE_LIMITED
+INTERNAL_ERROR
+
+
+---
+
+4-D.29 — HTTP STATUS
+
+Gunakan konsisten:
+
+200 OK
+201 CREATED
+400 BAD REQUEST
+401 UNAUTHORIZED
+403 FORBIDDEN
+404 NOT FOUND
+409 CONFLICT
+422 UNPROCESSABLE
+429 RATE LIMITED
+500 INTERNAL ERROR
+
+
+---
+
+4-D.30 — API RESPONSE
+
+Standard response:
+
+{
+  "data": {},
+  "meta": {},
+  "request_id": "..."
+}
+
+Error:
+
+{
+  "error": {
+    "code": "...",
+    "message": "...",
+    "details": []
+  },
+  "request_id": "..."
+}
+
+
+---
+
+4-D.31 — API VERSIONING
+
+Untuk MVP:
+
+/api/v1/
+
+Contoh:
+
+/api/v1/bookings
+/api/v1/vehicles
+/api/v1/quotes
+
+Tidak perlu versioning berlebihan.
+
+Tapi dari awal kita menghindari breaking changes tanpa kontrol.
+
+
+---
+
+4-D.32 — DATABASE MIGRATIONS
+
+Schema tidak boleh diedit manual sembarangan.
+
+Gunakan:
+
+migration_001
+migration_002
+migration_003
+...
+
+Development:
+
+> migration
+
+
+
+Production:
+
+> migration
+
+
+
+Semua perubahan:
+
+> version controlled.
+
+
+
+
+---
+
+4-D.33 — BACKUP
+
+Minimum:
+
+Database
+
+Automated backup.
+
+Files
+
+Vehicle images/object storage memiliki durability + backup strategy.
+
+Recovery
+
+Harus ada:
+
+> restore procedure.
+
+
+
+Backup tanpa pernah diuji restore:
+
+> belum bisa dianggap reliable.
+
+
+
+
+---
+
+4-D.34 — AUDITABILITY
+
+Action sensitif:
+
+Admin changed price
+Admin cancelled booking
+Admin assigned driver
+Admin modified payment
+Owner changed permission
+
+→ audit_logs
+
+Audit harus menjawab:
+
+> Who / What / When / Which record
+
+
+
+
+---
+
+4-D.35 — DEPLOYMENT ARCHITECTURE
+
+Untuk MVP:
+
+INTERNET
+                    │
+                    ↓
+              EDGE / CDN
+                    │
+                    ↓
+              WEB APPLICATION
+                    │
+                    ↓
+                   API
+                    │
+           ┌────────┴────────┐
+           ↓                 ↓
+       DATABASE         OBJECT STORAGE
+           │
+           ↓
+       BACKUPS
+
+Tidak perlu:
+
+❌ Kubernetes
+
+❌ microservices
+
+❌ service mesh
+
+❌ complex orchestration
+
+untuk tahap awal.
+
+
+---
+
+4-D.36 — MODULAR MONOLITH
+
+Final direction:
+
+MODULAR MONOLITH
+
+Bukan:
+
+> giant spaghetti monolith.
+
+
+
+Struktur:
+
+modules/
+├── bookings
+├── vehicles
+├── pricing
+├── availability
+├── quotes
+├── payments
+├── customers
+└── operations
+
+Masing-masing memiliki:
+
+> domain logic + validation + repository/service boundary.
+
+
+
+
+---
+
+4-D.37 — CI/CD
+
+Flow:
+
+GIT PUSH
+   ↓
+CI
+   ├── lint
+   ├── typecheck
+   ├── unit tests
+   ├── build
+   └── security checks
+   ↓
+DEPLOY
+   ↓
+PRODUCTION
+
+
+---
+
+4-D.38 — DEPLOYMENT GATE
+
+Production deployment harus gagal jika:
+
+❌ TypeScript error
+
+❌ tests failed
+
+❌ build failed
+
+❌ migration invalid
+
+Jangan:
+
+> “deploy dulu, test belakangan.”
+
+
+
+
+---
+
+4-D.39 — ROLLBACK
+
+Setiap deployment harus punya:
+
+> rollback strategy.
+
+
+
+Jika release baru menyebabkan:
+
+> booking error
+
+
+
+kita harus bisa kembali ke:
+
+> previous stable version.
+
+
+
+
+---
+
+4-D.40 — DATABASE MIGRATION SAFETY
+
+Deployment:
+
+NEW CODE
++
+NEW MIGRATION
+
+harus backward-compatible jika memungkinkan.
+
+Jangan langsung:
+
+DROP COLUMN
+
+sementara code lama masih berjalan.
+
+
+---
+
+4-D.41 — MONITORING
+
+Core metrics:
+
+Availability
+
+API uptime.
+
+Performance
+
+Response time.
+
+Errors
+
+5xx rate.
+
+Business
+
+Booking failures.
+
+Quote failures.
+
+Payment failures.
+
+
+---
+
+4-D.42 — ALERTING
+
+Alert ketika:
+
+5xx ↑
+booking failure ↑
+payment failure ↑
+database unavailable
+API latency ↑
+
+Jangan hanya monitor:
+
+> server CPU.
+
+
+
+Kita monitor:
+
+business health
+
+
+---
+
+4-D.43 — OBSERVABILITY
+
+Minimum:
+
+Logs
++
+Metrics
++
+Error tracking
+
+Future:
+
+> distributed tracing.
+
+
+
+MVP tidak perlu over-engineer.
+
+
+---
+
+4-D.44 — DATA PRIVACY
+
+Customer information:
+
+> hanya dikumpulkan jika dibutuhkan.
+
+
+
+Contoh:
+
+Untuk booking:
+
+name
+
+phone
+
+email
+
+trip details
+
+Tidak perlu meminta:
+
+> data yang tidak relevan.
+
+
+
+
+---
+
+4-D.45 — RETENTION
+
+Kita harus punya policy:
+
+> berapa lama booking records disimpan?
+
+
+
+> berapa lama audit logs?
+
+
+
+> berapa lama payment records?
+
+
+
+> kapan inactive customer data dihapus/anonymized?
+
+
+
+Detail legal/business policy nanti masuk governance layer.
+
+
+---
+
+4-D.46 — SECURITY PRINCIPLE
+
+Kita pakai:
+
+ZERO TRUST BETWEEN LAYERS
+
+Frontend tidak dipercaya.
+
+API tidak percaya client input.
+
+Database tidak diekspos publik.
+
+Admin permission tidak diasumsikan.
+
+Payment status tidak dipercaya hanya dari browser.
+
+
+---
+
+4-D.47 — PAYMENT WEBHOOK
+
+Kalau nanti memakai payment gateway:
+
+PAYMENT PROVIDER
+       ↓
+WEBHOOK
+       ↓
+VERIFY SIGNATURE
+       ↓
+IDEMPOTENCY CHECK
+       ↓
+UPDATE PAYMENT
+       ↓
+UPDATE BOOKING
+       ↓
+EVENT
+
+Jangan:
+
+> frontend redirect = payment confirmed.
+
+
+
+🔥 Payment confirmation harus berasal dari trusted server-side verification/provider event.
+
+
+---
+
+4-D.48 — WHATSAPP FUTURE
+
+Phase 1:
+
+BOOKING
+ ↓
+GENERATE MESSAGE
+ ↓
+WHATSAPP LINK
+
+Phase 2:
+
+BOOKING EVENT
+ ↓
+NOTIFICATION SERVICE
+ ↓
+WHATSAPP API
+ ↓
+WEBHOOK
+ ↓
+DELIVERY STATUS
+
+
+---
+
+4-D.49 — ARCHITECTURE DECISION RECORD
+
+Keputusan penting yang sekarang kita lock:
+
+Decision	Direction
+
+Architecture	Modular Monolith
+API	Domain-oriented
+Auth	Secure session/managed auth
+Authorization	RBAC + permissions
+Database	Relational
+Availability	Server-side deterministic
+Pricing	Server-side engine
+Booking	Transactional
+Payment	Server-side verification
+Storage	Object storage
+Deployment	Managed cloud
+CI/CD	Automated
+Logging	Centralized
+Audit	Sensitive actions
+Analytics	Product + business events
+
+
+
+---
+
+4-D.50 — FINAL SYSTEM ARCHITECTURE
+
+FAMILY TRANSPORT
+                           │
+                    ┌──────┴──────┐
+                    │             │
+                 CUSTOMER       ADMIN
+                    │             │
+                    └──────┬──────┘
+                           ↓
+                    WEB APPLICATION
+                           ↓
+                     EDGE / HTTPS
+                           ↓
+                      API / v1
+                           ↓
+              ┌────────────┴────────────┐
+              │                         │
+        AUTH + RBAC               VALIDATION
+              │                         │
+              └────────────┬────────────┘
+                           ↓
+                   DOMAIN SERVICES
+                           │
+       ┌───────────┬───────┼────────┬───────────┐
+       ↓           ↓       ↓        ↓           ↓
+   BOOKINGS    AVAIL.   PRICING   QUOTES    PAYMENTS
+       │           │       │        │           │
+       └───────────┴───────┼────────┴───────────┘
+                           ↓
+                       DATABASE
+                       /       \
+                      ↓         ↓
+                  STORAGE     AUDIT
+                      │
+                      ↓
+                   BACKUPS
+
+                           +
+                      EVENT LAYER
+                           ↓
+                 Notifications / Analytics
+
+
+---
+
+🔒 SESSION 4 — NOW LOCKED
+
+Gsss, Session 4 sekarang selesai secara arsitektural.
+
+Kita telah menyelesaikan:
+
+4-A
+
+Product & System Architecture
+
+4-B
+
+Database / ERD Architecture
+
+4-C
+
+Booking + Availability + Pricing Engine
+
+4-D
+
+API + Security + Deployment Architecture
+
+Jadi sekarang kita punya:
+
+> BUSINESS → PRODUCT → UX → DATA → LOGIC → API → SECURITY → INFRASTRUCTURE
+
+
+
+Itu sudah cukup kuat untuk masuk ke tahap product specification, bukan lagi sekadar ide.
+
+
+---
+
+🚀 NEXT — SESSION 5
+
+MVP PRODUCT SPECIFICATION
+
+Di Session 5 kita tidak lagi membahas:
+
+> “Family Transport mau bikin apa?”
+
+
+
+Karena itu sudah selesai.
+
+Kita akan menulis blueprint buildable:
+
+SESSION 5
+│
+├── 5-A Product Scope
+├── 5-B Feature Inventory
+├── 5-C User Stories
+├── 5-D Acceptance Criteria
+├── 5-E Screen Specification
+├── 5-F Component Specification
+├── 5-G API Contract
+├── 5-H Database Contract
+├── 5-I Admin Specification
+└── 5-J MVP Release Checklist
+
+Target akhirnya:
+
+DEVELOPER / AI CODING AGENT BISA MEMBANGUN SISTEM BERDASARKAN SPEC INI TANPA MENEBak-NEBAK LOGIC BISNIS.
+
+Itu yang kita kejar di Session 5.

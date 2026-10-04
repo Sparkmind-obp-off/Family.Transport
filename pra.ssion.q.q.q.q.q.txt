@@ -1,0 +1,77 @@
+Memproses selama 8s
+
+Nah, ketemu titik yang kamu maksud. Link Google Maps pertama mengarah ke Family Transport, sebuah agen sewa mobil di Gaten, Dabag, Condongcatur, Depok, Sleman, DIY. Listing saat ini menunjukkan rating 4,8/5 dari 38 ulasan dan jam operasional 07.00–22.00 setiap hari. 
+
+Yang menarik: ada jejak lama nama “FAMILY TRANSPORT” di data agen wilayah Bantul dengan nama PIC Hartanto. Ini belum cukup untuk memastikan orang/bisnisnya sama, tetapi cukup kuat sebagai lead historis untuk deep dive. 
+
+Jadi kalau kita lanjutkan project Family Transport, menurutku jangan langsung bikin website dulu. Kita masuk ke:
+
+FAMILY TRANSPORT — DEEP DIVE LANJUTAN
+
+A. Business Reality
+
+siapa sebenarnya Family Transport
+
+layanan utama: rental mobil / transport / driver
+
+target customer
+
+area layanan
+
+model harga
+
+keunggulan dibanding rental Jogja lain
+
+bagaimana customer sekarang melakukan booking
+
+
+B. Digital Presence Audit
+
+Google Maps / GBP
+
+review & reputasi
+
+foto
+
+kategori bisnis
+
+informasi kontak
+
+WhatsApp
+
+Instagram / sosial media
+
+website bila ada
+
+konsistensi nama, alamat, nomor, dan brand
+
+
+C. Conversion Audit Kita cari jawaban paling penting:
+
+> “Kalau orang menemukan Family Transport di Google hari ini, seberapa mudah mereka berubah dari pencari → chat → booking?”
+
+
+
+Karena untuk bisnis rental, website bukan tujuan utama. Website harus menjadi mesin yang mengarahkan orang ke WhatsApp + inquiry + booking.
+
+D. Product Opportunity
+
+Dari titik ini kita bisa bentuk:
+
+Family Transport Digital System → Landing Page
+→ Fleet / Mobil
+→ Paket Rental
+→ Harga / Request Quote
+→ Area Layanan
+→ WhatsApp CTA
+→ Booking Request
+→ Customer Data
+→ Admin Dashboard
+→ Follow-up
+→ Review / Retention
+
+Dan nanti baru kita tentukan apakah cukup Digital Business, atau memang layak dinaikkan menjadi Digital System seperti pola project-project kita sebelumnya.
+
+Untuk link kedua share.google, aku belum bisa membaca isi redirect-nya dari tool, jadi belum akan mengarang isi link tersebut. Yang pertama sudah berhasil kita identifikasi dengan cukup jelas.
+
+Jadi status sekarang: Family Transport sudah teridentifikasi → kita bisa lanjut deep dive A–Z dari bisnis ini. 

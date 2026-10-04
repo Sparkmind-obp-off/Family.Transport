@@ -1,0 +1,2912 @@
+
+Gas gsss 🔥 langsung lompat ke SESSION 6.
+Kita skip 5-I dulu dan anggap seluruh keputusan Session 1–5-H sudah menjadi foundation/locked.
+
+🚀 SESSION 6 — MVP BUILD SPECIFICATION
+Sekarang kita berhenti di level research & architecture dan mulai mengubah semuanya menjadi blueprint yang siap dibuild.
+
+Prinsip:
+
+Session 1–5 = menentukan apa dan bagaimana system harus bekerja.
+Session 6 = menentukan apa yang benar-benar kita build untuk MVP.
+
+6.1 — MVP NORTH STAR
+Family Transport MVP harus mampu menjalankan satu siklus bisnis lengkap:
+
+CUSTOMER
+   ↓
+Lihat layanan
+   ↓
+Lihat kendaraan
+   ↓
+Cek kebutuhan perjalanan
+   ↓
+Request booking
+   ↓
+Operator menerima
+   ↓
+Availability diverifikasi
+   ↓
+Harga/Quote dibuat
+   ↓
+Customer menerima
+   ↓
+Customer confirm
+   ↓
+Payment dicatat
+   ↓
+Vehicle + Driver ditugaskan
+   ↓
+Trip dijalankan
+   ↓
+Trip selesai
+   ↓
+Booking COMPLETED
+🔥 Kalau flow ini belum berjalan end-to-end, MVP belum selesai.
+
+6.2 — MVP SCOPE
+Kita bagi menjadi 4 sisi:
+
+PUBLIC
+CUSTOMER
+OPERATION
+ADMIN
+PUBLIC
+Customer tanpa login bisa:
+
+Home
+Services
+Vehicles
+About
+Contact
+Booking CTA
+CUSTOMER
+Customer bisa:
+
+Register
+Login
+Profile
+Create booking
+View booking
+View quote
+Accept quote
+View payment status
+View trip status
+View booking history
+Cancel when permitted
+OPERATION
+Operator bisa:
+
+Dashboard
+Booking queue
+Booking detail
+Check availability
+Create quote
+Assign vehicle
+Assign driver
+Update trip status
+Record payment
+View customer
+ADMIN
+Admin bisa:
+
+Manage services
+Manage vehicles
+Manage vehicle categories
+Manage drivers
+Manage pricing
+Manage users
+Manage bookings
+Manage payments
+View audit logs
+6.3 — MVP CORE MODULES
+Kita lock:
+
+01 Auth
+02 Users
+03 Services
+04 Fleet
+05 Availability
+06 Booking
+07 Pricing
+08 Quote
+09 Payment
+10 Driver
+11 Trip
+12 Notification
+13 Audit
+14 Admin
+6.4 — MVP YANG TIDAK PERLU DULU
+Supaya tidak melebar:
+
+❌ Mobile native app
+❌ Complex loyalty system
+❌ AI recommendation
+❌ Advanced fleet GPS
+❌ Automatic route optimization
+❌ Multi-company marketplace
+❌ Complex accounting
+❌ Subscription
+❌ Multi-country
+❌ Microservices
+Semua itu bisa menjadi post-MVP.
+
+6.5 — MVP USER FLOW
+Customer
+HOME
+ ↓
+SERVICE
+ ↓
+BOOK
+ ↓
+TRIP DETAILS
+ ↓
+CONTACT
+ ↓
+SUBMIT
+ ↓
+BOOKING CREATED
+ ↓
+QUOTE
+ ↓
+ACCEPT
+ ↓
+PAYMENT
+ ↓
+CONFIRMED
+6.6 — OPERATOR FLOW
+LOGIN
+ ↓
+DASHBOARD
+ ↓
+NEW BOOKING
+ ↓
+REVIEW
+ ↓
+CHECK AVAILABILITY
+ ↓
+CALCULATE PRICE
+ ↓
+CREATE QUOTE
+ ↓
+SEND CUSTOMER
+ ↓
+WAIT ACCEPTANCE
+ ↓
+ASSIGN VEHICLE
+ ↓
+ASSIGN DRIVER
+ ↓
+MONITOR TRIP
+6.7 — ADMIN FLOW
+LOGIN
+ ↓
+ADMIN DASHBOARD
+ ↓
+CONFIGURATION
+ ├── Services
+ ├── Vehicles
+ ├── Drivers
+ ├── Pricing
+ └── Users
+6.8 — MVP SCREENS
+Public
+/
+ /services
+ /services/:slug
+ /vehicles
+ /about
+ /contact
+ /book
+Customer
+/login
+/register
+/account
+/account/bookings
+/account/bookings/:id
+/account/quotes/:id
+Admin
+/admin
+/admin/bookings
+/admin/bookings/:id
+/admin/vehicles
+/admin/drivers
+/admin/services
+/admin/pricing
+/admin/payments
+/admin/users
+/admin/audit
+6.9 — DASHBOARD MVP
+Owner/operator langsung melihat:
+
+Today's Bookings
+Pending Bookings
+Confirmed Trips
+Pending Payments
+Available Vehicles
+Active Trips
+Contoh:
+
+TODAY
+────────────────────
+Bookings       8
+Pending        2
+Confirmed      5
+Active Trips   3
+Payments       4
+6.10 — BOOKING DASHBOARD
+Table:
+
+Booking Code
+Customer
+Service
+Date
+Vehicle
+Driver
+Status
+Payment
+Action
+Filter:
+
+Today
+Upcoming
+Pending
+Confirmed
+Completed
+Cancelled
+6.11 — BOOKING DETAIL
+Single source operational view:
+
+BOOKING #FT-000123
+
+Customer
+Service
+Date
+Pickup
+Destination
+Passengers
+
+──────────────
+
+QUOTE
+Subtotal
+Discount
+Fees
+Total
+
+──────────────
+
+PAYMENT
+Status
+Amount
+Method
+
+──────────────
+
+OPERATIONS
+Vehicle
+Driver
+Trip Status
+🔥 Operator tidak perlu berpindah 7 halaman untuk memahami satu booking.
+
+6.12 — VEHICLE MANAGEMENT
+Admin:
+
+Vehicle
+Category
+Capacity
+Registration
+Status
+Images
+Compatible Services
+Actions:
+
+Edit
+Deactivate
+Maintenance
+View Trips
+6.13 — DRIVER MANAGEMENT
+Driver
+Phone
+License
+Status
+Current Assignment
+Upcoming Trips
+6.14 — SERVICE MANAGEMENT
+Service Name
+Description
+Status
+Pricing Type
+Compatible Vehicles
+6.15 — PRICING MVP
+Pricing engine harus mendukung minimal:
+
+FIXED
+HOURLY
+DISTANCE
+QUOTE_REQUIRED
+Tetapi MVP boleh mengaktifkan hanya model yang benar-benar dibutuhkan bisnis saat launch.
+
+6.16 — BOOKING DATA FLOW
+Customer
+ ↓
+Booking Form
+ ↓
+POST /bookings
+ ↓
+Validation
+ ↓
+Availability
+ ↓
+Create Booking
+ ↓
+PENDING
+Belum:
+
+CONFIRMED.
+
+Karena confirmation adalah business event berbeda.
+
+6.17 — QUOTE FLOW
+PENDING
+ ↓
+Operator reviews
+ ↓
+Pricing
+ ↓
+QUOTE CREATED
+ ↓
+SENT
+Customer:
+
+QUOTE
+ ↓
+ACCEPT
+ ↓
+availability re-check
+ ↓
+CONFIRMED
+6.18 — PAYMENT FLOW
+MVP:
+
+CONFIRMED
+ ↓
+Payment instructions
+ ↓
+Customer pays
+ ↓
+Operator verifies
+ ↓
+Record payment
+ ↓
+PAID
+Payment gateway otomatis dapat ditambahkan setelah core flow stabil.
+
+6.19 — TRIP FLOW
+CONFIRMED
+ ↓
+Vehicle Assigned
+ ↓
+Driver Assigned
+ ↓
+SCHEDULED
+ ↓
+DRIVER_ASSIGNED
+ ↓
+EN_ROUTE
+ ↓
+PICKED_UP
+ ↓
+IN_PROGRESS
+ ↓
+COMPLETED
+6.20 — NOTIFICATION MVP
+Minimal notification:
+
+Booking Created
+Quote Ready
+Quote Accepted
+Booking Confirmed
+Payment Received
+Driver Assigned
+Trip Reminder
+Trip Completed
+Booking Cancelled
+Channel architecture:
+
+Notification Service
+       ↓
+Provider
+Jadi provider bisa diganti.
+
+6.21 — API MVP
+Core:
+
+POST   /api/v1/auth/register
+POST   /api/v1/auth/login
+POST   /api/v1/auth/logout
+
+GET    /api/v1/services
+GET    /api/v1/services/:id
+
+GET    /api/v1/vehicles
+GET    /api/v1/vehicles/:id
+
+POST   /api/v1/availability/check
+
+POST   /api/v1/bookings
+GET    /api/v1/bookings/:id
+GET    /api/v1/me/bookings
+POST   /api/v1/bookings/:id/cancel
+
+POST   /api/v1/quotes
+GET    /api/v1/quotes/:id
+POST   /api/v1/quotes/:id/accept
+
+GET    /api/v1/payments/:id
+Admin:
+
+GET    /api/v1/admin/bookings
+PATCH  /api/v1/admin/bookings/:id
+
+POST   /api/v1/admin/vehicles
+PATCH  /api/v1/admin/vehicles/:id
+
+POST   /api/v1/admin/drivers
+PATCH  /api/v1/admin/drivers/:id
+
+POST   /api/v1/admin/quotes
+
+POST   /api/v1/admin/payments
+
+POST   /api/v1/admin/trips
+POST   /api/v1/admin/trips/:id/assign-driver
+POST   /api/v1/admin/trips/:id/assign-vehicle
+PATCH  /api/v1/admin/trips/:id/status
+6.22 — MVP DATABASE
+Kita gunakan schema Session 5-F:
+
+users
+user_profiles
+roles
+permissions
+user_roles
+
+services
+vehicle_categories
+vehicles
+vehicle_images
+service_vehicles
+
+drivers
+driver_assignments
+
+bookings
+booking_items
+booking_status_history
+
+quotes
+quote_items
+
+payments
+
+trips
+trip_stops
+
+pricing_rules
+pricing_snapshots
+
+notifications
+audit_logs
+Tidak kita redesign lagi di Session 6 kecuali ditemukan blocker nyata.
+
+6.23 — MVP ARCHITECTURE
+                WEB
+                 │
+                 ▼
+              API v1
+                 │
+       ┌─────────┴─────────┐
+       │                   │
+   APPLICATION          AUTH/RBAC
+       │
+       ▼
+     DOMAIN
+       │
+ ┌─────┼─────────────┐
+ ▼     ▼             ▼
+DB   PROVIDERS      EVENTS
+ │      │             │
+D1     R2       Notifications
+6.24 — BUILD ORDER
+Kita jangan build berdasarkan halaman.
+
+Kita build berdasarkan dependency.
+
+PHASE 1 — Foundation
+Project
+TypeScript
+Cloudflare
+D1
+Drizzle
+Environment
+Migration
+Testing
+PHASE 2 — Identity
+Users
+Auth
+Sessions
+Roles
+Permissions
+PHASE 3 — Catalog
+Services
+Vehicle Categories
+Vehicles
+Drivers
+PHASE 4 — Booking Engine
+Availability
+Booking
+State Machine
+PHASE 5 — Commercial
+Pricing
+Quotes
+Payments
+PHASE 6 — Operations
+Vehicle Assignment
+Driver Assignment
+Trips
+Trip Status
+PHASE 7 — Communication
+Notifications
+Events
+PHASE 8 — Admin
+Dashboard
+Management
+Audit
+PHASE 9 — Hardening
+Security
+Concurrency
+Tests
+Performance
+Error handling
+Deployment
+6.25 — DEFINITION OF DONE
+Feature tidak dianggap selesai hanya karena:
+
+"UI sudah kelihatan."
+
+Feature selesai jika:
+
+UI
++
+API
++
+Validation
++
+Business Logic
++
+Database
++
+Authorization
++
+Error Handling
++
+Tests
+sudah bekerja.
+
+6.26 — BOOKING DEFINITION OF DONE
+Booking dianggap selesai jika kita bisa membuktikan:
+
+Customer creates booking
+        ↓
+Database record created
+        ↓
+Correct status
+        ↓
+Operator sees it
+        ↓
+Availability works
+        ↓
+Quote generated
+        ↓
+Customer accepts
+        ↓
+Booking confirmed
+        ↓
+Payment recorded
+        ↓
+Vehicle assigned
+        ↓
+Driver assigned
+        ↓
+Trip completed
+6.27 — MVP ACCEPTANCE TEST
+Scenario A — Happy Path
+Customer
+→ register
+→ login
+→ book
+→ quote
+→ accept
+→ payment
+→ assigned
+→ trip completed
+Expected:
+
+SUCCESS.
+
+Scenario B — Double Booking
+Customer A
++
+Customer B
++
+same vehicle
++
+overlapping time
+Expected:
+
+hanya satu berhasil.
+
+Scenario C — Unauthorized Access
+Customer A:
+
+GET Customer B booking
+Expected:
+
+DENIED.
+
+Scenario D — Price Tampering
+Client mengirim:
+
+total = 1
+Expected:
+
+server tetap menghitung harga sebenarnya.
+
+Scenario E — Notification Failure
+WhatsApp/email gagal.
+
+Expected:
+
+booking tetap valid.
+
+6.28 — MVP SUCCESS METRIC
+Secara teknis:
+
+0 critical security issue
+0 double booking
+0 broken core transaction
+0 orphan transaction
+Secara bisnis:
+
+Customer can book
+Operator can process
+Owner can monitor
+6.29 — SESSION 6 OUTPUT
+Setelah Session 6 ini, kita punya:
+
+MVP SCOPE
+      ↓
+USER FLOWS
+      ↓
+SCREEN INVENTORY
+      ↓
+API INVENTORY
+      ↓
+DATABASE
+      ↓
+MODULES
+      ↓
+BUILD ORDER
+      ↓
+ACCEPTANCE TEST
+      ↓
+DEFINITION OF DONE
+Jadi sekarang kita sudah keluar dari fase:
+
+"Kita mau bikin apa?"
+
+dan masuk ke:
+
+"Ini persis yang harus dibuild."
+
+🔒 SESSION 6 — FOUNDATION LOCK
+Family Transport MVP v0.1
+
+Architecture     → LOCKED
+Database         → LOCKED
+API Contract     → LOCKED
+Security         → LOCKED
+Reliability      → LOCKED
+MVP Scope        → LOCKED
+Build Order      → LOCKED
+Acceptance       → LOCKED
+Dan sesuai arahan gsss, kita nggak perlu menyelesaikan Session 5-I sekarang.
+
+NEXT STEP
+Kita bisa langsung pecah SESSION 6-A — PROJECT FOUNDATION & REPOSITORY SETUP, yaitu blueprint teknis paling awal:
+
+Repository
+→ monorepo
+→ package manager
+→ TypeScript
+→ Cloudflare Worker
+→ D1
+→ Drizzle
+→ migrations
+→ env
+→ CI
+→ test runner
+→ initial folder structure
+Ini baru titik di mana kita mulai mengubah blueprint Family Transport menjadi project nyata.
+
+
+Baik bleh d ehd ke gysss ds ssiond kd 6 a d kd gyssssdnsb..
+
+Gas gsss 🔥 kita masuk SESSION 6-A — PROJECT FOUNDATION & REPOSITORY SETUP.
+
+Di sini kita mulai menurunkan blueprint Family Transport menjadi project teknis nyata. Belum masuk fitur booking dulu. Kita bikin fondasinya supaya semua session berikutnya tinggal build di atasnya.
+
+SESSION 6-A — PROJECT FOUNDATION
+6-A.1 — OBJECTIVE
+Target Session 6-A:
+
+Repository
+   ↓
+Monorepo
+   ↓
+TypeScript
+   ↓
+Cloudflare Worker
+   ↓
+D1
+   ↓
+Drizzle
+   ↓
+Environment
+   ↓
+Testing
+   ↓
+CI
+   ↓
+Foundation ready
+Output akhirnya:
+
+Family Transport MVP Foundation v0.1
+
+6-A.2 — REPOSITORY
+Struktur awal:
+
+family-transport/
+│
+├── apps/
+│   └── web/
+│
+├── packages/
+│   ├── api/
+│   ├── auth/
+│   ├── config/
+│   ├── db/
+│   ├── domain/
+│   ├── providers/
+│   └── validation/
+│
+├── migrations/
+├── scripts/
+├── tests/
+│
+├── docs/
+│
+├── .github/
+│   └── workflows/
+│
+├── .gitignore
+├── package.json
+├── tsconfig.json
+├── wrangler.jsonc
+├── vitest.config.ts
+└── README.md
+6-A.3 — MONOREPO DECISION
+Kita gunakan:
+
+pnpm workspaces
+
+Karena project memiliki beberapa package yang harus berbagi:
+
+types
+domain
+validation
+database
+config
+Daripada semua dicampur dalam satu folder besar.
+
+6-A.4 — PACKAGE STRUCTURE
+Root:
+
+package.json
+Workspace:
+
+apps/*
+packages/*
+Contoh dependency:
+
+apps/web
+   ↓
+packages/api
+   ↓
+packages/domain
+   ↓
+packages/db
+6-A.5 — PACKAGE RESPONSIBILITY
+@family/domain
+Business rules.
+
+booking
+availability
+pricing
+quote
+payment
+trip
+@family/db
+Database:
+
+schema
+repositories
+migrations
+@family/api
+HTTP:
+
+routes
+middleware
+handlers
+@family/auth
+sessions
+password hashing
+identity
+RBAC
+@family/validation
+Zod schemas
+DTO validation
+@family/providers
+email
+messaging
+payment
+storage
+@family/config
+environment
+runtime configuration
+feature flags
+6-A.6 — TYPESCRIPT
+Strict mode:
+
+strict: true
+Kita tidak menggunakan:
+
+any
+secara sembarangan.
+
+Jika memang external data unknown:
+
+unknown
+kemudian divalidasi.
+
+6-A.7 — TYPESCRIPT RULE
+Target:
+
+Type-safe from request → database → response
+Flow:
+
+Unknown Input
+      ↓
+Validation
+      ↓
+Typed DTO
+      ↓
+Domain
+      ↓
+Typed Result
+6-A.8 — CLOUDFLARE
+Runtime target:
+
+Cloudflare Workers
+
+Worker menjadi backend/API runtime.
+
+Internet
+   ↓
+Cloudflare
+   ↓
+Worker
+   ↓
+Application
+6-A.9 — D1
+Database:
+
+Cloudflare D1
+
+Karena MVP membutuhkan:
+
+relational data
+transactions
+constraints
+queries
+dan D1 cocok dengan architecture Cloudflare yang sudah kita pilih.
+
+6-A.10 — DATABASE BOUNDARY
+Jangan:
+
+Route
+ ↓
+raw SQL everywhere
+Gunakan:
+
+Route
+ ↓
+Use Case
+ ↓
+Repository
+ ↓
+Drizzle
+ ↓
+D1
+6-A.11 — DRIZZLE
+Drizzle digunakan sebagai database layer.
+
+Struktur:
+
+packages/db/
+├── schema/
+├── repositories/
+├── migrations/
+└── index.ts
+Schema menjadi source of truth aplikasi.
+
+6-A.12 — MIGRATION
+Database versioning:
+
+001_initial_schema
+002_auth
+003_catalog
+004_booking
+...
+Tidak boleh:
+
+mengubah production database secara manual tanpa migration.
+
+6-A.13 — INITIAL DATABASE
+Session 6-A belum perlu membuat seluruh business schema.
+
+Kita mulai dengan foundation:
+
+users
+sessions
+roles
+permissions
+user_roles
+Kemudian feature schema masuk pada session berikutnya.
+
+6-A.14 — USER FOUNDATION
+Minimal:
+
+users
+────────────
+id
+email
+phone
+password_hash
+status
+created_at
+updated_at
+Status:
+
+ACTIVE
+SUSPENDED
+DELETED
+6-A.15 — SESSION TABLE
+sessions
+────────────
+id
+user_id
+expires_at
+created_at
+revoked_at
+Index:
+
+user_id
+expires_at
+6-A.16 — ROLE FOUNDATION
+roles
+────────
+id
+name
+Initial:
+
+CUSTOMER
+OPERATOR
+ADMIN
+OWNER
+6-A.17 — PERMISSION FOUNDATION
+permissions
+────────────
+id
+key
+description
+Examples:
+
+booking.create
+booking.read
+booking.update
+booking.cancel
+
+vehicle.read
+vehicle.manage
+
+driver.read
+driver.manage
+
+payment.read
+payment.manage
+6-A.18 — RBAC RELATION
+users
+  │
+  ▼
+user_roles
+  │
+  ▼
+roles
+  │
+  ▼
+permissions
+Jadi role tidak hard-coded di setiap route.
+
+6-A.19 — ENVIRONMENT
+Kita pisahkan:
+
+.env.local
+.env.example
+.env.example boleh masuk Git.
+
+.env.local:
+
+jangan masuk Git.
+
+6-A.20 — ENV VARIABLES
+Foundation:
+
+ENVIRONMENT
+APP_URL
+DATABASE
+AUTH_SECRET
+SESSION_TTL
+Provider secrets nanti ditambahkan ketika provider benar-benar diaktifkan.
+
+6-A.21 — SECRET RULE
+Tidak boleh:
+
+API_KEY = "xxxxx"
+di source code.
+
+Semua production secrets:
+
+Cloudflare secrets/environment configuration.
+
+6-A.22 — CONFIG VALIDATION
+Application startup:
+
+load env
+ ↓
+validate
+ ↓
+create config
+ ↓
+start application
+Jika:
+
+AUTH_SECRET missing
+maka:
+
+fail fast.
+
+6-A.23 — API FOUNDATION
+Base path:
+
+/api/v1
+Health endpoint:
+
+GET /api/v1/health
+Response:
+
+{
+  "status": "ok"
+}
+Tujuannya sederhana:
+
+memastikan Worker + application runtime hidup.
+
+6-A.24 — ERROR CONTRACT
+Semua API error memakai format konsisten:
+
+{
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Invalid request",
+    "requestId": "..."
+  }
+}
+Jangan setiap endpoint membuat format error sendiri.
+
+6-A.25 — REQUEST ID
+Setiap request:
+
+request
+ ↓
+requestId
+ ↓
+logs
+ ↓
+response
+Contoh:
+
+X-Request-ID
+Jika customer melapor:
+
+"booking saya error"
+
+operator bisa mencari:
+
+requestId
+6-A.26 — LOGGER
+Foundation logger minimal:
+
+info
+warn
+error
+Structured logging:
+
+{
+  "level": "error",
+  "requestId": "...",
+  "route": "...",
+  "errorCode": "..."
+}
+Jangan log password/token.
+
+6-A.27 — TEST FOUNDATION
+Testing stack:
+
+Vitest
+Folder:
+
+tests/
+├── unit/
+├── integration/
+└── e2e/
+Awal:
+
+health.test
+config.test
+database.test
+6-A.28 — FIRST TEST
+Test:
+
+GET /api/v1/health
+Expected:
+
+HTTP 200
+status = ok
+Ini menjadi:
+
+smoke test pertama.
+
+6-A.29 — CI FOUNDATION
+GitHub Actions:
+
+push
+ ↓
+install
+ ↓
+typecheck
+ ↓
+lint
+ ↓
+test
+ ↓
+build
+Jika gagal:
+
+CI gagal.
+
+6-A.30 — BRANCH STRATEGY
+Sederhana:
+
+main
+Production.
+
+Feature:
+
+feat/auth
+feat/booking
+feat/pricing
+Bug:
+
+fix/double-booking
+fix/payment-webhook
+6-A.31 — COMMIT CONVENTION
+Gunakan:
+
+feat:
+fix:
+refactor:
+test:
+docs:
+chore:
+Contoh:
+
+feat: initialize worker foundation
+feat: add session repository
+test: add health endpoint test
+6-A.32 — README
+README awal harus menjelaskan:
+
+Family Transport
+Purpose
+Platform operasional + booking transport.
+
+Stack
+TypeScript
+Cloudflare Workers
+D1
+Drizzle
+React/Next-compatible web
+Vitest
+Development
+install
+dev
+test
+build
+deploy
+Architecture
+Link ke:
+
+docs/architecture.md
+6-A.33 — DOCUMENTATION
+docs/:
+
+architecture.md
+database.md
+api.md
+security.md
+development.md
+deployment.md
+mvp.md
+Dokumentasi bukan kosmetik.
+
+Ini menjadi:
+
+context source untuk developer maupun coding agent.
+
+6-A.34 — CODING AGENT RULE
+Nanti jika kita memakai AI coding agent, agent harus membaca:
+
+README.md
+docs/architecture.md
+docs/mvp.md
+docs/security.md
+sebelum mengubah architecture.
+
+Dan:
+
+AI tidak boleh mengubah locked architecture tanpa explicit decision.
+
+6-A.35 — FOUNDATION RULE
+Agent tidak boleh tiba-tiba:
+
+ganti database
+ganti framework
+buat microservices
+ganti auth strategy
+hanya karena "lebih mudah".
+
+Semua perubahan architecture:
+
+Proposal
+ ↓
+Reason
+ ↓
+Impact
+ ↓
+Decision
+ ↓
+Documentation
+6-A.36 — INITIAL FILE TREE
+Setelah foundation:
+
+family-transport/
+│
+├── apps/
+│   └── web/
+│
+├── packages/
+│   ├── api/
+│   │   └── src/
+│   │
+│   ├── auth/
+│   │   └── src/
+│   │
+│   ├── config/
+│   │   └── src/
+│   │
+│   ├── db/
+│   │   └── src/
+│   │       ├── schema/
+│   │       └── repositories/
+│   │
+│   ├── domain/
+│   │   └── src/
+│   │
+│   ├── providers/
+│   │   └── src/
+│   │
+│   └── validation/
+│       └── src/
+│
+├── tests/
+│
+├── docs/
+│
+├── migrations/
+│
+├── .github/
+│   └── workflows/
+│
+├── package.json
+├── pnpm-workspace.yaml
+├── tsconfig.json
+├── wrangler.jsonc
+├── vitest.config.ts
+├── .env.example
+└── README.md
+6-A.37 — FOUNDATION ACCEPTANCE CRITERIA
+Session 6-A dianggap selesai jika:
+
+Repository
+☑ repository exists
+☑ workspace works
+☑ packages resolve
+TypeScript
+☑ strict mode
+☑ typecheck passes
+Cloudflare
+☑ Worker boots
+☑ local development works
+Database
+☑ D1 configured
+☑ Drizzle configured
+☑ migration works
+Auth foundation
+☑ users table
+☑ sessions table
+☑ RBAC tables
+API
+☑ /api/v1/health
+☑ standard error response
+☑ request ID
+Testing
+☑ Vitest
+☑ health test
+CI
+☑ GitHub Actions
+☑ typecheck
+☑ test
+☑ build
+6-A.38 — DEFINITION OF DONE
+6-A selesai bukan ketika folder sudah dibuat.
+
+Selesai ketika kita bisa menjalankan:
+
+pnpm install
+        ↓
+pnpm typecheck
+        ↓
+pnpm test
+        ↓
+pnpm build
+        ↓
+Worker starts
+        ↓
+D1 connects
+        ↓
+/api/v1/health → 200
+🔥 Itu baru foundation yang valid.
+
+🔒 SESSION 6-A — LOCKED
+Architecture yang sudah kita sepakati:
+
+TypeScript
+      +
+pnpm monorepo
+      +
+Cloudflare Workers
+      +
+D1
+      +
+Drizzle
+      +
+REST API
+      +
+Zod
+      +
+Vitest
+      +
+GitHub Actions
+Dan belum kita masukkan booking/pricing/fleet logic ke foundation.
+
+Itu sengaja.
+
+Karena kita ingin:
+
+Foundation → Identity → Catalog → Booking → Commercial → Operations
+
+bukan membangun semuanya sekaligus lalu sulit debugging.
+
+NEXT: SESSION 6-B
+Kita lanjut ke AUTH + IDENTITY FOUNDATION:
+
+User
+ ↓
+Registration
+ ↓
+Password hashing
+ ↓
+Login
+ ↓
+Session
+ ↓
+Logout
+ ↓
+RBAC
+ ↓
+Permission middleware
+Ini akan menjadi first real functional module dari Family Transport.
+
+
+Ngga kta lngsunggdbkd bkinn dkd msterr dm systemm dkd prompt. Kd untuk d kd genspark.ai d kd aj dkd gysssss dks s gs dkd gysss dns sgss dkd gysss ds ..
+
+Iya gsss 🔥 lebih tepat. Jangan kita coding manual satu-satu dulu. Kita bikin MASTER BUILD PROMPT yang bisa langsung kamu masukkan ke Genspark supaya dia yang membangun project berdasarkan seluruh specification yang sudah kita kunci.
+
+Dan prompt-nya jangan cuma bilang "buat website Family Transport". Kita harus kasih Genspark role + context + architecture + scope + rules + execution protocol + acceptance criteria supaya agent tidak improvisasi sembarangan.
+
+🚀 FAMILY TRANSPORT — MASTER SYSTEM BUILD PROMPT v1.0
+Copy prompt di bawah ini ke Genspark.ai sebagai MASTER INSTRUCTION / BUILD PROMPT.
+
+============================================================
+FAMILY TRANSPORT
+MASTER SYSTEM BUILD PROMPT v1.0
+============================================================
+
+ROLE
+
+You are a SENIOR PRODUCT ARCHITECT, FULL-STACK ENGINEER,
+SECURITY ENGINEER, UX ENGINEER, DATABASE ENGINEER,
+QA ENGINEER, and DEVOPS ENGINEER.
+
+Your task is to BUILD the Family Transport digital system
+based on the specification below.
+
+You are not allowed to invent a fundamentally different
+architecture simply because another approach is easier.
+
+The architecture and business rules defined in this document
+are the source of truth.
+
+============================================================
+1. PRODUCT
+============================================================
+
+Product Name:
+
+FAMILY TRANSPORT
+
+Product Type:
+
+Digital booking + operational management system for a family
+transport business.
+
+The system must connect:
+
+CUSTOMER
+↓
+BOOKING
+↓
+AVAILABILITY
+↓
+QUOTE
+↓
+PAYMENT
+↓
+VEHICLE
+↓
+DRIVER
+↓
+TRIP
+↓
+COMPLETION
+
+The MVP must be operationally usable, not merely a visual
+prototype.
+
+============================================================
+2. CORE PRODUCT PRINCIPLE
+============================================================
+
+The system must make it easy for:
+
+1. Customers to request transportation.
+2. Operators to process requests.
+3. Operators to verify availability.
+4. Operators to create pricing/quotes.
+5. Customers to accept quotes.
+6. Operators to confirm bookings.
+7. Operators to assign vehicles.
+8. Operators to assign drivers.
+9. Operators to manage trips.
+10. Owners/admins to monitor the business.
+
+============================================================
+3. ARCHITECTURE
+============================================================
+
+Use:
+
+MODULAR MONOLITH
++
+API-FIRST
++
+CLOUD-NATIVE
++
+DOMAIN-ORIENTED MODULES
+
+DO NOT build microservices for the MVP.
+
+The architecture must remain modular so services can be
+extracted later if necessary.
+
+High-level architecture:
+
+WEB
+ ↓
+REST API
+ ↓
+APPLICATION LAYER
+ ↓
+DOMAIN LAYER
+ ↓
+REPOSITORIES / INFRASTRUCTURE
+ ↓
+DATABASE / EXTERNAL PROVIDERS
+
+============================================================
+4. REQUIRED TECH STACK
+============================================================
+
+Primary language:
+
+TypeScript
+
+Package management:
+
+pnpm
+
+Repository:
+
+GitHub
+
+Runtime/deployment:
+
+Cloudflare Workers
+
+Database:
+
+Cloudflare D1
+
+Database tooling:
+
+Drizzle ORM
+
+Validation:
+
+Zod
+
+Testing:
+
+Vitest
+
+E2E testing:
+
+Playwright
+
+CI:
+
+GitHub Actions
+
+Object storage:
+
+Cloudflare R2 abstraction
+
+External services:
+
+Provider abstraction
+
+Do not tightly couple the business domain to any
+specific payment, WhatsApp, email, or storage vendor.
+
+============================================================
+5. REPOSITORY STRUCTURE
+============================================================
+
+Create a maintainable monorepo:
+
+family-transport/
+
+├── apps/
+│   └── web/
+│
+├── packages/
+│   ├── api/
+│   ├── auth/
+│   ├── config/
+│   ├── db/
+│   ├── domain/
+│   ├── providers/
+│   └── validation/
+│
+├── tests/
+│   ├── unit/
+│   ├── integration/
+│   └── e2e/
+│
+├── migrations/
+├── scripts/
+├── docs/
+│
+├── .github/
+│   └── workflows/
+│
+├── package.json
+├── pnpm-workspace.yaml
+├── tsconfig.json
+├── wrangler.jsonc
+├── vitest.config.ts
+├── .env.example
+└── README.md
+
+Keep responsibilities separated.
+
+============================================================
+6. DOMAIN MODULES
+============================================================
+
+The system must contain these logical modules:
+
+AUTH
+USERS
+SERVICES
+VEHICLES
+VEHICLE CATEGORIES
+AVAILABILITY
+BOOKINGS
+PRICING
+QUOTES
+PAYMENTS
+DRIVERS
+TRIPS
+NOTIFICATIONS
+AUDIT
+ADMIN
+
+Each domain must have clear boundaries.
+
+============================================================
+7. MVP SCOPE
+============================================================
+
+PUBLIC:
+
+/
+ /services
+ /services/:slug
+ /vehicles
+ /about
+ /contact
+ /book
+
+CUSTOMER:
+
+/login
+/register
+/account
+/account/bookings
+/account/bookings/:id
+/account/quotes/:id
+
+ADMIN/OPERATOR:
+
+/admin
+/admin/bookings
+/admin/bookings/:id
+/admin/vehicles
+/admin/drivers
+/admin/services
+/admin/pricing
+/admin/payments
+/admin/users
+/admin/audit
+
+============================================================
+8. CUSTOMER CAPABILITIES
+============================================================
+
+Customer can:
+
+- Register
+- Login
+- Logout
+- Manage profile
+- Browse services
+- Browse vehicles
+- Submit booking request
+- View own bookings
+- View quote
+- Accept quote
+- View payment status
+- View trip status
+- Cancel booking when business rules allow
+- View booking history
+
+Customers must never access another customer's records.
+
+============================================================
+9. OPERATOR CAPABILITIES
+============================================================
+
+Operator can:
+
+- Login
+- View dashboard
+- View booking queue
+- Review booking
+- Check availability
+- Create quote
+- Update booking
+- Assign vehicle
+- Assign driver
+- Record payment
+- Manage trip status
+- View relevant customer information
+
+============================================================
+10. ADMIN CAPABILITIES
+============================================================
+
+Admin can:
+
+- Manage users
+- Manage services
+- Manage vehicle categories
+- Manage vehicles
+- Manage drivers
+- Manage pricing rules
+- Manage bookings
+- Manage payments
+- View audit logs
+
+OWNER has highest operational authority.
+
+============================================================
+11. AUTHENTICATION
+============================================================
+
+Use secure session-based authentication.
+
+Session must use secure cookie characteristics:
+
+HttpOnly
+Secure
+SameSite
+
+Never store sensitive authentication credentials in
+localStorage unless there is an explicit security reason.
+
+Password must never be stored in plaintext.
+
+Use strong password hashing.
+
+Session model:
+
+sessions
+---------
+id
+user_id
+expires_at
+created_at
+revoked_at
+
+Logout must revoke the session.
+
+============================================================
+12. RBAC
+============================================================
+
+Initial roles:
+
+CUSTOMER
+OPERATOR
+ADMIN
+OWNER
+
+Use role + permission based authorization.
+
+Example permissions:
+
+booking.create
+booking.read
+booking.update
+booking.cancel
+
+vehicle.read
+vehicle.manage
+
+driver.read
+driver.manage
+
+payment.read
+payment.manage
+
+pricing.read
+pricing.manage
+
+admin.users.manage
+
+Do not rely exclusively on frontend role checks.
+
+Authorization must be enforced server-side.
+
+============================================================
+13. DATABASE FOUNDATION
+============================================================
+
+Initial foundation entities:
+
+users
+sessions
+roles
+permissions
+user_roles
+
+Later business entities include:
+
+user_profiles
+services
+vehicle_categories
+vehicles
+vehicle_images
+service_vehicles
+drivers
+driver_assignments
+bookings
+booking_items
+booking_status_history
+quotes
+quote_items
+payments
+trips
+trip_stops
+pricing_rules
+pricing_snapshots
+notifications
+audit_logs
+
+Use proper:
+
+PRIMARY KEYS
+FOREIGN KEYS
+INDEXES
+UNIQUE CONSTRAINTS
+NOT NULL CONSTRAINTS
+CHECK CONSTRAINTS where appropriate
+
+Use migrations.
+
+Never rely on undocumented manual production schema changes.
+
+============================================================
+14. API
+============================================================
+
+API base:
+
+/api/v1
+
+Initial endpoints:
+
+POST /api/v1/auth/register
+POST /api/v1/auth/login
+POST /api/v1/auth/logout
+
+GET /api/v1/services
+GET /api/v1/services/:id
+
+GET /api/v1/vehicles
+GET /api/v1/vehicles/:id
+
+POST /api/v1/availability/check
+
+POST /api/v1/bookings
+GET /api/v1/bookings/:id
+GET /api/v1/me/bookings
+POST /api/v1/bookings/:id/cancel
+
+POST /api/v1/quotes
+GET /api/v1/quotes/:id
+POST /api/v1/quotes/:id/accept
+
+GET /api/v1/payments/:id
+
+Health:
+
+GET /api/v1/health
+
+Admin endpoints must be protected by RBAC.
+
+============================================================
+15. API ERROR CONTRACT
+============================================================
+
+Use a consistent structure:
+
+{
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Invalid request",
+    "requestId": "..."
+  }
+}
+
+Never expose sensitive internal implementation details.
+
+Every request should have a request ID.
+
+============================================================
+16. INPUT VALIDATION
+============================================================
+
+All external input is untrusted.
+
+Validate server-side using Zod.
+
+Validate:
+
+- types
+- formats
+- required fields
+- ranges
+- enum values
+- business constraints
+
+Never pass raw request bodies directly into domain logic.
+
+============================================================
+17. CORE BUSINESS RULE
+============================================================
+
+NEVER TRUST THE CLIENT.
+
+Frontend values are not authoritative.
+
+Server is authoritative for:
+
+- availability
+- price
+- discount
+- booking status
+- payment status
+- resource assignment
+- permissions
+
+============================================================
+18. PRICE INTEGRITY
+============================================================
+
+Never trust a client-supplied total.
+
+If client sends:
+
+total = 1
+
+do not use it.
+
+Server must calculate price using pricing rules.
+
+Discounts must also be calculated and validated server-side.
+
+============================================================
+19. AVAILABILITY
+============================================================
+
+Availability must be calculated server-side.
+
+Never trust:
+
+available = true
+
+from the client.
+
+Availability must consider relevant:
+
+- vehicle status
+- vehicle capacity
+- service compatibility
+- time overlap
+- maintenance
+- existing reservations
+- operational constraints
+
+============================================================
+20. DOUBLE BOOKING PROTECTION
+============================================================
+
+This is CRITICAL.
+
+The system must protect against two customers attempting to
+reserve the same vehicle/resource for overlapping periods.
+
+Availability check alone is NOT enough.
+
+At reservation/confirmation time:
+
+1. Recheck availability.
+2. Perform operation within the appropriate transaction/
+   concurrency boundary.
+3. Prevent conflicting reservation.
+4. Return a conflict response if unavailable.
+
+Expected behavior:
+
+Customer A → SUCCESS
+Customer B → CONFLICT
+
+Never allow both to silently succeed.
+
+============================================================
+21. IDEMPOTENCY
+============================================================
+
+Create/transactional endpoints must support idempotency
+where duplicate requests could create duplicate business
+transactions.
+
+Support:
+
+Idempotency-Key
+
+Repeated request with same valid key must not create
+duplicate booking/payment effects.
+
+Payment webhook processing must also be idempotent.
+
+============================================================
+22. BOOKING STATE MACHINE
+============================================================
+
+Use controlled state transitions.
+
+Example:
+
+DRAFT
+↓
+PENDING
+↓
+QUOTED
+↓
+CONFIRMED
+↓
+COMPLETED
+
+Cancellation may be allowed from permitted states.
+
+Invalid transitions must be rejected server-side.
+
+Frontend must not directly control state transitions.
+
+============================================================
+23. QUOTE FLOW
+============================================================
+
+Booking:
+
+PENDING
+↓
+Operator reviews
+↓
+Quote created
+↓
+Customer receives quote
+↓
+Customer accepts
+↓
+Availability rechecked
+↓
+Booking confirmed
+
+Expired or invalid quotes must not be accepted.
+
+============================================================
+24. PAYMENT INTEGRITY
+============================================================
+
+Payment amount is server-authoritative.
+
+Webhook flow:
+
+provider
+↓
+signature verification
+↓
+payload validation
+↓
+idempotency check
+↓
+payment processing
+
+Duplicate webhook must not create duplicate payment effects.
+
+============================================================
+25. TRIP FLOW
+============================================================
+
+Confirmed booking:
+
+CONFIRMED
+↓
+vehicle assigned
+↓
+driver assigned
+↓
+SCHEDULED
+↓
+DRIVER_ASSIGNED
+↓
+EN_ROUTE
+↓
+PICKED_UP
+↓
+IN_PROGRESS
+↓
+COMPLETED
+
+Enforce valid state transitions.
+
+============================================================
+26. NOTIFICATIONS
+============================================================
+
+Notification service must be abstracted.
+
+Possible events:
+
+BookingCreated
+QuoteCreated
+QuoteAccepted
+BookingConfirmed
+PaymentReceived
+DriverAssigned
+TripReminder
+TripCompleted
+BookingCancelled
+
+Notification failure must NOT corrupt the primary booking
+transaction.
+
+Example:
+
+Booking = CONFIRMED
+WhatsApp = FAILED
+
+The booking remains CONFIRMED.
+
+============================================================
+27. PROVIDER ABSTRACTION
+============================================================
+
+Use interfaces.
+
+Example:
+
+PaymentProvider
+MessagingProvider
+EmailProvider
+StorageProvider
+
+Business domain must depend on interfaces rather than
+specific vendor SDKs.
+
+Allow future implementations such as:
+
+Mock
+Midtrans
+Xendit
+WhatsApp provider
+Email provider
+R2
+
+without changing core business logic.
+
+============================================================
+28. SECURITY
+============================================================
+
+Implement protection against:
+
+- authentication bypass
+- authorization bypass
+- IDOR
+- SQL injection
+- XSS
+- CSRF where applicable
+- brute force
+- excessive requests
+- price tampering
+- duplicate transactions
+- insecure file upload
+- privilege escalation
+
+Use:
+
+- parameterized queries
+- secure cookies
+- rate limiting
+- input validation
+- authorization middleware
+- origin/CORS controls
+- security headers where applicable
+
+============================================================
+29. AUDIT LOG
+============================================================
+
+Sensitive operations should generate audit records.
+
+Examples:
+
+login
+logout
+booking.created
+booking.confirmed
+booking.cancelled
+vehicle.assigned
+driver.assigned
+payment.recorded
+price.override
+role.changed
+
+Audit logs should be append-oriented and protected from
+ordinary application deletion.
+
+============================================================
+30. OBSERVABILITY FOUNDATION
+============================================================
+
+Implement:
+
+- structured logging
+- request IDs
+- health endpoint
+- consistent errors
+- basic operational logging
+
+Never log:
+
+- passwords
+- session secrets
+- API secrets
+- payment secrets
+- unnecessary sensitive customer information
+
+============================================================
+31. TESTING
+============================================================
+
+Use:
+
+Vitest for unit/integration testing.
+
+Playwright for E2E.
+
+Minimum tests:
+
+AUTH
+- registration
+- login
+- logout
+- session expiration
+
+RBAC
+- customer cannot access admin endpoint
+- customer cannot access another customer's booking
+
+BOOKING
+- valid booking
+- invalid booking
+- invalid state transition
+- double booking
+
+PRICING
+- server-calculated price
+- price tampering protection
+
+PAYMENT
+- valid payment
+- duplicate webhook
+
+NOTIFICATION
+- notification failure does not corrupt booking
+
+============================================================
+32. GOLDEN E2E FLOW
+============================================================
+
+The most important E2E scenario:
+
+Customer
+↓
+Register
+↓
+Login
+↓
+Browse service
+↓
+Create booking
+↓
+Operator sees booking
+↓
+Operator checks availability
+↓
+Operator creates quote
+↓
+Customer receives quote
+↓
+Customer accepts
+↓
+Availability rechecked
+↓
+Booking confirmed
+↓
+Payment recorded
+↓
+Vehicle assigned
+↓
+Driver assigned
+↓
+Trip starts
+↓
+Trip completes
+
+This must eventually be fully testable.
+
+============================================================
+33. DEVELOPMENT PHASES
+============================================================
+
+Build in this order.
+
+PHASE 1
+Foundation
+
+- repository
+- monorepo
+- TypeScript
+- Cloudflare Worker
+- D1
+- Drizzle
+- migrations
+- config
+- testing
+- CI
+
+PHASE 2
+Identity
+
+- users
+- authentication
+- sessions
+- roles
+- permissions
+- RBAC
+
+PHASE 3
+Catalog
+
+- services
+- vehicle categories
+- vehicles
+- drivers
+
+PHASE 4
+Booking Engine
+
+- availability
+- booking
+- booking state machine
+- concurrency protection
+
+PHASE 5
+Commercial
+
+- pricing
+- quotes
+- payments
+
+PHASE 6
+Operations
+
+- vehicle assignment
+- driver assignment
+- trips
+- trip statuses
+
+PHASE 7
+Communication
+
+- events
+- notifications
+
+PHASE 8
+Admin
+
+- dashboard
+- management
+- audit
+
+PHASE 9
+Hardening
+
+- security
+- reliability
+- performance
+- testing
+- deployment
+
+============================================================
+34. UI/UX PRINCIPLES
+============================================================
+
+The UI must be:
+
+PERSONAL
+CLEAR
+CALM
+INTENTIONAL
+PROGRESSIVE
+MOBILE-FIRST
+OPERATIONALLY PRACTICAL
+
+Do not build an over-designed marketing website while
+neglecting operational usability.
+
+The admin interface must prioritize:
+
+- speed
+- clarity
+- status visibility
+- actionable information
+- minimal clicks
+
+============================================================
+35. CUSTOMER UX
+============================================================
+
+Customer should understand:
+
+1. What services are available.
+2. What information is needed.
+3. What happens after booking.
+4. Whether booking is pending/confirmed.
+5. What they need to pay.
+6. What vehicle/driver status applies.
+7. What happens next.
+
+Avoid unnecessary complexity.
+
+============================================================
+36. ADMIN DASHBOARD
+============================================================
+
+Dashboard should eventually expose:
+
+Today's Bookings
+Pending Bookings
+Confirmed Trips
+Pending Payments
+Available Vehicles
+Active Trips
+
+Booking table:
+
+Booking Code
+Customer
+Service
+Date
+Vehicle
+Driver
+Status
+Payment
+Action
+
+============================================================
+37. MOBILE-FIRST
+============================================================
+
+The system must work well on mobile.
+
+Customer booking flow must be comfortable on Android
+mobile screens.
+
+Admin/operator interface must also remain usable on
+mobile, while supporting desktop layouts.
+
+============================================================
+38. MVP EXCLUSIONS
+============================================================
+
+Do NOT add these unless explicitly requested later:
+
+- native mobile application
+- microservices
+- complex loyalty system
+- AI recommendation engine
+- advanced GPS fleet tracking
+- route optimization
+- multi-country marketplace
+- complex accounting system
+- subscription system
+
+Do not expand scope unnecessarily.
+
+============================================================
+39. CODE QUALITY RULES
+============================================================
+
+Avoid:
+
+- giant files
+- giant components
+- giant utility files
+- duplicated business logic
+- SQL inside UI
+- business logic inside React components
+- vendor-specific logic inside domain
+- uncontrolled global state
+- unnecessary abstractions
+
+Prefer:
+
+- small modules
+- explicit boundaries
+- typed interfaces
+- domain-focused services
+- reusable validation
+- testable business logic
+
+============================================================
+40. ARCHITECTURE GOVERNANCE
+============================================================
+
+The following are LOCKED unless there is a documented
+architecture decision:
+
+TypeScript
+pnpm
+Cloudflare Workers
+D1
+Drizzle
+REST API
+Zod
+Vitest
+Playwright
+Modular Monolith
+Provider abstraction
+Secure session authentication
+RBAC
+
+If you believe a change is required:
+
+DO NOT silently change it.
+
+Instead:
+
+1. Explain the problem.
+2. Explain proposed alternative.
+3. Explain impact.
+4. Wait for explicit approval.
+
+============================================================
+41. DOCUMENTATION
+============================================================
+
+Create and maintain:
+
+docs/
+├── architecture.md
+├── database.md
+├── api.md
+├── security.md
+├── development.md
+├── deployment.md
+└── mvp.md
+
+README must explain:
+
+- project purpose
+- stack
+- setup
+- local development
+- testing
+- architecture
+- deployment
+
+============================================================
+42. CI
+============================================================
+
+GitHub Actions must run:
+
+install
+↓
+typecheck
+↓
+lint
+↓
+test
+↓
+build
+
+Do not allow known failing checks to be ignored.
+
+============================================================
+43. DEFINITION OF DONE
+============================================================
+
+A feature is NOT done simply because the UI exists.
+
+A feature is done only when:
+
+UI
++
+API
++
+Validation
++
+Business logic
++
+Database
++
+Authorization
++
+Error handling
++
+Tests
+
+are implemented appropriately.
+
+============================================================
+44. MVP DEFINITION OF DONE
+============================================================
+
+MVP is complete when the golden E2E flow works:
+
+Customer
+→ booking
+→ operator processing
+→ quote
+→ customer acceptance
+→ confirmation
+→ payment
+→ vehicle assignment
+→ driver assignment
+→ trip
+→ completion
+
+AND:
+
+- no known critical security issue
+- no double booking
+- no unauthorized booking access
+- no client-side price manipulation
+- duplicate transactions are protected
+- core failures are handled safely
+- CI passes
+- production build succeeds
+
+============================================================
+45. EXECUTION PROTOCOL
+============================================================
+
+IMPORTANT:
+
+Do NOT attempt to build everything blindly in one huge step.
+
+Execute incrementally.
+
+STEP 1
+Inspect repository.
+
+STEP 2
+Create/verify project foundation.
+
+STEP 3
+Run typecheck.
+
+STEP 4
+Run tests.
+
+STEP 5
+Run build.
+
+STEP 6
+Only after foundation succeeds, continue to Identity.
+
+STEP 7
+After Identity succeeds, continue to Catalog.
+
+STEP 8
+Then Booking.
+
+STEP 9
+Then Commercial.
+
+STEP 10
+Then Operations.
+
+STEP 11
+Then Communication.
+
+STEP 12
+Then Admin.
+
+STEP 13
+Then Hardening.
+
+After every phase:
+
+- run tests
+- run typecheck
+- run build
+- inspect errors
+- fix root causes
+- update documentation
+
+Never continue while the previous phase is fundamentally broken.
+
+============================================================
+46. AGENT BEHAVIOR
+============================================================
+
+You are an ENGINEERING AGENT.
+
+Do not merely describe code.
+
+Actually create/modify the project files when the environment
+allows it.
+
+Do not generate fake success messages.
+
+If a command fails:
+
+1. inspect the actual error
+2. identify root cause
+3. fix it
+4. rerun the command
+
+Do not hide failures.
+
+Do not replace real functionality with placeholders unless
+the specification explicitly allows a mock/provider abstraction.
+
+============================================================
+47. CURRENT PRIORITY
+============================================================
+
+START WITH:
+
+PHASE 1 — FOUNDATION
+
+Implement:
+
+1. Repository structure
+2. pnpm workspace
+3. TypeScript configuration
+4. Cloudflare Worker
+5. D1 configuration
+6. Drizzle setup
+7. Initial migrations
+8. Environment configuration
+9. API foundation
+10. /api/v1/health
+11. request ID
+12. error handling
+13. logger
+14. Vitest
+15. initial tests
+16. GitHub Actions
+17. documentation
+
+Do NOT implement the entire booking system before the
+foundation is verified.
+
+============================================================
+48. FINAL PRINCIPLE
+============================================================
+
+Build the smallest system that can correctly operate the
+real Family Transport business.
+
+Do not optimize for:
+
+"many features"
+
+Optimize for:
+
+"one complete, reliable business flow."
+
+The ultimate target is:
+
+REAL CUSTOMER
+→ REAL BOOKING
+→ REAL OPERATION
+→ REAL PAYMENT
+→ REAL VEHICLE
+→ REAL DRIVER
+→ REAL TRIP
+→ REAL COMPLETION
+
+============================================================
+END OF MASTER SYSTEM BUILD PROMPT
+============================================================
+🔥 Cara kita pakai di Genspark
+Jangan langsung kasih prompt lalu biarkan dia ngoding liar sampai selesai.
+
+Urutannya:
+
+MASTER PROMPT
+      ↓
+Genspark membaca specification
+      ↓
+PHASE 1 — FOUNDATION
+      ↓
+TEST
+      ↓
+CHECK
+      ↓
+PHASE 2 — IDENTITY
+      ↓
+TEST
+      ↓
+PHASE 3 — CATALOG
+      ↓
+...
+Jadi Master Prompt = governance + blueprint, sedangkan nanti kita bisa kasih Execution Prompt per phase supaya Genspark bekerja lebih terkontrol.
+
+Dan satu hal penting gsss:
+Jangan dulu kita masukkan semua detail visual/branding final Family Transport ke master ini.
+
+Untuk sekarang kita kunci:
+
+SYSTEM ENGINE FIRST → BUSINESS FLOW FIRST → UI/BRAND POLISH AFTER CORE WORKS.
+
+Dengan begitu kita nggak punya masalah klasik:
+
+website kelihatan keren → tapi booking engine-nya sebenarnya palsu.
+
+Kalau Genspark sudah menerima Master Prompt ini, tahap berikutnya yang paling masuk akal adalah SESSION 6-B → EXECUTION PROMPT PHASE 1 FOUNDATION, yaitu prompt pendek yang menyuruh Genspark benar-benar mulai membangun repository + Worker + D1 + Drizzle + CI, bukan menjelaskan ulang blueprint.
+
+

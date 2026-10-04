@@ -1,0 +1,1100 @@
+Gas gsss 🔥 langsung masuk SESSION 5-G — SYSTEM ARCHITECTURE + TECH STACK + FOLDER STRUCTURE.
+
+Di tahap ini kita nggak coding dulu. Kita kunci arsitektur supaya nanti coding agent nggak bikin keputusan teknis sembarangan.
+
+SESSION 5-G — SYSTEM ARCHITECTURE
+
+5-G.1 — ARCHITECTURE DECISION
+
+Untuk Family Transport MVP, kita gunakan prinsip:
+
+> Modular Monolith + API-first + Cloudflare-compatible.
+
+
+
+Bukan microservices.
+
+Kenapa?
+
+Family Transport masih satu business domain. Microservices sekarang hanya menambah:
+
+deployment complexity
+
+network boundaries
+
+observability burden
+
+authentication complexity
+
+debugging complexity
+
+
+Jadi:
+
+ONE APPLICATION
+     │
+     ├── Public Web
+     ├── Customer
+     ├── Admin
+     └── API
+           │
+           ├── Auth
+           ├── Booking
+           ├── Availability
+           ├── Pricing
+           ├── Quote
+           ├── Payment
+           ├── Fleet
+           ├── Driver
+           └── Trip
+
+Tetapi setiap domain tetap punya boundary sendiri.
+
+
+---
+
+5-G.2 — HIGH LEVEL ARCHITECTURE
+
+INTERNET
+                       │
+                       ▼
+              ┌─────────────────┐
+              │   WEB APP       │
+              │ Public/Customer │
+              │     /Admin      │
+              └────────┬────────┘
+                       │
+                       ▼
+              ┌─────────────────┐
+              │    API LAYER    │
+              │    /api/v1      │
+              └────────┬────────┘
+                       │
+          ┌────────────┼────────────┐
+          ▼            ▼            ▼
+       AUTH/RBAC    DOMAIN       EVENTS
+                     LOGIC
+          │            │            │
+          │      ┌─────┼─────┐      │
+          │      ▼     ▼     ▼      │
+          │   Booking Fleet Trip    │
+          │      │     │     │      │
+          └──────┼─────┼─────┼──────┘
+                 ▼     ▼     ▼
+               DATABASE / STORAGE
+
+
+---
+
+5-G.3 — RECOMMENDED STACK
+
+Untuk MVP:
+
+Layer	Technology
+
+Frontend	React / Next-compatible architecture
+Backend	TypeScript
+API	REST
+Database	Cloudflare D1 / SQLite-compatible
+ORM/query	Drizzle
+Auth	Session-based authentication
+Validation	Zod
+Storage	Cloudflare R2
+Hosting	Cloudflare Workers
+Email	Provider abstraction
+WhatsApp	Provider abstraction
+Payments	Provider abstraction
+Testing	Vitest
+E2E	Playwright
+CI	GitHub Actions
+
+
+Kita sengaja menggunakan:
+
+> provider abstraction
+
+
+
+supaya vendor bisa diganti tanpa membongkar domain logic.
+
+
+---
+
+5-G.4 — WHY TYPESCRIPT
+
+Satu bahasa untuk:
+
+frontend
+backend
+domain
+validation
+database types
+tests
+
+Benefit:
+
+> mengurangi context switching dan type mismatch.
+
+
+
+
+---
+
+5-G.5 — WHY REST API
+
+MVP tidak membutuhkan GraphQL.
+
+REST sudah cukup untuk:
+
+GET
+POST
+PATCH
+DELETE
+
+dan sangat mudah dipahami coding agent.
+
+
+---
+
+5-G.6 — API BOUNDARY
+
+Frontend:
+
+UI
+ ↓
+API client
+ ↓
+REST API
+
+Frontend tidak boleh langsung:
+
+UI → Database
+
+atau:
+
+UI → D1
+
+Semua business operation:
+
+> melalui domain/backend.
+
+
+
+
+---
+
+5-G.7 — DOMAIN LAYERS
+
+Backend:
+
+HTTP
+ ↓
+Application
+ ↓
+Domain
+ ↓
+Infrastructure
+
+HTTP
+
+Request/response.
+
+Application
+
+Use cases.
+
+Domain
+
+Business rules.
+
+Infrastructure
+
+Database/external providers.
+
+
+---
+
+5-G.8 — EXAMPLE: BOOKING
+
+Request:
+
+POST /api/v1/bookings
+
+Flow:
+
+Route
+ ↓
+Auth middleware
+ ↓
+Zod validation
+ ↓
+CreateBookingUseCase
+ ↓
+AvailabilityService
+ ↓
+PricingService
+ ↓
+BookingRepository
+ ↓
+Database
+ ↓
+Event
+ ↓
+Response
+
+Route handler tidak boleh mengandung:
+
+> 300 baris business logic.
+
+
+
+
+---
+
+5-G.9 — DOMAIN MODULES
+
+Kita gunakan modules:
+
+auth
+users
+catalog
+availability
+bookings
+quotes
+pricing
+payments
+fleet
+drivers
+trips
+notifications
+audit
+
+
+---
+
+5-G.10 — MONOREPO STRUCTURE
+
+Recommended:
+
+family-transport/
+│
+├── apps/
+│   └── web/
+│
+├── packages/
+│   ├── domain/
+│   ├── api/
+│   ├── db/
+│   ├── auth/
+│   ├── validation/
+│   ├── providers/
+│   └── config/
+│
+├── tests/
+│   ├── unit/
+│   ├── integration/
+│   └── e2e/
+│
+├── migrations/
+│
+├── scripts/
+│
+├── docs/
+│
+├── .github/
+│   └── workflows/
+│
+├── package.json
+├── tsconfig.json
+├── wrangler.jsonc
+└── README.md
+
+
+---
+
+5-G.11 — WEB STRUCTURE
+
+apps/web/
+
+src/
+├── app/
+│   ├── page
+│   ├── services/
+│   ├── vehicles/
+│   ├── book/
+│   ├── login/
+│   ├── account/
+│   └── admin/
+│
+├── components/
+│   ├── ui/
+│   ├── booking/
+│   ├── vehicle/
+│   ├── service/
+│   └── admin/
+│
+├── lib/
+│   ├── api-client/
+│   ├── auth/
+│   └── utils/
+│
+└── styles/
+
+
+---
+
+5-G.12 — DOMAIN STRUCTURE
+
+packages/domain/
+
+src/
+├── booking/
+│   ├── entities/
+│   ├── services/
+│   ├── use-cases/
+│   ├── policies/
+│   └── types/
+│
+├── availability/
+├── pricing/
+├── quotes/
+├── payments/
+├── fleet/
+├── drivers/
+├── trips/
+└── notifications/
+
+
+---
+
+5-G.13 — BOOKING MODULE
+
+Contoh:
+
+booking/
+├── entities/
+│   └── booking.ts
+│
+├── use-cases/
+│   ├── create-booking.ts
+│   ├── get-booking.ts
+│   ├── cancel-booking.ts
+│   └── confirm-booking.ts
+│
+├── policies/
+│   ├── booking-policy.ts
+│   └── status-transition.ts
+│
+├── types/
+│   └── booking.types.ts
+│
+└── index.ts
+
+
+---
+
+5-G.14 — REPOSITORY PATTERN
+
+Domain tidak tahu:
+
+> D1 / SQLite / PostgreSQL.
+
+
+
+Domain hanya tahu interface.
+
+BookingRepository
+
+Implementation:
+
+D1BookingRepository
+
+Jadi:
+
+Domain
+   ↓
+Repository Interface
+   ↓
+Infrastructure
+   ↓
+D1
+
+🔥 Ini membuat system portable.
+
+
+---
+
+5-G.15 — DATABASE PACKAGE
+
+packages/db/
+
+src/
+├── schema/
+│   ├── users.ts
+│   ├── services.ts
+│   ├── vehicles.ts
+│   ├── bookings.ts
+│   ├── quotes.ts
+│   ├── payments.ts
+│   ├── trips.ts
+│   └── audit.ts
+│
+├── repositories/
+│   ├── user.repository.ts
+│   ├── booking.repository.ts
+│   ├── vehicle.repository.ts
+│   └── ...
+│
+└── index.ts
+
+
+---
+
+5-G.16 — API PACKAGE
+
+packages/api/
+
+src/
+├── routes/
+│   ├── auth.ts
+│   ├── services.ts
+│   ├── vehicles.ts
+│   ├── availability.ts
+│   ├── bookings.ts
+│   ├── quotes.ts
+│   ├── payments.ts
+│   ├── trips.ts
+│   └── admin/
+│
+├── middleware/
+│   ├── auth.ts
+│   ├── rbac.ts
+│   ├── rate-limit.ts
+│   └── error-handler.ts
+│
+└── index.ts
+
+
+---
+
+5-G.17 — PROVIDER ABSTRACTION
+
+External integrations:
+
+packages/providers/
+
+├── payment/
+│   ├── interface.ts
+│   └── mock.ts
+│
+├── messaging/
+│   ├── interface.ts
+│   └── mock.ts
+│
+├── email/
+│   ├── interface.ts
+│   └── mock.ts
+│
+└── storage/
+    ├── interface.ts
+    └── r2.ts
+
+Contoh:
+
+PaymentProvider
+
+bukan:
+
+MidtransService
+
+di dalam core booking logic.
+
+Nanti bisa:
+
+PaymentProvider
+├── Mock
+├── Midtrans
+├── Xendit
+└── Other
+
+
+---
+
+5-G.18 — ENVIRONMENT
+
+Development
+
+local
+
+Preview
+
+preview
+
+Production
+
+production
+
+Config jangan hard-code.
+
+
+---
+
+5-G.19 — SECRETS
+
+Jangan commit:
+
+API keys
+database credentials
+JWT secrets
+payment secrets
+WhatsApp tokens
+
+Ke repository.
+
+Gunakan:
+
+> Cloudflare secrets / environment secrets.
+
+
+
+
+---
+
+5-G.20 — CONFIG
+
+Central config:
+
+packages/config/
+
+src/
+└── env.ts
+
+Validasi environment ketika application boot.
+
+Misalnya:
+
+DATABASE
+AUTH_SECRET
+STORAGE_BUCKET
+PAYMENT_PROVIDER
+
+Jika required secret missing:
+
+> application fail fast.
+
+
+
+
+---
+
+5-G.21 — AUTH ARCHITECTURE
+
+Recommended:
+
+Browser
+ ↓
+Secure session cookie
+ ↓
+Auth middleware
+ ↓
+User identity
+ ↓
+RBAC
+
+Cookie:
+
+HttpOnly
+Secure
+SameSite
+
+Jangan menyimpan session credential sensitif di localStorage jika bisa dihindari.
+
+
+---
+
+5-G.22 — AUTH FLOW
+
+LOGIN
+ ↓
+verify credential
+ ↓
+create session
+ ↓
+set secure cookie
+ ↓
+request
+ ↓
+load session
+ ↓
+identify user
+
+Logout:
+
+invalidate session
+ ↓
+clear cookie
+
+
+---
+
+5-G.23 — RBAC FLOW
+
+Request
+ ↓
+Authenticated?
+ ↓
+Role
+ ↓
+Permission
+ ↓
+Resource ownership
+ ↓
+Allowed?
+
+Contoh:
+
+customer
+→ GET /me/bookings
+→ own records only
+
+Admin:
+
+admin
+→ GET /admin/bookings
+→ all permitted records
+
+
+---
+
+5-G.24 — EVENTS
+
+Kita gunakan internal domain events:
+
+BookingCreated
+BookingConfirmed
+BookingCancelled
+
+QuoteCreated
+QuoteAccepted
+
+PaymentRecorded
+
+DriverAssigned
+
+TripCompleted
+
+Event handler:
+
+event
+ ↓
+notification
+ ↓
+audit
+ ↓
+analytics
+
+Dengan demikian domain tidak bergantung langsung pada WhatsApp/email.
+
+
+---
+
+5-G.25 — OBSERVABILITY
+
+Minimal:
+
+structured logs
+request ID
+error tracking
+audit logs
+basic metrics
+
+Setiap request idealnya punya:
+
+request_id
+
+Jika error:
+
+> mudah ditelusuri dari request → use case → database.
+
+
+
+
+---
+
+5-G.26 — LOGGING RULE
+
+Jangan log:
+
+password
+session token
+payment secret
+full sensitive customer data
+
+Log:
+
+request_id
+route
+status
+duration
+actor_id if appropriate
+error_code
+
+
+---
+
+5-G.27 — TESTING PYRAMID
+
+E2E
+            /   \
+       Integration
+          /     \
+        Unit Tests
+
+Unit
+
+Business rules:
+
+pricing
+availability
+state transitions
+
+Integration
+
+API + database
+repositories
+auth
+
+E2E
+
+Golden flow:
+
+browse
+→ book
+→ quote
+→ confirm
+→ payment
+→ trip
+
+
+---
+
+5-G.28 — CI PIPELINE
+
+Setiap PR:
+
+install
+ ↓
+typecheck
+ ↓
+lint
+ ↓
+unit tests
+ ↓
+integration tests
+ ↓
+build
+ ↓
+E2E
+
+Jika gagal:
+
+> merge blocked.
+
+
+
+
+---
+
+5-G.29 — DEPLOYMENT
+
+Target:
+
+GitHub
+   ↓
+CI
+   ↓
+Cloudflare
+   ↓
+Worker
+   ↓
+D1
+   ↓
+R2
+
+Preview deployment:
+
+Pull Request
+ ↓
+Preview
+
+Production:
+
+main
+ ↓
+production deployment
+
+
+---
+
+5-G.30 — MIGRATION POLICY
+
+Database changes harus melalui migration.
+
+Jangan:
+
+> mengedit production schema manual tanpa migration.
+
+
+
+Flow:
+
+schema change
+ ↓
+migration
+ ↓
+local test
+ ↓
+preview
+ ↓
+production
+
+Migration harus:
+
+> versioned + reversible jika memungkinkan.
+
+
+
+
+---
+
+5-G.31 — DEPENDENCY RULES
+
+UI
+
+Boleh:
+
+UI → API client
+
+Tidak boleh:
+
+UI → DB
+
+Domain
+
+Boleh:
+
+Domain → interfaces
+
+Tidak boleh:
+
+Domain → Cloudflare SDK
+Domain → D1 implementation
+Domain → WhatsApp SDK
+
+Infrastructure
+
+Boleh:
+
+D1
+R2
+external APIs
+
+
+---
+
+5-G.32 — THE MOST IMPORTANT BOUNDARY
+
+BUSINESS LOGIC
+        ≠
+INFRASTRUCTURE
+
+Contoh:
+
+> "Apakah vehicle tersedia?"
+
+
+
+adalah business rule.
+
+Sedangkan:
+
+> "Bagaimana membaca D1?"
+
+
+
+adalah infrastructure.
+
+Keduanya jangan dicampur.
+
+
+---
+
+5-G.33 — FOLDER GOVERNANCE
+
+Setiap file harus punya alasan berada di tempatnya.
+
+Jika developer ingin membuat:
+
+utils/bookingEverything.ts
+
+🚫 reject.
+
+Gunakan domain yang jelas:
+
+booking/
+availability/
+pricing/
+
+
+---
+
+5-G.34 — ANTI-SPAGHETTI RULES
+
+Tidak boleh:
+
+❌ business logic di React component
+❌ SQL langsung di route handler
+❌ API provider dipanggil dari UI
+❌ duplicate pricing calculation
+❌ duplicate availability logic
+❌ random global utility
+❌ giant helpers.ts
+❌ giant services.ts
+
+
+---
+
+5-G.35 — GOLDEN FLOW ARCHITECTURE
+
+Booking:
+
+UI
+ ↓
+API
+ ↓
+Auth
+ ↓
+Validation
+ ↓
+CreateBookingUseCase
+ ↓
+AvailabilityPolicy
+ ↓
+PricingService
+ ↓
+BookingRepository
+ ↓
+D1
+ ↓
+Domain Event
+ ↓
+Notification
+
+Ini menjadi:
+
+> canonical architecture path.
+
+
+
+
+---
+
+5-G.36 — ARCHITECTURE DECISION RECORD
+
+Kita kunci:
+
+Decision	Choice
+
+Architecture	Modular Monolith
+Language	TypeScript
+API	REST
+DB	D1/SQLite
+Storage	R2
+Validation	Zod
+ORM	Drizzle
+Auth	Secure session
+RBAC	Backend enforced
+Testing	Vitest + Playwright
+Deployment	Cloudflare
+Repo	GitHub
+CI	GitHub Actions
+
+
+
+---
+
+5-G.37 — WHY THIS IS THE RIGHT MVP
+
+Kita mendapatkan:
+
+SIMPLE ENOUGH
+       +
+MODULAR ENOUGH
+       +
+SECURE ENOUGH
+       +
+SCALABLE ENOUGH
+
+Tanpa premature microservices.
+
+Kalau bisnis nanti berkembang besar:
+
+Modular Monolith
+       ↓
+Extract high-load modules
+       ↓
+Services
+
+bukan sebaliknya.
+
+
+---
+
+🔒 SESSION 5-G — LOCKED
+
+Sekarang specification Family Transport sudah punya:
+
+✅ Product requirements
+✅ Competitor engine
+✅ User stories
+✅ Acceptance criteria
+✅ UX screens
+✅ API contract
+✅ Database model
+✅ System architecture
+✅ Tech stack
+✅ Folder structure
+✅ Security boundaries
+✅ Provider abstraction
+✅ Testing strategy
+✅ CI/CD strategy
+✅ Deployment model
+
+
+---
+
+🚀 NEXT — SESSION 5-H
+
+Tahap berikutnya kita kunci SECURITY + RELIABILITY + BUSINESS RULE ENGINE.
+
+Kita akan membedah secara khusus:
+
+AUTH SECURITY
+RBAC
+BOOKING CONCURRENCY
+DOUBLE BOOKING PREVENTION
+PRICE TAMPERING
+PAYMENT INTEGRITY
+RATE LIMITING
+INPUT VALIDATION
+AUDIT
+BACKUP / RECOVERY
+FAILURE MODES
+
+Lalu kita buat:
+
+> FAMILY TRANSPORT SECURITY & RELIABILITY SPEC v1.0
+
+
+
+Ini penting sebelum coding, karena setelah 5-H kita bisa masuk ke Session 6 — MVP Build Specification dengan jauh lebih aman dan tidak perlu bongkar arsitektur di tengah jalan.

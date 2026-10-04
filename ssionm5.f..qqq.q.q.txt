@@ -1,0 +1,1168 @@
+ssion.5.f.q,qq.q..qGas gsss 🔥 langsung SESSION 5-F — DATABASE SCHEMA + ENTITY RELATIONSHIP.
+
+Sekarang kita kunci data backbone Family Transport. Prinsipnya:
+
+> Database bukan sekadar tempat menyimpan data. Database harus menjaga kebenaran bisnis.
+
+
+
+SESSION 5-F — DATABASE SCHEMA
+
+5-F.1 — CORE DOMAIN MODEL
+
+Kita bagi menjadi 7 domain:
+
+IDENTITY
+├── users
+├── user_profiles
+├── roles
+└── permissions
+
+CATALOG
+├── services
+├── vehicle_categories
+├── vehicles
+└── vehicle_images
+
+OPERATIONS
+├── drivers
+├── driver_assignments
+├── trips
+└── trip_stops
+
+BOOKING
+├── bookings
+├── booking_items
+├── booking_status_history
+├── quotes
+└── quote_items
+
+FINANCE
+├── payments
+├── pricing_rules
+└── pricing_snapshots
+
+COMMUNICATION
+└── notifications
+
+GOVERNANCE
+└── audit_logs
+
+
+---
+
+5-F.2 — users
+
+Identity utama.
+
+users
+-----
+id              PK
+phone           UNIQUE
+email           UNIQUE NULL
+password_hash
+status
+created_at
+updated_at
+
+Status:
+
+ACTIVE
+SUSPENDED
+DEACTIVATED
+
+Rule:
+
+> Jangan hard-delete user yang sudah memiliki transaksi.
+
+
+
+
+---
+
+5-F.3 — user_profiles
+
+Data profil dipisahkan dari authentication identity.
+
+user_profiles
+-------------
+user_id         PK / FK users.id
+full_name
+avatar_url
+notes
+created_at
+updated_at
+
+Relationship:
+
+users 1 ─── 1 user_profiles
+
+
+---
+
+5-F.4 — ROLES
+
+roles
+-----
+id
+code UNIQUE
+name
+
+Seed:
+
+CUSTOMER
+OPERATOR
+ADMIN
+OWNER
+
+
+---
+
+5-F.5 — PERMISSIONS
+
+permissions
+-----------
+id
+code UNIQUE
+name
+
+Contoh:
+
+booking.read
+booking.create
+booking.update
+booking.cancel
+
+vehicle.read
+vehicle.manage
+
+driver.read
+driver.manage
+
+payment.read
+payment.manage
+
+pricing.read
+pricing.manage
+
+
+---
+
+5-F.6 — USER ROLES
+
+Jika satu user bisa memiliki lebih dari satu role:
+
+user_roles
+----------
+user_id       FK
+role_id       FK
+
+UNIQUE(user_id, role_id)
+
+Relationship:
+
+users
+  ↕
+user_roles
+  ↕
+roles
+
+
+---
+
+5-F.7 — SERVICES
+
+services
+--------
+id
+slug UNIQUE
+name
+description
+status
+pricing_type
+sort_order
+created_at
+updated_at
+
+Status:
+
+ACTIVE
+INACTIVE
+
+Pricing type:
+
+FIXED
+HOURLY
+DISTANCE
+QUOTE_REQUIRED
+
+
+---
+
+5-F.8 — VEHICLE CATEGORIES
+
+Jangan langsung menaruh semua informasi kategori di vehicle.
+
+vehicle_categories
+------------------
+id
+name
+slug UNIQUE
+description
+default_capacity
+status
+created_at
+updated_at
+
+Contoh:
+
+MPV
+SUV
+VAN
+BUS
+
+
+---
+
+5-F.9 — VEHICLES
+
+vehicles
+--------
+id
+category_id       FK
+name
+registration_no
+capacity
+status
+notes
+created_at
+updated_at
+
+Status:
+
+ACTIVE
+INACTIVE
+MAINTENANCE
+
+🔥 registration_no harus UNIQUE.
+
+
+---
+
+5-F.10 — VEHICLE IMAGES
+
+vehicle_images
+--------------
+id
+vehicle_id      FK
+url
+alt_text
+sort_order
+created_at
+
+Relationship:
+
+vehicle 1 ─── N images
+
+
+---
+
+5-F.11 — SERVICE ↔ VEHICLE
+
+Satu service bisa menggunakan banyak vehicle.
+
+Satu vehicle bisa kompatibel dengan banyak service.
+
+Jadi:
+
+> many-to-many.
+
+
+
+service_vehicles
+----------------
+service_id      FK
+vehicle_id      FK
+
+PRIMARY KEY(service_id, vehicle_id)
+
+🔥 Jangan simpan:
+
+vehicle.service_id
+
+karena itu membatasi model bisnis terlalu cepat.
+
+
+---
+
+5-F.12 — DRIVERS
+
+drivers
+-------
+id
+user_id          FK NULL
+full_name
+phone
+status
+license_info
+notes
+created_at
+updated_at
+
+Status:
+
+ACTIVE
+INACTIVE
+SUSPENDED
+
+Jika driver punya login account:
+
+drivers.user_id → users.id
+
+
+---
+
+5-F.13 — BOOKINGS
+
+Ini salah satu tabel paling penting.
+
+bookings
+--------
+id
+booking_code UNIQUE
+customer_id       FK
+service_id        FK
+vehicle_id        FK NULL
+start_at
+end_at
+pickup_address
+destination_address
+passenger_count
+status
+currency
+subtotal
+discount
+fees
+total
+notes
+created_at
+updated_at
+
+
+---
+
+5-F.14 — BOOKING STATUS
+
+Enum:
+
+DRAFT
+PENDING
+QUOTED
+CONFIRMED
+CANCELLED
+COMPLETED
+
+Status history jangan hanya mengandalkan current status.
+
+
+---
+
+5-F.15 — BOOKING STATUS HISTORY
+
+booking_status_history
+----------------------
+id
+booking_id        FK
+from_status
+to_status
+changed_by        FK users.id
+reason
+created_at
+
+🔥 Ini memberikan audit perjalanan booking.
+
+Contoh:
+
+PENDING
+ ↓
+QUOTED
+ ↓
+CONFIRMED
+ ↓
+COMPLETED
+
+
+---
+
+5-F.16 — BOOKING ITEMS
+
+Untuk add-ons/services tambahan:
+
+booking_items
+-------------
+id
+booking_id       FK
+item_type
+name
+quantity
+unit_price
+total_price
+metadata_json
+created_at
+
+Contoh:
+
+Extra Hour
+Child Seat
+Additional Stop
+
+
+---
+
+5-F.17 — QUOTES
+
+quotes
+------
+id
+quote_code UNIQUE
+booking_id       FK
+status
+subtotal
+discount
+fees
+total
+currency
+valid_until
+pricing_version
+created_at
+updated_at
+
+
+---
+
+5-F.18 — QUOTE ITEMS
+
+quote_items
+-----------
+id
+quote_id         FK
+name
+description
+quantity
+unit_price
+total_price
+created_at
+
+Quote menjadi:
+
+> snapshot komersial.
+
+
+
+Jika pricing berubah setelah quote dibuat:
+
+> quote lama tetap konsisten.
+
+
+
+
+---
+
+5-F.19 — PRICING RULES
+
+pricing_rules
+-------------
+id
+service_id
+vehicle_category_id NULL
+rule_type
+amount
+unit
+priority
+status
+effective_from
+effective_until
+created_at
+updated_at
+
+Contoh:
+
+hourly_rate
+fixed_rate
+distance_rate
+addon_rate
+
+
+---
+
+5-F.20 — PRICING SNAPSHOTS
+
+🔥 Untuk historical integrity.
+
+pricing_snapshots
+-----------------
+id
+booking_id
+quote_id NULL
+pricing_version
+input_json
+calculation_json
+created_at
+
+Artinya kita bisa mengetahui:
+
+> "Kenapa booking ini harganya segini?"
+
+
+
+bukan hanya:
+
+> "Totalnya Rp X."
+
+
+
+
+---
+
+5-F.21 — PAYMENTS
+
+payments
+--------
+id
+booking_id
+amount
+currency
+method
+status
+reference
+paid_at
+created_by
+created_at
+updated_at
+
+Status:
+
+PENDING
+PAID
+FAILED
+REFUNDED
+
+Method MVP:
+
+CASH
+BANK_TRANSFER
+MANUAL
+
+Gateway dapat ditambahkan kemudian.
+
+
+---
+
+5-F.22 — TRIPS
+
+Booking dan trip jangan dijadikan satu entity.
+
+Karena:
+
+> booking = commercial/customer transaction
+
+
+
+sedangkan:
+
+> trip = operational execution.
+
+
+
+Schema:
+
+trips
+-----
+id
+booking_id UNIQUE
+vehicle_id
+driver_id NULL
+start_at
+end_at
+status
+created_at
+updated_at
+
+
+---
+
+5-F.23 — TRIP STATUS
+
+SCHEDULED
+DRIVER_ASSIGNED
+EN_ROUTE
+PICKED_UP
+IN_PROGRESS
+COMPLETED
+CANCELLED
+
+
+---
+
+5-F.24 — TRIP STOPS
+
+Jika nanti satu perjalanan memiliki banyak stop:
+
+trip_stops
+----------
+id
+trip_id
+sequence
+address
+stop_type
+arrival_at NULL
+departure_at NULL
+notes
+
+sequence menentukan urutan.
+
+
+---
+
+5-F.25 — DRIVER ASSIGNMENTS
+
+Daripada hanya:
+
+trip.driver_id
+
+kita bisa punya history assignment:
+
+driver_assignments
+------------------
+id
+trip_id
+driver_id
+assigned_by
+assigned_at
+unassigned_at NULL
+reason
+
+Ini lebih audit-friendly.
+
+trips.driver_id dapat menjadi current assignment atau kita dapat menjadikan assignment table sebagai source of truth; jangan membuat dua source of truth yang bisa berbeda.
+
+Untuk MVP:
+
+> gunakan driver_assignments sebagai history dan current assignment ditentukan dari active assignment.
+
+
+
+
+---
+
+5-F.26 — NOTIFICATIONS
+
+notifications
+-------------
+id
+user_id
+type
+title
+message
+channel
+status
+read_at NULL
+created_at
+
+Status:
+
+PENDING
+SENT
+FAILED
+
+Channel:
+
+IN_APP
+EMAIL
+WHATSAPP
+SMS
+
+
+---
+
+5-F.27 — AUDIT LOGS
+
+audit_logs
+----------
+id
+actor_id
+action
+entity_type
+entity_id
+before_json
+after_json
+metadata_json
+created_at
+
+Contoh:
+
+actor = admin_01
+action = VEHICLE_DEACTIVATED
+entity = vehicle
+entity_id = veh_123
+
+
+---
+
+5-F.28 — ENTITY RELATIONSHIP
+
+Gambaran besarnya:
+
+USER
+ │
+ ├──── USER_PROFILE
+ │
+ ├──── USER_ROLE ─── ROLE ─── PERMISSION
+ │
+ └──── BOOKING
+          │
+          ├──── SERVICE
+          │
+          ├──── VEHICLE
+          │
+          ├──── BOOKING_ITEMS
+          │
+          ├──── STATUS_HISTORY
+          │
+          ├──── QUOTE
+          │       └──── QUOTE_ITEMS
+          │
+          ├──── PAYMENT
+          │
+          └──── TRIP
+                  │
+                  ├──── DRIVER_ASSIGNMENT
+                  │
+                  ├──── DRIVER
+                  │
+                  └──── TRIP_STOPS
+
+
+---
+
+5-F.29 — CORE CARDINALITY
+
+USER 1 ─── N BOOKINGS
+
+SERVICE 1 ─── N BOOKINGS
+
+BOOKING 1 ─── N BOOKING_ITEMS
+
+BOOKING 1 ─── N STATUS_HISTORY
+
+BOOKING 1 ─── N QUOTES
+
+QUOTE 1 ─── N QUOTE_ITEMS
+
+BOOKING 1 ─── N PAYMENTS
+
+BOOKING 1 ─── 0..1 TRIP
+
+TRIP 1 ─── N DRIVER_ASSIGNMENTS
+
+TRIP 1 ─── N TRIP_STOPS
+
+VEHICLE 1 ─── N VEHICLE_IMAGES
+
+SERVICE N ─── N VEHICLES
+
+
+---
+
+5-F.30 — IMPORTANT DESIGN DECISION
+
+Booking ≠ Quote ≠ Payment ≠ Trip
+
+Ini harus dipertahankan.
+
+BOOKING
+customer intention / reservation
+
+QUOTE
+commercial offer
+
+PAYMENT
+financial transaction
+
+TRIP
+operational execution
+
+Dengan pemisahan ini system jauh lebih scalable.
+
+
+---
+
+5-F.31 — SOFT DELETE POLICY
+
+Jangan hard delete transactional entities.
+
+Boleh soft deactivate:
+
+vehicles
+services
+drivers
+users
+
+Jangan delete:
+
+bookings
+quotes
+payments
+trips
+audit_logs
+
+Historical data harus tetap utuh.
+
+
+---
+
+5-F.32 — TIMESTAMPS
+
+Core entities menggunakan:
+
+created_at
+updated_at
+
+Transactional events:
+
+created_at
+
+Status changes:
+
+created_at
+changed_by
+
+
+---
+
+5-F.33 — INDEX STRATEGY
+
+Minimum indexes:
+
+users.phone
+users.email
+
+bookings.booking_code
+bookings.customer_id
+bookings.status
+bookings.start_at
+bookings.end_at
+bookings.vehicle_id
+
+quotes.quote_code
+quotes.booking_id
+quotes.status
+
+payments.booking_id
+payments.status
+
+trips.booking_id
+trips.vehicle_id
+trips.driver_id
+trips.start_at
+
+driver_assignments.trip_id
+driver_assignments.driver_id
+
+
+---
+
+5-F.34 — AVAILABILITY INDEX
+
+Availability query paling sering menggunakan:
+
+vehicle_id
+start_at
+end_at
+status
+
+Jadi database harus dioptimalkan untuk query overlap.
+
+Tetapi:
+
+> index bukan pengganti concurrency control.
+
+
+
+
+---
+
+5-F.35 — UNIQUE CONSTRAINTS
+
+Minimal:
+
+users.phone UNIQUE
+users.email UNIQUE (when present)
+
+services.slug UNIQUE
+vehicle_categories.slug UNIQUE
+vehicles.registration_no UNIQUE
+
+bookings.booking_code UNIQUE
+quotes.quote_code UNIQUE
+
+Dan:
+
+user_roles
+service_vehicles
+
+menggunakan composite unique/primary key.
+
+
+---
+
+5-F.36 — DATA OWNERSHIP
+
+Critical ownership:
+
+booking.customer_id
+
+menentukan siapa customer pemilik booking.
+
+Customer API:
+
+> selalu query berdasarkan authenticated user.
+
+
+
+Contoh concept:
+
+WHERE booking.customer_id = current_user.id
+
+Bukan:
+
+WHERE customer_id = request.body.customer_id
+
+🔥 Ini security boundary.
+
+
+---
+
+5-F.37 — DATA INTEGRITY RULES
+
+Database/backend harus mencegah:
+
+booking tanpa customer
+booking tanpa service
+payment tanpa booking
+trip tanpa booking
+quote tanpa booking
+booking item tanpa booking
+
+Foreign key wajib digunakan.
+
+
+---
+
+5-F.38 — STATE INTEGRITY
+
+Contoh:
+
+COMPLETED booking
+
+tidak boleh kembali:
+
+PENDING
+
+kecuali ada business process eksplisit yang memang mengizinkan.
+
+State machine:
+
+> backend authority.
+
+
+
+
+---
+
+5-F.39 — CURRENCY
+
+Jangan gunakan floating-point untuk uang.
+
+Gunakan:
+
+integer minor units
+
+Misalnya:
+
+Rp 150.000
+
+disimpan sebagai:
+
+150000
+
+atau sesuai currency strategy yang dipilih.
+
+Currency selalu disimpan eksplisit:
+
+currency = IDR
+
+
+---
+
+5-F.40 — JSON USAGE
+
+JSON boleh digunakan untuk:
+
+metadata
+pricing input snapshot
+pricing calculation snapshot
+audit metadata
+
+Tetapi jangan memasukkan core relational data seperti:
+
+> customer_id, vehicle_id, booking_id
+
+
+
+ke dalam JSON kalau datanya memang relational.
+
+
+---
+
+5-F.41 — MVP DATABASE PRINCIPLE
+
+Kita tidak perlu over-engineer.
+
+MVP cukup:
+
+users
+user_profiles
+roles
+user_roles
+
+services
+vehicle_categories
+vehicles
+vehicle_images
+service_vehicles
+
+drivers
+driver_assignments
+
+bookings
+booking_items
+booking_status_history
+
+quotes
+quote_items
+
+payments
+
+trips
+trip_stops
+
+pricing_rules
+pricing_snapshots
+
+notifications
+audit_logs
+
+Ini sudah cukup kuat untuk foundation.
+
+
+---
+
+5-F.42 — DATABASE GOLDEN RULE
+
+> One fact → one source of truth.
+
+
+
+Contoh:
+
+Harga final:
+
+> quote/payment snapshot.
+
+
+
+Availability:
+
+> operational resource state + booking/trip constraints.
+
+
+
+Customer identity:
+
+> users.
+
+
+
+Current business state:
+
+> canonical status field.
+
+
+
+History:
+
+> event/history tables.
+
+
+
+
+---
+
+🔒 SESSION 5-F — LOCKED
+
+Sekarang Family Transport sudah memiliki:
+
+✅ Entity model
+✅ Database domains
+✅ PK/FK
+✅ Relationships
+✅ Cardinality
+✅ Status model
+✅ Historical data strategy
+✅ Pricing snapshot
+✅ Payment separation
+✅ Trip separation
+✅ Driver assignment
+✅ Audit
+✅ Index strategy
+✅ Security ownership
+✅ Integrity rules
+✅ Soft-delete policy
+
+
+---
+
+🚀 NEXT — SESSION 5-G
+
+Tahap berikutnya adalah:
+
+SYSTEM ARCHITECTURE + TECH STACK + FOLDER STRUCTURE
+
+Kita akan mengunci:
+
+Frontend
+Backend/API
+Database
+Auth
+Storage
+Notifications
+Payments
+Deployment
+Environment
+Secrets
+Observability
+Testing
+CI/CD
+
+Lalu kita turunkan menjadi:
+
+/apps
+/packages
+/db
+/api
+/components
+/services
+/domain
+
+beserta dependency boundaries supaya project Family Transport tidak berubah menjadi codebase berantakan ketika mulai kita build.

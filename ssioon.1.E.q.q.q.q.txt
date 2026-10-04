@@ -1,0 +1,948 @@
+Gas gsss 🔥 Kita langsung lanjut SESSION 1-E — CUSTOMER & JOURNEY DEEP DIVE.
+
+Di tahap ini kita berhenti melihat Family Transport dari sisi mobil/bisnis, dan mulai melihatnya dari sisi orang yang membeli.
+
+SESSION 1-E — CUSTOMER & JOURNEY DEEP DIVE
+
+01 — CUSTOMER CORE
+
+Customer Family Transport sebenarnya tidak membeli:
+
+> Toyota Avanza / Innova / Hiace.
+
+
+
+Mereka membeli:
+
+> kepastian bahwa perjalanan mereka berjalan lancar.
+
+
+
+Jadi customer journey kita harus dibangun berdasarkan job-to-be-done, bukan berdasarkan jenis mobil.
+
+
+---
+
+02 — CUSTOMER SEGMENT MAP
+
+Untuk MVP, aku membagi market menjadi 5 customer archetype.
+
+Segment	Need	Potential Value	Priority
+
+Tourist / Family	Liburan nyaman	Medium–High	⭐⭐⭐⭐⭐
+Group / Event	Transport banyak orang	High	⭐⭐⭐⭐
+Airport / Transfer	Cepat & pasti	Medium	⭐⭐⭐⭐
+Corporate	Reliable recurring transport	High	⭐⭐⭐⭐⭐
+Local Customer	Rental kebutuhan pribadi	Medium	⭐⭐⭐
+
+
+🔥 Fokus utama:
+
+Tourist/Family + Corporate
+
+Kenapa?
+
+Karena satu memberi volume, satu memberi recurring revenue.
+
+
+---
+
+03 — CUSTOMER #1
+
+TOURIST / FAMILY
+
+Profile
+
+Orang dari luar Jogja datang bersama:
+
+pasangan;
+
+keluarga;
+
+teman;
+
+anak;
+
+orang tua.
+
+
+Mereka biasanya sudah punya:
+
+tanggal
+
+
+destinasi
+
+
+jumlah orang
+
+tetapi belum tentu tahu:
+
+> kendaraan apa yang paling tepat.
+
+
+
+
+---
+
+TRIGGER
+
+Contoh:
+
+> “Bulan depan kami mau ke Jogja 3 hari.”
+
+
+
+↓
+
+Search:
+
+rental mobil Jogja
+
+↓
+
+Google Maps / Google Search
+
+↓
+
+Compare:
+
+harga;
+
+rating;
+
+mobil;
+
+lokasi;
+
+review;
+
+driver.
+
+
+
+---
+
+FEAR
+
+Ini penting banget.
+
+Customer takut:
+
+❌ mobil tidak sesuai foto
+
+❌ mobil tidak tersedia
+
+❌ driver telat
+
+❌ biaya tiba-tiba bertambah
+
+❌ admin slow response
+
+❌ booking tidak jelas
+
+❌ kendaraan tidak nyaman
+
+❌ kena scam
+
+
+---
+
+DESIRED OUTCOME
+
+Customer ingin:
+
+> “Saya tinggal datang ke Jogja dan semuanya sudah siap.”
+
+
+
+Ini adalah emotional outcome.
+
+
+---
+
+04 — CUSTOMER JOURNEY #1
+
+SEARCH
+  ↓
+DISCOVER
+  ↓
+COMPARE
+  ↓
+TRUST
+  ↓
+SELECT
+  ↓
+INQUIRE
+  ↓
+BOOK
+  ↓
+TRAVEL
+  ↓
+REVIEW
+  ↓
+REPEAT
+
+Digital opportunity
+
+Setiap tahap harus punya sistem.
+
+
+---
+
+DISCOVER
+
+Google Maps / Google Search.
+
+Family Transport harus menang melalui:
+
+Local SEO
+
+
+Google Business Profile
+
+
+Reviews
+
+
+---
+
+COMPARE
+
+Website.
+
+Customer melihat:
+
+Fleet
+
+Price
+
+Service
+
+Terms
+
+Reviews
+
+
+---
+
+SELECT
+
+System membantu memilih:
+
+> “Mana yang cocok?”
+
+
+
+
+---
+
+INQUIRE
+
+Bukan:
+
+> “Chat kami.”
+
+
+
+Tetapi:
+
+Get a Quote
+
+Customer memasukkan:
+
+date;
+
+duration;
+
+passengers;
+
+destination;
+
+service.
+
+
+
+---
+
+BOOK
+
+Request masuk ke dashboard.
+
+Admin tidak perlu membaca chat panjang untuk mengetahui kebutuhan customer.
+
+
+---
+
+05 — CUSTOMER #2
+
+CORPORATE
+
+Ini customer yang berbeda total.
+
+Corporate tidak terlalu peduli:
+
+> “Avanza paling murah berapa?”
+
+
+
+Mereka lebih peduli:
+
+Reliability
+
+Invoice
+
+Documentation
+
+Driver
+
+Punctuality
+
+Fleet availability
+
+Recurring service
+
+Account management
+
+
+---
+
+CORPORATE JOURNEY
+
+BUSINESS NEED
+      ↓
+SEARCH / REFERRAL
+      ↓
+VENDOR EVALUATION
+      ↓
+QUOTE
+      ↓
+APPROVAL
+      ↓
+BOOKING
+      ↓
+SERVICE
+      ↓
+INVOICE
+      ↓
+REPEAT
+
+🔥 Opportunity:
+
+Corporate bukan sekadar booking customer.
+
+Mereka bisa menjadi:
+
+ACCOUNT
+
+Contoh:
+
+PT ABC
+
+↓
+
+Account Manager
+
+↓
+
+Monthly transport
+
+↓
+
+Multiple bookings
+
+↓
+
+Invoice
+
+↓
+
+Customer history
+
+↓
+
+Repeat.
+
+Ini jauh lebih valuable daripada transaksi satu kali.
+
+
+---
+
+06 — CUSTOMER #3
+
+AIRPORT TRANSFER
+
+Trigger:
+
+> “Besok landing di YIA jam 10.”
+
+
+
+Customer tidak ingin:
+
+mencari mobil;
+
+tawar harga;
+
+mencari driver;
+
+menunggu.
+
+
+Mereka ingin:
+
+PICKUP CONFIRMATION
+
+Flow:
+
+FLIGHT
+ ↓
+ARRIVAL TIME
+ ↓
+PASSENGERS
+ ↓
+LUGGAGE
+ ↓
+PICKUP LOCATION
+ ↓
+VEHICLE
+ ↓
+PRICE
+ ↓
+BOOK
+
+Key promise:
+
+> “Driver sudah siap ketika Anda tiba.”
+
+
+
+Tentu hanya boleh dijanjikan jika operationally bisa dipenuhi.
+
+
+---
+
+07 — CUSTOMER #4
+
+GROUP / EVENT
+
+Misalnya:
+
+25 orang
+
+2 hari
+
+Jogja
+
+Mereka tidak membutuhkan:
+
+> satu mobil.
+
+
+
+Mereka membutuhkan:
+
+> transport coordination.
+
+
+
+Flow:
+
+EVENT
+ ↓
+DATE
+ ↓
+PEOPLE
+ ↓
+ROUTE
+ ↓
+VEHICLE REQUIREMENT
+ ↓
+QUOTE
+ ↓
+COORDINATION
+ ↓
+BOOKING
+
+Potential revenue:
+
+🔥🔥🔥
+
+Tetapi operational complexity juga:
+
+🔥🔥🔥
+
+Karena itu bukan MVP pertama, tapi harus masuk architecture jangka panjang.
+
+
+---
+
+08 — CUSTOMER #5
+
+LOCAL CUSTOMER
+
+Use cases:
+
+keluarga;
+
+perjalanan luar kota;
+
+acara;
+
+wedding;
+
+kebutuhan bisnis;
+
+kendaraan sementara.
+
+
+Journey lebih sederhana:
+
+NEED
+ ↓
+SEARCH
+ ↓
+FLEET
+ ↓
+PRICE
+ ↓
+WHATSAPP
+ ↓
+BOOK
+
+Ini tetap penting karena local customer bisa menghasilkan repeat booking.
+
+
+---
+
+09 — CUSTOMER PAIN MATRIX
+
+Sekarang kita rangkum.
+
+Pain	Tourist	Corporate	Airport	Group	Local
+
+Takut tidak tersedia	🔥🔥🔥	🔥🔥🔥	🔥🔥🔥	🔥🔥🔥	🔥🔥
+Harga tidak jelas	🔥🔥🔥	🔥🔥	🔥🔥	🔥🔥🔥	🔥🔥🔥
+Slow response	🔥🔥🔥	🔥🔥🔥	🔥🔥🔥	🔥🔥🔥	🔥🔥
+Kendaraan tidak sesuai	🔥🔥🔥	🔥🔥	🔥🔥	🔥🔥🔥	🔥🔥
+Driver	🔥🔥🔥	🔥🔥🔥	🔥🔥🔥	🔥🔥🔥	🔥🔥
+Dokumentasi	🔥	🔥🔥🔥	🔥	🔥🔥	🔥
+Koordinasi	🔥	🔥🔥🔥	🔥	🔥🔥🔥	🔥
+
+
+
+---
+
+10 — THE BIG INSIGHT
+
+Ada satu pola yang muncul di semua customer.
+
+Mereka selalu ingin mengetahui 5 hal:
+
+1. AVAILABLE?
+
+> Mobilnya ada?
+
+
+
+2. SUITABLE?
+
+> Cocok nggak untuk kebutuhan saya?
+
+
+
+3. HOW MUCH?
+
+> Totalnya berapa?
+
+
+
+4. TRUSTWORTHY?
+
+> Aman nggak?
+
+
+
+5. WHAT NEXT?
+
+> Setelah saya setuju, bagaimana booking-nya?
+
+
+
+Ini berarti 5 pertanyaan tersebut harus menjadi core architecture website.
+
+
+---
+
+11 — FAMILY TRANSPORT CUSTOMER ENGINE
+
+Aku usulkan sistem:
+
+5C CUSTOMER ENGINE
+
+① CHOOSE
+
+Pilih kebutuhan.
+
+② CHECK
+
+Cek kendaraan & availability.
+
+③ CALCULATE
+
+Hitung harga / quote.
+
+④ CONFIRM
+
+Konfirmasi booking.
+
+⑤ COMPLETE
+
+Perjalanan selesai → review → repeat.
+
+CHOOSE
+  ↓
+CHECK
+  ↓
+CALCULATE
+  ↓
+CONFIRM
+  ↓
+COMPLETE
+  ↓
+REPEAT
+
+🔥 Ini bisa menjadi core funnel Family Transport.
+
+
+---
+
+12 — CUSTOMER DATA ENGINE
+
+Supaya website benar-benar menjadi system, kita perlu menangkap:
+
+CUSTOMER
+
+name
+
+phone
+
+email optional
+
+
+TRIP
+
+date
+
+start
+
+destination
+
+duration
+
+passengers
+
+
+SERVICE
+
+rental
+
+driver
+
+airport
+
+tour
+
+event
+
+
+VEHICLE
+
+preferred vehicle
+
+recommended vehicle
+
+
+BOOKING
+
+quote
+
+status
+
+payment
+
+confirmation
+
+
+POST-TRIP
+
+completed
+
+review
+
+repeat potential
+
+
+
+---
+
+13 — BOOKING STATUS
+
+Kita mulai membayangkan workflow admin:
+
+NEW
+ ↓
+CONTACTED
+ ↓
+QUOTED
+ ↓
+WAITING CONFIRMATION
+ ↓
+CONFIRMED
+ ↓
+PAID / DEPOSIT
+ ↓
+IN SERVICE
+ ↓
+COMPLETED
+ ↓
+REVIEW REQUESTED
+ ↓
+REPEAT / LOST
+
+🔥 Ini jauh lebih berguna daripada sekadar:
+
+> “Ada pesan WhatsApp masuk.”
+
+
+
+
+---
+
+14 — CUSTOMER EXPERIENCE TARGET
+
+Target experience Family Transport:
+
+BEFORE
+
+Customer:
+
+> “Saya bingung harus sewa apa.”
+
+
+
+AFTER
+
+System:
+
+> “Untuk 5 orang selama 3 hari, kami merekomendasikan…”
+
+
+
+
+---
+
+BEFORE
+
+Customer:
+
+> “Harganya berapa?”
+
+
+
+AFTER
+
+System:
+
+> Estimated total: Rp X
+
+
+
+
+---
+
+BEFORE
+
+Customer:
+
+> “Mobilnya ada?”
+
+
+
+AFTER
+
+System:
+
+> Availability: Check / Available / Request confirmation
+
+
+
+
+---
+
+BEFORE
+
+Customer:
+
+> “Booking gimana?”
+
+
+
+AFTER
+
+Request Booking → Confirmation
+
+
+---
+
+15 — CUSTOMER-CENTRIC POSITIONING
+
+Setelah customer journey ini, positioning kita makin tajam.
+
+Bukan:
+
+> Family Transport — Rental Mobil Jogja
+
+
+
+Tetapi kita bisa mengarah ke:
+
+Family Transport
+
+Your Journey, Handled.
+
+Maknanya:
+
+Anda punya perjalanan.
+
+Kami mengurus transportasinya.
+
+Bukan hanya:
+
+> “Kami punya mobil.”
+
+
+
+
+---
+
+16 — PRIORITY MATRIX
+
+Sekarang kita tentukan apa yang masuk MVP.
+
+🟢 MVP
+
+Tourist / Family
+
+Local Customer
+
+Airport Transfer
+
+Karena flow-nya relatif sederhana.
+
+🟡 Phase 2
+
+Corporate
+
+Karena butuh:
+
+account;
+
+quotation;
+
+invoice;
+
+recurring booking.
+
+
+🔵 Phase 3
+
+Group / Event
+
+Karena membutuhkan:
+
+multiple vehicle;
+
+itinerary;
+
+coordination;
+
+complex quote.
+
+
+
+---
+
+17 — SESSION 1-E VERDICT
+
+Kita sekarang sudah mengetahui:
+
+WHO
+
+Tourist / Family / Corporate / Airport / Group / Local.
+
+WHY
+
+Mereka membutuhkan certainty & convenience.
+
+FEAR
+
+Availability / price / trust / driver / coordination.
+
+SEARCH
+
+Google / Maps / referral / social.
+
+COMPARE
+
+Price / review / fleet / service.
+
+CONVERT
+
+Quote → WhatsApp → Booking.
+
+EXPERIENCE
+
+Pickup → Journey → Completion.
+
+RETENTION
+
+Review → Repeat → Corporate account.
+
+
+---
+
+🔥 HASIL BESAR SESSION 1
+
+Dari 1-A sampai 1-E, kita sudah membangun:
+
+1-A — Business Deep Dive
+→ memahami bisnis.
+
+1-B — Competitor Engine
+→ memahami market.
+
+1-C — Actual Competitor Research
+→ menemukan pemain nyata.
+
+1-D — Competitor Teardown
+→ menemukan best practices & gaps.
+
+1-E — Customer & Journey
+→ memahami customer dan funnel.
+
+Sekarang Session 1 secara strategis sudah hampir lengkap.
+
+Tinggal satu bagian yang menurutku wajib sebelum kita masuk Session 2:
+
+SESSION 1-F — OFFER & REVENUE ENGINE
+
+Di situ kita akan menentukan:
+
+Family Transport sebenarnya harus menjual apa → paket apa → service mode apa → pricing logic → revenue stream → high-value offer → recurring offer → dan mana yang MVP vs nanti.
+
+Setelah 1-F, baru kita bisa masuk ke:
+
+SESSION 2 — POSITIONING + OFFER ARCHITECTURE
+
+dan mulai menerjemahkan semua research ini menjadi produk bisnis Family Transport yang benar-benar bisa dibangun.

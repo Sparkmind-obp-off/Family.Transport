@@ -1,0 +1,1210 @@
+Gas gsss 🔥 lanjut SESSION 5-E — API CONTRACT + BACKEND BEHAVIOR.
+
+Sekarang kita masuk dari UX → engineering contract. Targetnya: frontend, backend, database, dan coding agent punya kontrak yang sama dan nggak boleh menebak-nebak behavior system.
+
+SESSION 5-E — API CONTRACT
+
+5-E.1 — API PRINCIPLE
+
+Architecture:
+
+CLIENT
+  ↓
+API
+  ↓
+AUTH / RBAC
+  ↓
+VALIDATION
+  ↓
+DOMAIN LOGIC
+  ↓
+DATABASE
+  ↓
+EVENT / NOTIFICATION
+
+Rule utama:
+
+> Frontend hanya meminta. Backend yang memutuskan.
+
+
+
+Jadi:
+
+frontend tidak menentukan harga final
+
+frontend tidak menentukan availability
+
+frontend tidak menentukan permission
+
+frontend tidak menentukan booking status
+
+frontend tidak menentukan payment status
+
+
+
+---
+
+5-E.2 — API CONVENTION
+
+Base:
+
+/api/v1
+
+Response sukses:
+
+{
+  "success": true,
+  "data": {}
+}
+
+Error:
+
+{
+  "success": false,
+  "error": {
+    "code": "ERROR_CODE",
+    "message": "Human readable message"
+  }
+}
+
+
+---
+
+5-E.3 — AUTH API
+
+POST /api/v1/auth/register
+
+Purpose:
+
+> Create customer account.
+
+
+
+Input:
+
+name
+phone
+email?
+password
+
+Output:
+
+user
+session
+
+Rules:
+
+phone required
+
+password validated server-side
+
+duplicate identity rejected
+
+password never returned
+
+
+
+---
+
+POST /api/v1/auth/login
+
+Input:
+
+identifier
+password
+
+Output:
+
+session
+user
+roles
+permissions
+
+Invalid:
+
+AUTH_INVALID_CREDENTIALS
+
+Jangan membocorkan apakah email/phone tertentu terdaftar.
+
+
+---
+
+POST /api/v1/auth/logout
+
+Invalidates session.
+
+
+---
+
+5-E.4 — SERVICE API
+
+GET /api/v1/services
+
+Public.
+
+Returns:
+
+id
+slug
+name
+description
+status
+pricing_type
+
+Only active services exposed publicly.
+
+
+---
+
+GET /api/v1/services/:id
+
+Returns service detail.
+
+
+---
+
+POST /api/v1/admin/services
+
+Admin only.
+
+Creates service.
+
+
+---
+
+PATCH /api/v1/admin/services/:id
+
+Admin only.
+
+
+---
+
+5-E.5 — VEHICLE API
+
+GET /api/v1/vehicles
+
+Public fleet catalog.
+
+Filters:
+
+category
+capacity
+service_id
+
+Important:
+
+> This endpoint is not the availability engine.
+
+
+
+
+---
+
+GET /api/v1/vehicles/:id
+
+Vehicle detail.
+
+
+---
+
+POST /api/v1/admin/vehicles
+
+Admin.
+
+
+---
+
+PATCH /api/v1/admin/vehicles/:id
+
+Admin.
+
+
+---
+
+POST /api/v1/admin/vehicles/:id/deactivate
+
+Soft deactivation.
+
+Historical transactions remain intact.
+
+
+---
+
+5-E.6 — AVAILABILITY API
+
+🔥 Core endpoint.
+
+POST
+
+/api/v1/availability/check
+
+Request:
+
+{
+  "service_id": "svc_123",
+  "start_at": "2026-08-20T09:00:00",
+  "end_at": "2026-08-20T17:00:00",
+  "passengers": 4,
+  "vehicle_category_id": "cat_01"
+}
+
+Server performs:
+
+service validation
+      ↓
+date validation
+      ↓
+capacity filtering
+      ↓
+service compatibility
+      ↓
+booking conflict
+      ↓
+maintenance conflict
+      ↓
+driver/resource conflict
+
+Response:
+
+{
+  "success": true,
+  "data": {
+    "available": true,
+    "vehicles": []
+  }
+}
+
+
+---
+
+5-E.7 — AVAILABILITY RULE
+
+Vehicle dianggap eligible jika:
+
+ACTIVE
+AND capacity >= passengers
+AND service compatible
+AND no overlapping confirmed booking
+AND no maintenance block
+AND operational constraints satisfied
+
+
+---
+
+5-E.8 — OVERLAP RULE
+
+Dua trip conflict jika:
+
+existing.start < requested.end
+AND
+existing.end > requested.start
+
+Ini menjadi canonical overlap rule.
+
+Jangan membuat versi berbeda di frontend/backend.
+
+
+---
+
+5-E.9 — BOOKING API
+
+POST
+
+/api/v1/bookings
+
+Request:
+
+{
+  "service_id": "svc_123",
+  "vehicle_id": "veh_123",
+  "start_at": "2026-08-20T09:00:00",
+  "end_at": "2026-08-20T17:00:00",
+  "pickup": "Location A",
+  "destination": "Location B",
+  "passengers": 4,
+  "addons": [],
+  "customer": {
+    "name": "Customer",
+    "phone": "..."
+  }
+}
+
+
+---
+
+5-E.10 — BOOKING SERVER FLOW
+
+Backend:
+
+REQUEST
+ ↓
+AUTH
+ ↓
+VALIDATE
+ ↓
+RECHECK AVAILABILITY
+ ↓
+CALCULATE PRICE
+ ↓
+CREATE BOOKING
+ ↓
+RESERVE RESOURCE
+ ↓
+CREATE EVENT
+ ↓
+NOTIFY
+ ↓
+RESPONSE
+
+🔥 Availability harus re-check saat booking dibuat.
+
+Tidak boleh hanya percaya hasil /availability/check.
+
+
+---
+
+5-E.11 — BOOKING STATUS
+
+Canonical status:
+
+DRAFT
+PENDING
+QUOTED
+CONFIRMED
+CANCELLED
+COMPLETED
+
+Jangan membuat status bebas seperti:
+
+> "almost confirmed"
+
+
+
+atau:
+
+> "waiting-ish".
+
+
+
+
+---
+
+5-E.12 — BOOKING TRANSITIONS
+
+DRAFT
+ ↓
+PENDING
+ ↓
+QUOTED
+ ↓
+CONFIRMED
+ ↓
+COMPLETED
+
+Cancellation:
+
+PENDING → CANCELLED
+QUOTED → CANCELLED
+CONFIRMED → CANCELLED
+
+Invalid transition:
+
+> COMPLETED → CONFIRMED
+
+
+
+harus ditolak.
+
+
+---
+
+5-E.13 — IDEMPOTENCY
+
+POST /bookings
+
+Harus menerima:
+
+Idempotency-Key
+
+Contoh:
+
+Idempotency-Key: abc123
+
+Jika request sama dikirim ulang:
+
+> jangan membuat booking kedua.
+
+
+
+
+---
+
+5-E.14 — GET BOOKING
+
+GET
+
+/api/v1/bookings/:id
+
+Rules:
+
+Customer:
+
+> hanya booking miliknya.
+
+
+
+Operator/admin:
+
+> sesuai permission.
+
+
+
+
+---
+
+5-E.15 — QUOTE API
+
+POST
+
+/api/v1/quotes
+
+Request:
+
+booking_id
+
+Server mengambil booking state.
+
+Kemudian:
+
+validate
+ ↓
+calculate
+ ↓
+snapshot price
+ ↓
+create quote
+
+
+---
+
+5-E.16 — QUOTE OBJECT
+
+Minimal:
+
+quote_id
+quote_code
+booking_id
+subtotal
+discount
+fees
+total
+currency
+valid_until
+status
+
+Status:
+
+DRAFT
+SENT
+ACCEPTED
+REJECTED
+EXPIRED
+
+
+---
+
+5-E.17 — ACCEPT QUOTE
+
+POST
+
+/api/v1/quotes/:id/accept
+
+Server:
+
+authenticate
+ ↓
+authorize
+ ↓
+check ownership
+ ↓
+check expiry
+ ↓
+revalidate availability
+ ↓
+lock resource
+ ↓
+confirm booking
+ ↓
+create event
+
+Jika resource sudah hilang:
+
+409 RESOURCE_UNAVAILABLE
+
+
+---
+
+5-E.18 — PRICING API
+
+Pricing sebaiknya tidak diekspos sebagai:
+
+> "frontend sends total."
+
+
+
+Sebaliknya:
+
+POST
+
+/api/v1/pricing/quote
+
+Input:
+
+service
+vehicle
+duration
+addons
+route/area if applicable
+
+Output:
+
+subtotal
+fees
+discount
+total
+currency
+pricing_version
+
+
+---
+
+5-E.19 — PRICE SNAPSHOT
+
+🔥 Ini penting untuk historical integrity.
+
+Saat quote dibuat:
+
+price_snapshot
+pricing_version
+
+disimpan.
+
+Jika admin kemudian mengubah tarif:
+
+> booking lama tidak ikut berubah.
+
+
+
+
+---
+
+5-E.20 — ADMIN BOOKING API
+
+GET
+
+/api/v1/admin/bookings
+
+Filters:
+
+status
+date_from
+date_to
+vehicle_id
+driver_id
+service_id
+
+Pagination wajib.
+
+
+---
+
+5-E.21 — ASSIGN VEHICLE
+
+POST
+
+/api/v1/admin/bookings/:id/assign-vehicle
+
+Input:
+
+{
+  "vehicle_id": "veh_123"
+}
+
+Backend harus:
+
+> re-check availability.
+
+
+
+Tidak boleh:
+
+> assign karena admin mengirim ID valid.
+
+
+
+
+---
+
+5-E.22 — ASSIGN DRIVER
+
+POST
+
+/api/v1/admin/trips/:id/assign-driver
+
+Input:
+
+{
+  "driver_id": "drv_123"
+}
+
+Server mengecek:
+
+driver active
+driver eligible
+driver available
+no overlapping assignment
+
+
+---
+
+5-E.23 — TRIP API
+
+POST
+
+/api/v1/admin/trips
+
+Trip dibuat dari booking yang confirmed.
+
+Trip:
+
+trip_id
+booking_id
+vehicle_id
+driver_id
+start_at
+end_at
+status
+
+
+---
+
+5-E.24 — TRIP STATUS API
+
+PATCH
+
+/api/v1/admin/trips/:id/status
+
+Input:
+
+{
+  "status": "IN_PROGRESS"
+}
+
+Backend memvalidasi state transition.
+
+
+---
+
+5-E.25 — PAYMENT API
+
+POST
+
+/api/v1/admin/payments
+
+MVP manual payment.
+
+Input:
+
+booking_id
+amount
+method
+reference
+paid_at
+
+Backend:
+
+> calculates/validates amount.
+
+
+
+
+---
+
+5-E.26 — PAYMENT STATUS
+
+Canonical:
+
+UNPAID
+PARTIAL
+PAID
+REFUNDED
+
+Jangan menggunakan:
+
+> "DONE"
+
+
+
+untuk payment.
+
+
+---
+
+5-E.27 — PAYMENT WEBHOOK
+
+Jika gateway P1 nanti:
+
+POST /api/v1/webhooks/payment
+
+Flow:
+
+verify signature
+ ↓
+validate event
+ ↓
+check idempotency
+ ↓
+update payment
+ ↓
+update booking/payment state
+ ↓
+emit event
+
+
+---
+
+5-E.28 — CUSTOMER API
+
+GET
+
+/api/v1/me
+
+PATCH
+
+/api/v1/me
+
+GET
+
+/api/v1/me/bookings
+
+GET
+
+/api/v1/me/quotes
+
+Semua harus menggunakan:
+
+> authenticated identity dari session/token.
+
+
+
+Bukan user_id yang dipercaya dari frontend.
+
+
+---
+
+5-E.29 — NOTIFICATION API
+
+Notification sebaiknya event-driven.
+
+Contoh:
+
+booking.created
+       ↓
+notification service
+       ↓
+WhatsApp / email
+
+Bukan:
+
+booking endpoint
+   ↓
+send WhatsApp directly
+
+Dengan begitu failure notification:
+
+> tidak merusak transaksi utama.
+
+
+
+
+---
+
+5-E.30 — DOMAIN EVENTS
+
+MVP events:
+
+booking.created
+booking.confirmed
+booking.cancelled
+
+quote.created
+quote.accepted
+quote.expired
+
+payment.recorded
+payment.confirmed
+
+driver.assigned
+
+trip.started
+trip.completed
+
+
+---
+
+5-E.31 — ERROR CONTRACT
+
+Canonical errors:
+
+400 VALIDATION_ERROR
+401 UNAUTHENTICATED
+403 FORBIDDEN
+404 NOT_FOUND
+409 RESOURCE_CONFLICT
+409 RESOURCE_UNAVAILABLE
+409 INVALID_STATE_TRANSITION
+422 BUSINESS_RULE_VIOLATION
+429 RATE_LIMITED
+500 INTERNAL_ERROR
+
+
+---
+
+5-E.32 — ERROR EXAMPLE
+
+Jika kendaraan sudah diambil:
+
+{
+  "success": false,
+  "error": {
+    "code": "RESOURCE_UNAVAILABLE",
+    "message": "The selected vehicle is no longer available."
+  }
+}
+
+Frontend kemudian:
+
+> show alternative vehicles.
+
+
+
+
+---
+
+5-E.33 — RBAC
+
+Role:
+
+CUSTOMER
+OPERATOR
+ADMIN
+OWNER
+
+Contoh:
+
+Action	Customer	Operator	Admin	Owner
+
+View own booking	✅	—	—	—
+View all bookings	❌	✅	✅	✅
+Create booking	✅	✅	✅	✅
+Assign driver	❌	✅	✅	✅
+Manage vehicle	❌	Limited	✅	✅
+Manage users	❌	❌	✅	✅
+Pricing config	❌	Limited	✅	✅
+System settings	❌	❌	Limited	✅
+
+
+Backend tetap menjadi authority.
+
+
+---
+
+5-E.34 — API AUTHORIZATION
+
+Urutan:
+
+Request
+ ↓
+Authenticate
+ ↓
+Identify actor
+ ↓
+Load role
+ ↓
+Check permission
+ ↓
+Check resource ownership
+ ↓
+Execute
+
+Bukan:
+
+Request
+ ↓
+frontend says "I'm admin"
+
+
+---
+
+5-E.35 — TRANSACTION BOUNDARY
+
+Booking confirmation harus atomic.
+
+Conceptually:
+
+BEGIN TRANSACTION
+
+revalidate resource
+create/update booking
+reserve vehicle
+create trip if applicable
+create event
+
+COMMIT
+
+Jika salah satu critical operation gagal:
+
+> rollback.
+
+
+
+
+---
+
+5-E.36 — CONCURRENCY PROTECTION
+
+Scenario:
+
+Customer A → Vehicle X
+Customer B → Vehicle X
+
+secara bersamaan.
+
+System harus memastikan:
+
+A → SUCCESS
+B → CONFLICT
+
+atau sebaliknya.
+
+Tidak boleh:
+
+A → SUCCESS
+B → SUCCESS
+
+untuk resource yang sama dan waktu overlapping.
+
+
+---
+
+5-E.37 — API VERSIONING
+
+Gunakan:
+
+/api/v1
+
+Jangan:
+
+/api/new
+/api/final
+/api/latest2
+
+Jika breaking change:
+
+> /api/v2.
+
+
+
+
+---
+
+5-E.38 — PAGINATION
+
+Collection endpoint:
+
+?page=1
+&limit=20
+
+Response:
+
+{
+  "items": [],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "total": 100,
+    "total_pages": 5
+  }
+}
+
+
+---
+
+5-E.39 — AUDIT API BEHAVIOR
+
+Sensitive operations otomatis menghasilkan audit:
+
+booking.confirmed
+vehicle.deactivated
+price.override
+driver.assigned
+payment.recorded
+booking.cancelled
+
+Audit:
+
+actor_id
+action
+entity_type
+entity_id
+metadata
+created_at
+
+
+---
+
+5-E.40 — API SECURITY BASELINE
+
+Semua endpoint harus mempertimbangkan:
+
+Authentication
+Authorization
+Validation
+Rate limiting
+Idempotency
+Input sanitization
+Audit
+Error handling
+
+Dan:
+
+> jangan return internal database errors ke client.
+
+
+
+
+---
+
+5-E.41 — GOLDEN API FLOW
+
+Core transaction:
+
+POST /availability/check
+        ↓
+POST /bookings
+        ↓
+POST /quotes
+        ↓
+POST /quotes/:id/accept
+        ↓
+POST /admin/payments
+        ↓
+POST /admin/trips/:id/assign-driver
+        ↓
+PATCH /admin/trips/:id/status
+        ↓
+COMPLETED
+
+🔥 Ini adalah backend backbone.
+
+
+---
+
+5-E.42 — API CONTRACT PRINCIPLE
+
+Kita kunci 5 hukum:
+
+1.
+
+Client is untrusted.
+
+2.
+
+Server calculates money.
+
+3.
+
+Server decides availability.
+
+4.
+
+Database protects transaction integrity.
+
+5.
+
+Every state transition is explicit.
+
+
+---
+
+🔒 SESSION 5-E — LOCKED
+
+Sekarang kita sudah punya:
+
+✅ API architecture
+✅ Endpoint inventory
+✅ Request/response behavior
+✅ Auth
+✅ RBAC
+✅ Availability
+✅ Booking
+✅ Pricing
+✅ Quote
+✅ Payment
+✅ Driver
+✅ Trip
+✅ Notifications
+✅ Domain events
+✅ Error contract
+✅ Idempotency
+✅ Concurrency protection
+✅ Transaction boundaries
+✅ Audit behavior
+
+
+---
+
+🚀 NEXT — SESSION 5-F
+
+Berikutnya kita masuk ke bagian yang menjadi jembatan terakhir sebelum coding:
+
+DATABASE SCHEMA + ENTITY RELATIONSHIP
+
+Kita akan menentukan tabel/entity:
+
+users
+user_profiles
+roles
+permissions
+
+services
+vehicle_categories
+vehicles
+vehicle_images
+
+drivers
+driver_assignments
+
+booking_requests
+bookings
+booking_items
+
+quotes
+quote_items
+
+payments
+
+trips
+trip_stops
+
+notifications
+audit_logs
+
+pricing_rules
+pricing_snapshots
+
+Lalu kita tentukan secara presisi:
+
+PK → FK → cardinality → indexes → unique constraints → status enums → soft delete → timestamps → ownership → transaction integrity.
+
+Setelah 5-F, kita sudah bisa menyusun MASTER TECHNICAL SPECIFICATION Family Transport dan baru kemudian masuk ke implementation/build.

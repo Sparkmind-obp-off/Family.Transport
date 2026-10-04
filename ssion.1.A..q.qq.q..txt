@@ -1,0 +1,718 @@
+Gas. Kita resmi masuk SESSION 1 — FAMILY TRANSPORT BUSINESS DEEP DIVE A–Z. 🔥
+
+Aku cek ulang jejak digital yang tersedia sekarang, dan ada satu koreksi penting dari pembahasan sebelumnya: kita tidak boleh mencampur “Family Transport” yang sekarang dengan “CV. Jogja Family Transport” tahun 2008 tanpa verifikasi. Nama dan bidangnya memang sangat dekat, tetapi bukti hubungan langsung belum ada. 
+
+SESSION 1 — FAMILY TRANSPORT BUSINESS DEEP DIVE A–Z
+
+01 — BUSINESS IDENTITY
+
+Current entity
+
+Working name: Family Transport
+
+Business category: Transport / car rental
+
+Geographic market: Yogyakarta dan sekitarnya
+
+Ada direktori yang mencatat Family Transport — Jl. Jomblangan — +62 878-3857-2399 sebagai bisnis rental/transport di Yogyakarta. 
+
+Namun, ini belum cukup untuk menyatakan nomor tersebut adalah nomor aktif/current dari listing Maps yang kamu kirim.
+
+Historical entity
+
+Kita menemukan:
+
+CV. Jogja Family Transport
+
+Artikel tahun 2017 menyebut perusahaan tersebut:
+
+bergerak di jasa transportasi;
+
+melayani tour wisata;
+
+kebutuhan kantor pemerintah/swasta;
+
+carter individu;
+
+jasa angkut/pengiriman barang;
+
+menyediakan kendaraan wedding/pengantin;
+
+mengklaim berdiri sejak 2008;
+
+pada saat artikel diterbitkan beralamat di Jl. Bantul KM 7, Pucung, Pendowoharjo, Sewon, Bantul. 
+
+
+Artikel tersebut juga mencantumkan website rentalcarjogja.com dan beberapa nomor kontak lama. 
+
+🔴 VERIFICATION STATUS
+
+Data	Status
+
+Family Transport sebagai bisnis transport/rental	🟢
+Eksistensi di Yogyakarta	🟢
+Family Transport — Jomblangan	🟢
+CV. Jogja Family Transport	🟢 historical
+Berdiri sejak 2008	🟡 historical entity
+Family Transport sekarang = CV. Jogja Family Transport	🔴 belum terbukti
+Owner	🔴 belum diketahui
+Legal entity aktif	🔴 belum diketahui
+Tahun berdiri current business	🔴 belum diketahui
+
+
+Ini penting.
+
+Kita tidak akan memakai “since 2008” di website nanti sebelum terbukti.
+
+
+---
+
+02 — BUSINESS DNA
+
+Dari data yang sudah ditemukan, ada indikasi bahwa bisnis ini bukan sekadar:
+
+> “Sewa mobil.”
+
+
+
+Melainkan berada di kategori:
+
+TRANSPORTATION SERVICE
+
+dengan kemungkinan beberapa revenue stream:
+
+Rental
+
+→ kendaraan
+
+Driver Service
+
+→ kendaraan + driver
+
+Tour / Travel
+
+→ perjalanan wisata
+
+Carter
+
+→ perjalanan personal/group
+
+Corporate Transport
+
+→ kebutuhan perusahaan
+
+Wedding Transport
+
+→ kendaraan untuk acara
+
+Logistics
+
+→ pengiriman/barang
+
+Ini menarik karena berarti Family Transport berpotensi memiliki Average Order Value lebih tinggi daripada rental mobil harian biasa.
+
+
+---
+
+03 — CUSTOMER SEGMENTS
+
+Kita sementara pecah menjadi 6 segmen.
+
+① TOURIST
+
+Orang datang ke Jogja.
+
+Needs:
+
+Airport → Hotel → Wisata → Hotel → Airport
+
+Pain:
+
+tidak tahu rental terpercaya;
+
+takut mobil tidak sesuai;
+
+takut driver tidak profesional;
+
+bingung harga;
+
+takut kena biaya tambahan.
+
+
+
+---
+
+② FAMILY
+
+Keluarga datang ke Jogja.
+
+Needs:
+
+mobil nyaman;
+
+kapasitas cukup;
+
+driver;
+
+perjalanan wisata;
+
+fleksibilitas.
+
+
+Value proposition:
+
+> Nyaman, aman, tidak perlu repot mengemudi sendiri.
+
+
+
+
+---
+
+③ GROUP
+
+Rombongan.
+
+Needs:
+
+kendaraan besar;
+
+koordinasi;
+
+itinerary;
+
+driver;
+
+pickup/drop-off.
+
+
+Potential AOV:
+
+TINGGI.
+
+
+---
+
+④ CORPORATE
+
+Perusahaan / kantor.
+
+Needs:
+
+transport meeting;
+
+kunjungan kerja;
+
+event;
+
+perjalanan dinas;
+
+transport employee/client.
+
+
+Potential:
+
+HIGH + RECURRING.
+
+
+---
+
+⑤ WEDDING / EVENT
+
+Needs:
+
+kendaraan pengantin;
+
+kendaraan keluarga;
+
+transport tamu;
+
+event transport.
+
+
+Historical evidence bahkan menunjukkan layanan wedding/pengantin pernah menjadi bagian penawaran Jogja Family Transport. 
+
+
+---
+
+⑥ LOCAL CUSTOMER
+
+Customer Jogja sendiri.
+
+Needs:
+
+rental;
+
+perjalanan luar kota;
+
+event;
+
+kebutuhan keluarga;
+
+kebutuhan bisnis.
+
+
+
+---
+
+04 — CORE PROBLEM YANG DIJUAL
+
+Ini bagian yang paling penting untuk positioning.
+
+Customer sebenarnya tidak membeli mobil.
+
+Customer membeli:
+
+> kepastian perjalanan.
+
+
+
+Mereka ingin:
+
+Mobil tersedia
+
+
+harga jelas
+
+
+driver aman
+
+
+pickup tepat
+
+
+kendaraan layak
+
+
+komunikasi mudah
+
+
+tidak ada drama.
+
+Jadi positioning kita jangan berhenti di:
+
+> Rental Mobil Jogja.
+
+
+
+Tetapi:
+
+> Reliable Transportation Partner for Your Journey in Yogyakarta.
+
+
+
+Nanti kita bisa adaptasi menjadi Bahasa Indonesia yang lebih natural.
+
+
+---
+
+05 — CURRENT DIGITAL GAP
+
+Dari research awal, aku melihat peluang besar.
+
+Bisnis transport seperti ini biasanya memiliki funnel:
+
+Google Maps
+
+↓
+
+Customer lihat rating/foto
+
+↓
+
+Customer cari nomor
+
+↓
+
+WhatsApp
+
+↓
+
+Tanya harga
+
+↓
+
+Tanya mobil
+
+↓
+
+Tanya availability
+
+↓
+
+Negosiasi
+
+↓
+
+Booking
+
+Masalahnya:
+
+terlalu banyak friction.
+
+Customer harus bertanya manual:
+
+> “Mas ada Avanza?”
+
+
+
+> “Tanggal sekian bisa?”
+
+
+
+> “Harga berapa?”
+
+
+
+> “Dengan driver berapa?”
+
+
+
+> “Lepas kunci bisa?”
+
+
+
+> “Bisa jemput bandara?”
+
+
+
+Nah.
+
+SYSTEM yang akan kita bangun harus mengurangi pertanyaan berulang tersebut.
+
+
+---
+
+06 — OPPORTUNITY
+
+Maka produk digital Family Transport nantinya bukan sekadar website.
+
+Kita arahkan menjadi:
+
+FAMILY TRANSPORT DIGITAL BOOKING SYSTEM
+
+Customer dapat:
+
+Explore
+
+→ layanan
+
+Browse
+
+→ kendaraan
+
+Select
+
+→ tanggal
+
+Choose
+
+→ service
+
+Request
+
+→ booking
+
+Confirm
+
+→ WhatsApp/admin
+
+Receive
+
+→ confirmation
+
+
+---
+
+07 — INFORMATION ARCHITECTURE AWAL
+
+Draft awal:
+
+FAMILY TRANSPORT
+│
+├── Home
+│
+├── Services
+│   ├── Car Rental
+│   ├── Rental + Driver
+│   ├── Airport Transfer
+│   ├── Tour & Travel
+│   ├── Corporate Transport
+│   ├── Wedding Transport
+│   └── Other Transport
+│
+├── Fleet
+│   ├── MPV
+│   ├── SUV
+│   ├── Premium
+│   └── Group / Large Vehicle
+│
+├── Destinations
+│   ├── Yogyakarta
+│   ├── Airport
+│   ├── Outside Jogja
+│   └── Custom Trip
+│
+├── Booking
+│
+├── About
+│
+├── FAQ
+│
+└── Contact
+
+Catatan: kategori kendaraan dan layanan di atas masih struktur produk, bukan klaim bahwa Family Transport saat ini menyediakan semuanya.
+
+
+---
+
+08 — REVENUE ENGINE
+
+Kita jangan hanya mengandalkan:
+
+Rental harian.
+
+Buat revenue ladder:
+
+LOW
+
+Rental
+
+↓
+
+MEDIUM
+
+Rental + Driver
+
+↓
+
+MEDIUM/HIGH
+
+Airport Transfer
+
+↓
+
+HIGH
+
+Tour / Charter
+
+↓
+
+HIGH
+
+Corporate
+
+↓
+
+HIGH
+
+Wedding / Event
+
+↓
+
+RECURRING
+
+Corporate Contract
+
+Ini yang membuat project ini menarik secara bisnis.
+
+
+---
+
+09 — TRUST ENGINE
+
+Untuk bisnis transport, trust harus menjadi produk digital, bukan hanya teks.
+
+Website nanti harus menampilkan:
+
+VEHICLE TRUST
+
+foto kendaraan asli;
+
+tahun kendaraan bila tersedia;
+
+kapasitas;
+
+fasilitas;
+
+kondisi.
+
+
+DRIVER TRUST
+
+profesional;
+
+pengalaman;
+
+identitas perusahaan bila memang dapat ditampilkan;
+
+SOP pelayanan.
+
+
+BUSINESS TRUST
+
+alamat;
+
+Google Maps;
+
+review;
+
+legal information;
+
+pengalaman bisnis jika terverifikasi.
+
+
+TRANSACTION TRUST
+
+harga;
+
+terms;
+
+deposit;
+
+cancellation;
+
+payment;
+
+booking confirmation.
+
+
+
+---
+
+10 — DATA YANG MASIH HARUS KITA TEMUKAN
+
+Ini research backlog kita.
+
+BUSINESS
+
+[ ] Owner
+
+[ ] Legal entity
+
+[ ] Tahun berdiri current entity
+
+[ ] Alamat operasional current
+
+[ ] Nomor WhatsApp aktif
+
+[ ] Website aktif
+
+[ ] Social media aktif
+
+
+FLEET
+
+[ ] Daftar kendaraan
+
+[ ] Kapasitas
+
+[ ] Transmission
+
+[ ] Tahun
+
+[ ] Harga
+
+[ ] Availability
+
+
+SERVICE
+
+[ ] Lepas kunci
+
+[ ] Dengan driver
+
+[ ] Airport
+
+[ ] Tour
+
+[ ] Corporate
+
+[ ] Wedding
+
+[ ] Charter
+
+[ ] Logistics
+
+
+CUSTOMER
+
+[ ] Customer utama
+
+[ ] Geographic market
+
+[ ] High-value segment
+
+[ ] Repeat customer
+
+[ ] Corporate customer
+
+
+DIGITAL
+
+[ ] Google Business Profile
+
+[ ] Review analysis
+
+[ ] Instagram
+
+[ ] Facebook
+
+[ ] TikTok
+
+[ ] Website
+
+[ ] SEO
+
+[ ] WhatsApp funnel
+
+
+
+---
+
+🔥 KESIMPULAN SESSION 1 — V0.1
+
+Aku sekarang melihat Family Transport bukan sebagai:
+
+> Rental Mobil #sekian di Jogja
+
+
+
+tetapi sebagai potential:
+
+> Transportation Service Business yang punya beberapa jalur revenue dan bisa diubah menjadi digital booking/conversion system.
+
+
+
+Dan historical data 2008 adalah lead yang sangat menarik, tetapi kita tandai UNVERIFIED sampai ada bukti bahwa entity sekarang memang continuity dari CV. Jogja Family Transport tersebut. 
+
+PROJECT POSITIONING SEMENTARA
+
+Family Transport
+
+Transport Business
+
+↓
+
+Digital Presence
+
+↓
+
+Lead Generation
+
+↓
+
+Booking System
+
+↓
+
+Customer Management
+
+↓
+
+Repeat / Corporate Revenue
+
+↓
+
+Family Transport Digital Business System
+
+Session 1 belum selesai 100%. Fondasi A–Z sudah kita bentuk, dan langkah berikutnya paling bernilai adalah menguliti CURRENT DIGITAL PRESENCE Family Transport satu per satu — Google Maps → website → social → contact → review → competitor → funnel. Itu yang akan menentukan apa yang sebenarnya harus kita bangun, bukan sekadar bikin website cantik.

@@ -1,0 +1,1440 @@
+Gas gsss 🔥 langsung lanjut SESSION 3-C — PAGE-BY-PAGE UX SPECIFICATION.
+
+Sekarang kita turunkan hasil 3-A + 3-B menjadi blueprint tiap halaman. Jadi nanti saat masuk design/build, kita tinggal menerjemahkan spec ini—bukan mulai mikir dari nol lagi.
+
+SESSION 3-C — PAGE-BY-PAGE UX SPEC
+
+3-C.0 — GLOBAL UX CONTRACT
+
+Semua halaman Family Transport mengikuti:
+
+Intent → Information → Trust → Decision → CTA
+
+Dan setiap halaman wajib punya:
+
+Primary goal
+
+Primary CTA
+
+Secondary CTA
+
+Trust proof
+
+Next best action
+
+Analytics events
+
+Responsive/mobile behavior
+
+
+
+---
+
+3-C.1 — HOME
+
+Objective
+
+Membuat visitor dalam beberapa detik memahami:
+
+> Family Transport itu apa + mereka bisa membantu apa + harus mulai dari mana.
+
+
+
+Structure
+
+HEADER
+↓
+HERO
+↓
+SERVICE INTENTS
+↓
+TRIP MATCH
+↓
+FEATURED VEHICLES
+↓
+HOW IT WORKS
+↓
+TRUST / REVIEWS
+↓
+DESTINATION / SERVICE AREA
+↓
+FAQ
+↓
+FINAL CTA
+↓
+FOOTER
+
+Hero
+
+Your Journey, Handled.
+
+> Rental, transfer, and transport solutions in Yogyakarta.
+
+
+
+Primary:
+
+Plan My Trip
+
+Secondary:
+
+Browse Vehicles
+
+Analytics
+
+view_home
+
+click_plan_trip
+
+click_browse_vehicles
+
+
+---
+
+3-C.2 — RENTAL LANDING
+
+Objective
+
+Mengubah visitor menjadi:
+
+> Vehicle exploration → availability check.
+
+
+
+Structure:
+
+Hero
+↓
+Self Drive / With Driver
+↓
+Vehicle Categories
+↓
+Featured Fleet
+↓
+How Rental Works
+↓
+Trust
+↓
+FAQ
+↓
+CTA
+
+Primary CTA:
+
+Browse Vehicles
+
+Secondary:
+
+Plan My Trip
+
+
+---
+
+3-C.3 — FLEET PAGE
+
+Objective
+
+Membantu customer memilih kendaraan.
+
+Top
+
+Find Your Vehicle
+
+Filter:
+
+passengers;
+
+transmission;
+
+service;
+
+vehicle type;
+
+price range.
+
+
+Vehicle Card
+
+PHOTO
+NAME
+SEATS
+TRANSMISSION
+SERVICE
+PRICE
+[VIEW VEHICLE]
+
+Primary CTA:
+
+View Vehicle
+
+
+---
+
+Empty State
+
+> No vehicles match your current search.
+
+
+
+Actions:
+
+Clear Filters
+
+Try Another Date
+
+Ask Our Team
+
+
+---
+
+3-C.4 — VEHICLE DETAIL
+
+Ini salah satu halaman highest conversion value.
+
+Structure:
+
+Gallery
+↓
+Vehicle Name
+↓
+Quick Specs
+↓
+Service Selector
+↓
+Price
+↓
+Availability
+↓
+Features
+↓
+What's Included
+↓
+Terms
+↓
+Reviews
+↓
+FAQ
+↓
+CTA
+
+
+---
+
+Quick Specs
+
+Contoh:
+
+7 Seats
+
+Automatic
+
+4 Doors
+
+Large Luggage
+
+
+---
+
+Service Selector
+
+How would you like to use it?
+
+Self Drive
+
+With Driver
+
+Driver + Fuel
+
+Selection mengubah pricing/availability bila applicable.
+
+
+---
+
+3-C.5 — VEHICLE AVAILABILITY
+
+User:
+
+Pickup
+
+Return
+
+Service
+
+CTA:
+
+Check Availability
+
+State:
+
+Available
+
+> Available for your dates.
+
+
+
+CTA:
+
+Continue
+
+Unavailable
+
+> This vehicle isn't available for your dates.
+
+
+
+Then:
+
+Recommended alternatives
+
+
+---
+
+3-C.6 — TRIP MATCH
+
+Ini signature feature.
+
+Hero:
+
+Tell Us About Your Trip
+
+Progress:
+
+Step 1 of 5
+
+Questions:
+
+1. Number of people
+
+
+2. Date
+
+
+3. Duration
+
+
+4. Destination
+
+
+5. Driver preference
+
+
+
+
+---
+
+UX RULE
+
+Satu pertanyaan utama per screen mobile.
+
+Jangan tampilkan form panjang.
+
+
+---
+
+3-C.7 — TRIP MATCH RESULT
+
+Header:
+
+We Found Your Best Match
+
+Primary recommendation:
+
+Toyota Innova
+
+Best Match
+
+> Suitable for your group size and trip duration.
+
+
+
+Specs.
+
+Estimated price.
+
+CTA:
+
+View Option
+
+Secondary:
+
+See Other Options
+
+
+---
+
+3-C.8 — AIRPORT TRANSFER
+
+Hero:
+
+Airport Transfer Made Easy
+
+Form:
+
+Airport
+
+Arrival date
+
+Arrival time
+
+Destination
+
+Passengers
+
+Luggage
+
+CTA:
+
+Get Transfer Quote
+
+
+---
+
+Result
+
+ROUTE
+YIA → Yogyakarta
+
+VEHICLE
+Toyota Innova
+
+SERVICE
+Private Transfer
+
+ESTIMATE
+Rp X
+
+CTA:
+
+Request Transfer
+
+
+---
+
+3-C.9 — TRIP / CHARTER
+
+Hero:
+
+Plan Your Journey
+
+Input:
+
+Date
+
+Duration
+
+Passengers
+
+Destination
+
+Vehicle preference
+
+Driver
+
+Optional:
+
+Itinerary / Notes
+
+CTA:
+
+Request Trip Quote
+
+
+---
+
+3-C.10 — CORPORATE
+
+Corporate harus terasa lebih professional daripada consumer pages.
+
+Hero:
+
+Transport for Your Business
+
+Copy:
+
+> Reliable transportation for employees, clients, events, and recurring business needs.
+
+
+
+CTA:
+
+Request Corporate Quote
+
+
+---
+
+Corporate Form
+
+Company
+
+Company name
+
+Contact person
+
+Phone / WhatsApp
+
+Email
+
+Requirement
+
+Service type
+
+Frequency
+
+Passengers
+
+Area
+
+Vehicle requirement
+
+Notes
+
+CTA:
+
+Submit Requirement
+
+
+---
+
+3-C.11 — QUOTE PAGE
+
+Quote page adalah decision screen.
+
+Header:
+
+Your Transport Estimate
+
+Trip summary.
+
+Vehicle.
+
+Service.
+
+Dates.
+
+Pickup.
+
+Passengers.
+
+
+---
+
+Price Breakdown
+
+Vehicle       Rp X
+Driver        Rp X
+Additional    Rp X
+Discount     -Rp X
+-------------------
+TOTAL         Rp X
+
+Jika belum final:
+
+> Estimated total — final price will be confirmed by our team.
+
+
+
+
+---
+
+CTA hierarchy
+
+Primary
+
+Continue Booking
+
+Secondary
+
+Chat With Us
+
+Tertiary
+
+Change Details
+
+
+---
+
+3-C.12 — BOOKING PAGE
+
+Jangan mengulang semua input.
+
+User sudah memilih:
+
+> vehicle + service + dates.
+
+
+
+Sekarang hanya collect missing data.
+
+Customer
+
+Name
+
+WhatsApp
+
+Email optional
+
+Trip
+
+Pickup
+
+Destination
+
+Time
+
+Passengers
+
+Notes
+
+Special request.
+
+CTA:
+
+Request Booking
+
+
+---
+
+3-C.13 — BOOKING VALIDATION
+
+Rules:
+
+Required
+
+Name
+
+WhatsApp
+
+Date
+
+Pickup
+
+Passengers
+
+Conditional
+
+Destination → required untuk transfer/trip.
+
+Return date → required multi-day.
+
+Flight → required airport pickup jika digunakan.
+
+
+---
+
+3-C.14 — CONFIRMATION PAGE
+
+Success state:
+
+Booking Request Received
+
+Booking ID:
+
+FT-2026-XXXXX
+
+Status:
+
+Pending Confirmation
+
+Summary.
+
+Next steps:
+
+01
+Our team checks availability.
+
+02
+We confirm the final price.
+
+03
+You receive payment instructions.
+
+04
+Booking becomes confirmed.
+
+CTA:
+
+Chat on WhatsApp
+
+
+---
+
+3-C.15 — CUSTOMER BOOKING STATUS
+
+Customer dapat membuka:
+
+> /booking/FT-2026-XXXXX
+
+
+
+Status:
+
+REQUESTED
+   ↓
+REVIEWING
+   ↓
+QUOTED
+   ↓
+CONFIRMED
+   ↓
+PAID
+   ↓
+COMPLETED
+
+Ini mengurangi:
+
+> “Mas, booking saya sudah diproses belum?”
+
+
+
+
+---
+
+3-C.16 — ABOUT
+
+About bukan halaman:
+
+> “Kami berdiri sejak…”
+
+
+
+saja.
+
+Harus menjawab:
+
+Who are we?
+
+What do we do?
+
+Where do we operate?
+
+Why trust us?
+
+How can we help?
+
+Structure:
+
+Story
+↓
+Mission
+↓
+Service
+↓
+Fleet
+↓
+Trust
+↓
+Contact
+
+
+---
+
+3-C.17 — FAQ
+
+FAQ berdasarkan real objections.
+
+Categories:
+
+Rental
+
+Apakah bisa self drive?
+
+Driver
+
+Apakah tersedia driver?
+
+Booking
+
+Bagaimana cara booking?
+
+Payment
+
+Bagaimana pembayaran?
+
+Cancellation
+
+Bagaimana pembatalan?
+
+Airport
+
+Apakah bisa pickup YIA?
+
+Corporate
+
+Apakah menerima corporate account?
+
+
+---
+
+3-C.18 — CONTACT
+
+Jangan sekadar:
+
+> alamat + nomor.
+
+
+
+Berikan action.
+
+WhatsApp
+
+Chat With Us
+
+Phone
+
+Call Us
+
+Location
+
+Open Maps
+
+Business Hours
+
+Clear.
+
+
+---
+
+3-C.19 — GLOBAL FOOTER
+
+Family Transport
+
+Rental
+Transfer
+Trip
+Corporate
+
+About
+FAQ
+Contact
+
+WhatsApp
+Google Maps
+Instagram
+
+Terms
+Privacy
+Cancellation
+
+
+---
+
+3-C.20 — ADMIN DASHBOARD
+
+Sekarang sisi internal.
+
+Dashboard harus menjawab:
+
+> Apa yang perlu saya kerjakan hari ini?
+
+
+
+Top metrics:
+
+Today's Trips
+
+Pending Requests
+
+Pending Quotes
+
+Payment Pending
+
+Available Vehicles
+
+
+---
+
+3-C.21 — ADMIN BOOKING LIST
+
+Table:
+
+Booking	Customer	Vehicle	Date	Service	Status
+
+
+
+Filter:
+
+date;
+
+status;
+
+service;
+
+vehicle.
+
+
+Search:
+
+> Booking ID / customer / WhatsApp.
+
+
+
+
+---
+
+3-C.22 — BOOKING DETAIL ADMIN
+
+Admin melihat:
+
+CUSTOMER
+TRIP
+VEHICLE
+SERVICE
+PRICE
+PAYMENT
+STATUS
+NOTES
+ACTIVITY
+
+Actions:
+
+Confirm
+
+Edit Quote
+
+Request Payment
+
+Cancel
+
+Contact Customer
+
+
+---
+
+3-C.23 — QUOTE MANAGEMENT
+
+Admin bisa:
+
+Create Quote
+
+Edit Quote
+
+Send Quote
+
+Mark Accepted
+
+Expire Quote
+
+Quote history harus tersimpan.
+
+🔥 Jangan overwrite tanpa audit trail.
+
+
+---
+
+3-C.24 — VEHICLE MANAGEMENT
+
+Setiap vehicle:
+
+Identity
+Specs
+Photos
+Services
+Pricing
+Availability
+Status
+Maintenance
+
+Status:
+
+Available
+
+Reserved
+
+Active
+
+Maintenance
+
+Blocked
+
+
+---
+
+3-C.25 — PRICING MANAGEMENT
+
+Admin:
+
+Vehicle Rate
+Driver Rate
+Duration
+Area
+Date Rules
+Add-ons
+Discount
+
+Tetapi:
+
+> pricing changes harus tercatat.
+
+
+
+Minimal:
+
+who
+
+when
+
+what changed
+
+
+---
+
+3-C.26 — CUSTOMER MANAGEMENT
+
+Customer profile:
+
+Name
+Contact
+Trips
+Bookings
+Last Booking
+Preferred Vehicle
+Notes
+
+Future:
+
+> customer segmentation.
+
+
+
+Contoh:
+
+New
+
+Returning
+
+Corporate
+
+VIP
+
+Namun MVP tidak perlu over-engineer segmentation.
+
+
+---
+
+3-C.27 — ADMIN UX PRINCIPLE
+
+Admin dashboard bukan untuk “cantik”.
+
+Prioritas:
+
+ACTIONABILITY
+
+Admin harus tahu:
+
+> Apa yang harus dilakukan sekarang?
+
+
+
+Contoh:
+
+🔴 3 booking pending confirmation
+
+🟡 2 payment pending
+
+🟢 5 confirmed trips today
+
+
+---
+
+3-C.28 — MOBILE ADMIN
+
+Admin kemungkinan besar akan menggunakan HP.
+
+Maka:
+
+booking detail harus mobile-friendly;
+
+WhatsApp action prominent;
+
+status update cepat;
+
+call customer cepat;
+
+availability check cepat.
+
+
+Desktop/tablet tetap didukung.
+
+
+---
+
+3-C.29 — ANALYTICS EVENT MAP
+
+Public:
+
+page_view
+view_service
+view_vehicle
+filter_vehicle
+check_availability
+start_trip_match
+complete_trip_match
+view_recommendation
+generate_quote
+start_booking
+submit_booking
+click_whatsapp
+
+Booking:
+
+booking_created
+booking_confirmed
+payment_requested
+payment_received
+booking_completed
+
+Post-trip:
+
+review_requested
+review_submitted
+repeat_booking
+
+
+---
+
+3-C.30 — EVENT NAMING RULE
+
+Gunakan konsisten:
+
+object_action
+
+Contoh:
+
+vehicle_view
+
+quote_created
+
+atau jika mengikuti event taxonomy yang kita tetapkan:
+
+view_vehicle
+
+generate_quote
+
+Yang penting:
+
+> satu naming convention dan jangan berubah-ubah.
+
+
+
+
+---
+
+3-C.31 — RESPONSIVE BREAKPOINT PRINCIPLE
+
+Kita tidak desain:
+
+> desktop lalu “diperkecil”.
+
+
+
+Kita desain:
+
+Mobile first
+
+↓
+
+Tablet
+
+↓
+
+Desktop
+
+Contoh mobile:
+
+[Photo]
+
+Toyota Innova
+7 seats · Automatic
+
+Rp X/day
+
+[Check Availability]
+
+Desktop dapat:
+
+PHOTO | VEHICLE INFORMATION
+      | SPECS
+      | PRICE
+      | BOOKING PANEL
+
+
+---
+
+3-C.32 — COMPONENT INVENTORY
+
+Global components:
+
+Header
+
+Footer
+
+CTA
+
+Button
+
+Input
+
+Select
+
+Date picker
+
+Vehicle card
+
+Service card
+
+Price breakdown
+
+Trust badge
+
+Review card
+
+FAQ accordion
+
+Status badge
+
+Booking timeline
+
+WhatsApp CTA
+
+Empty state
+
+Error state
+
+Loading state
+
+Modal
+
+Toast
+
+
+
+---
+
+3-C.33 — DESIGN SYSTEM IMPLICATION
+
+Dari UX ini kita sudah tahu komponen inti yang akan dibutuhkan.
+
+Berarti 3-D nanti bukan mendesain random page.
+
+Kita akan membangun:
+
+FAMILY TRANSPORT DESIGN SYSTEM
+
+berdasarkan component inventory ini.
+
+
+---
+
+3-C.34 — PAGE PRIORITY
+
+Tidak semua page memiliki importance sama.
+
+P0 — Conversion Critical
+
+1. Home
+
+
+2. Fleet
+
+
+3. Vehicle Detail
+
+
+4. Trip Match
+
+
+5. Quote
+
+
+6. Booking
+
+
+7. Confirmation
+
+
+
+P1 — Service
+
+8. Rental
+
+
+9. Airport Transfer
+
+
+10. Trip
+
+
+11. Corporate
+
+
+
+P2 — Trust / Support
+
+12. About
+
+
+13. FAQ
+
+
+14. Contact
+
+
+
+P0 — Admin
+
+15. Dashboard
+
+
+16. Booking Detail
+
+
+17. Vehicle
+
+
+18. Quote
+
+
+
+
+---
+
+3-C.35 — THE MOST IMPORTANT SCREENS
+
+Kalau resource terbatas, jangan bangun semuanya sekaligus.
+
+Fokus:
+
+HOME
+ ↓
+TRIP MATCH / FLEET
+ ↓
+VEHICLE
+ ↓
+AVAILABILITY
+ ↓
+QUOTE
+ ↓
+BOOKING
+ ↓
+CONFIRMATION
+
+🔥 Ini adalah MVP conversion spine.
+
+
+---
+
+3-C.36 — FINAL UX ARCHITECTURE
+
+FAMILY TRANSPORT
+                        │
+                 DIGITAL EXPERIENCE
+                        │
+        ┌───────────────┴───────────────┐
+        ↓                               ↓
+   EXPLORE PATH                    MATCH PATH
+        ↓                               ↓
+      FLEET                         TRIP MATCH
+        ↓                               ↓
+   VEHICLE                        RECOMMENDATION
+        └───────────────┬───────────────┘
+                        ↓
+                  AVAILABILITY
+                        ↓
+                      QUOTE
+                        ↓
+                    BOOKING
+                        ↓
+                  CONFIRMATION
+                        ↓
+                     PAYMENT
+                        ↓
+                      TRIP
+                        ↓
+                     REVIEW
+                        ↓
+                     CRM
+                        ↓
+                     REPEAT
+
+
+---
+
+🔒 SESSION 3-C VERDICT
+
+Sekarang kita sudah punya page-level blueprint untuk:
+
+✅ Home
+✅ Rental
+✅ Fleet
+✅ Vehicle Detail
+✅ Trip Match
+✅ Airport Transfer
+✅ Trip/Charter
+✅ Corporate
+✅ Quote
+✅ Booking
+✅ Confirmation
+✅ Booking Status
+✅ About
+✅ FAQ
+✅ Contact
+✅ Admin Dashboard
+✅ Booking Management
+✅ Quote Management
+✅ Vehicle Management
+✅ Pricing Management
+✅ Customer Management
+✅ Analytics Events
+✅ Component Inventory
+✅ Page Priority
+
+
+---
+
+NEXT: SESSION 3-D
+
+Sekarang tinggal satu bagian besar untuk mengunci Session 3:
+
+SESSION 3-D — VISUAL DESIGN SYSTEM & BRAND EXPERIENCE
+
+Di sini kita akan menentukan:
+
+Brand personality
+
+→ Visual direction
+
+→ Color system
+
+→ Typography
+
+→ Spacing
+
+→ Buttons
+
+→ Cards
+
+→ Vehicle cards
+
+→ Forms
+
+→ Quote UI
+
+→ Trust elements
+
+→ Mobile behavior
+
+→ Photography direction
+
+→ Iconography
+
+→ Motion
+
+→ Accessibility
+
+→ Design tokens
+
+Sampai akhirnya kita punya:
+
+FAMILY TRANSPORT UI/UX DESIGN SYSTEM v1.0
+
+Baru setelah itu SESSION 3 kita LOCK TOTAL, lalu kita masuk ke SESSION 4 — PRODUCT & SYSTEM ARCHITECTURE.
