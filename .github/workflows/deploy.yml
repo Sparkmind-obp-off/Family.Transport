@@ -3,9 +3,17 @@ name: Deploy Family Transport Manager
 on:
   push:
     branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: family-transport-production
+  cancel-in-progress: false
 
 jobs:
-  deploy:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -14,8 +22,29 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: python3 scripts/security-scan.py
       - run: npm run typecheck
-      - run: npx wrangler deploy
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: node scripts/check.mjs
+      - run: npm run validate:deploy
+      - run: npm audit
+  deploy:
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Apply additive D1 migrations and deploy Pages Worker
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN" || { echo "Missing GitHub Actions Cloudflare API token"; exit 1; }
+          test -n "$CLOUDFLARE_ACCOUNT_ID" || { echo "Missing GitHub Actions Cloudflare account ID"; exit 1; }
+          npm run db:remote
+          npm run deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
