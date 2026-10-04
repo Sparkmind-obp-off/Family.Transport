@@ -7,7 +7,7 @@ Alat operasional internal Family Transport untuk Fahruk. WhatsApp tetap menjadi 
 - Repository: https://github.com/Sparkmind-obp-off/Family.Transport
 - Stack: TypeScript Worker + Cloudflare Pages Assets + D1; tanpa framework UI besar atau dependensi runtime tambahan.
 - Deploy produksi dan 12 pemeriksaan smoke telah dijalankan pada 2026-10-04. Record sintetis smoke dibersihkan berdasarkan ID yang dibuat oleh pengujian itu saja. Data lokal pengujian tidak disalin ke produksi.
-- GitHub Actions telah diperbarui. Kredensial integrasi saat pengerjaan menerima HTTP 403 untuk API repository Actions secrets; keberadaan secrets CI tidak dapat diperiksa atau disetel lewat integrasi tersebut. Ini tidak menghalangi deploy BYOK langsung yang telah dilakukan.
+- Implementasi telah dipush ke main. GitHub Actions secrets Cloudflare telah dikonfigurasi dan workflow verification + deployment berhasil: https://github.com/Sparkmind-obp-off/Family.Transport/actions/runs/37195043749 (attempt 2). Attempt pertama gagal karena workflow sudah antre sebelum secrets tersedia; rerun berhasil setelah secrets diisi. Batas izin integrasi awal telah diatasi menggunakan autentikasi sementara berizin workflow, tanpa menyimpan token di repository.
 
 ## Fungsi selesai
 - Dashboard hari ini, mendatang, perlu tindakan, dan jumlah operasional yang dihitung database, bukan jumlah halaman hasil.
@@ -65,6 +65,7 @@ Filter trips: `from`, `to`, `status`, `q`, `attention=YYYY-MM-DD`, `open=1`; daf
 - Error database disamarkan; tidak ada logging request body, nomor customer, catatan, stack trace, atau secrets. Pemindai secrets melaporkan lokasi, bukan nilai.
 - Tidak menyimpan data pribadi di localStorage, tidak menggunakan CDN analytics atau WhatsApp API.
 - Pemindaian pola history dan pengecekan nilai secrets aktif tidak menemukan secrets dalam source/Git. Pemindai pola bukan jaminan audit kredensial sempurna.
+- Jangan kirim kredensial lewat chat atau menaruhnya di URL remote Git. Cabut/rotasi token yang pernah terekspos; untuk automation gunakan token berizin minimum dan GitHub Actions secrets.
 
 ## Pengembangan dan pengujian
 Node 22, Python 3, npm. `npm ci` menggunakan lockfile.
@@ -87,7 +88,7 @@ python3 scripts/security-scan.py
 
 `node scripts/check.mjs` menjalankan runner CI lokal: membuat secret sintetis lokal (mengganti .dev.vars), menerapkan migrasi lokal, menjalankan preview, tes API/security/schema/browser, lalu menghentikan preview. Jangan jalankan bersamaan dengan preview port 3000 yang sudah aktif.
 
-Hasil yang telah dieksekusi: Node test runner 62 pass, 0 fail (57 kasus API, 4 security, 1 wrapper suite); Python 9 pass; browser 14 checks pass; typecheck/build/dry-run pass; npm audit 0 vulnerabilities. Lint tidak dikonfigurasi; sintaks frontend diperiksa dengan `node --check public/app.js`. D1 local/remote foreign_key_check tanpa pelanggaran; integrity_check SQLite lokal `ok` (pragma integrity_check tidak diizinkan runtime D1, jadi diperiksa lewat SQLite lokal).
+Hasil yang telah dieksekusi: Node test runner 62 pass, 0 fail (57 kasus API, 4 security, 1 wrapper suite); Python 9 pass; browser 14 checks pass; typecheck/build/dry-run pass; npm audit 0 vulnerabilities. Lint tidak dikonfigurasi; sintaks frontend diperiksa dengan `node --check public/app.js`. D1 local/remote foreign_key_check tanpa pelanggaran; integrity_check SQLite lokal `ok` (pragma integrity_check tidak diizinkan runtime D1, jadi diperiksa lewat SQLite lokal). Pemeriksaan yang sama pada job verify GitHub Actions telah berhasil, bukan hanya pengujian sandbox.
 
 ## Deployment BYOK dan CI
 Tidak memakai Hosted Genspark; aplikasi ada di akun Cloudflare pengguna.
@@ -98,7 +99,7 @@ Tidak memakai Hosted Genspark; aplikasi ada di akun Cloudflare pengguna.
 4. `npm run db:remote`, lalu `npm run deploy` (build bersih dan deploy branch main).
 5. `node tests/production-smoke.mjs` memerlukan .env.production privat dan token D1 cleanup di environment. Menciptakan dan membersihkan hanya record sintetis milik run; jangan gunakan sebagai pilot data nyata.
 
-Workflow `.github/workflows/deploy.yml` melakukan install terkunci, scan, typecheck, build, migrasi lokal, tes, audit, lalu migrasi remote dan deploy. Administrator repository perlu memastikan Actions secrets `CLOUDFLARE_API_TOKEN` dan `CLOUDFLARE_ACCOUNT_ID` tersedia di Settings → Secrets and variables → Actions; integrasi saat ini tidak mempunyai izin mengelolanya (HTTP 403). Secret operator tetap disimpan di Pages, bukan dibake oleh CI. Preview branch tanpa secret akan fail closed.
+Workflow `.github/workflows/deploy.yml` melakukan install terkunci, scan, typecheck, build, migrasi lokal, tes, audit, lalu migrasi remote dan deploy. Actions secrets `CLOUDFLARE_API_TOKEN` dan `CLOUDFLARE_ACCOUNT_ID` telah dikonfigurasi pada repository; job verify dan deploy telah berhasil. Saat rotasi token Cloudflare, perbarui secret tersebut melalui Settings → Secrets and variables → Actions. Secret operator tetap disimpan di Pages, bukan dibake oleh CI. Preview branch tanpa secret akan fail closed.
 
 ## Batas dan langkah operasional berikutnya
-Seluruh fitur MVP yang diminta telah diimplementasikan. Belum dilaksanakan: pilot langsung dengan Fahruk dan customer nyata; pengujian menggunakan data sintetis. Konfirmasi akses dan coba satu perjalanan nyata sebagai handover, bukan penambahan fitur. Aktivasi/verifikasi auto-deploy CI memerlukan izin GitHub Actions secrets di atas. Pembayaran, GPS, accounting, akun customer/driver, WhatsApp API, AI, dan multi-tenant tetap sengaja di luar scope.
+Seluruh fitur MVP yang diminta telah diimplementasikan dan CI/CD berhasil. Belum dilaksanakan: pilot langsung dengan Fahruk dan customer nyata; pengujian menggunakan data sintetis. Konfirmasi akses dan coba satu perjalanan nyata sebagai handover, bukan penambahan fitur. Pembayaran, GPS, accounting, akun customer/driver, WhatsApp API, AI, dan multi-tenant tetap sengaja di luar scope.
