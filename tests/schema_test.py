@@ -42,6 +42,26 @@ class SchemaTests(unittest.TestCase):
         self.trip()
         self.db.execute("UPDATE drivers SET active=0 WHERE id='d'")
         with self.assertRaises(sqlite3.IntegrityError): self.db.execute("UPDATE trips SET driver_id='d'")
+    def test_retained_inactive_driver_blocks_assignment_completion(self):
+        self.trip()
+        self.db.execute("UPDATE trips SET status='CONFIRMED',driver_id='d'")
+        self.db.execute("UPDATE drivers SET active=0 WHERE id='d'")
+        with self.assertRaises(sqlite3.IntegrityError): self.db.execute("UPDATE trips SET vehicle_id='v',status='ASSIGNED'")
+        self.assertEqual(self.db.execute('SELECT status,vehicle_id FROM trips').fetchone(), ('CONFIRMED',None))
+    def test_retained_inactive_vehicle_blocks_assignment_completion(self):
+        self.trip()
+        self.db.execute("UPDATE trips SET status='CONFIRMED',vehicle_id='v'")
+        self.db.execute("UPDATE vehicles SET active=0 WHERE id='v'")
+        with self.assertRaises(sqlite3.IntegrityError): self.db.execute("UPDATE trips SET driver_id='d',status='ASSIGNED'")
+    def test_inactive_assigned_resource_blocks_trip_start(self):
+        self.trip()
+        self.db.execute("UPDATE trips SET status='CONFIRMED'")
+        self.db.execute("UPDATE trips SET status='ASSIGNED',driver_id='d',vehicle_id='v'")
+        self.db.execute("UPDATE drivers SET active=0 WHERE id='d'")
+        with self.assertRaises(sqlite3.IntegrityError): self.db.execute("UPDATE trips SET status='ON_TRIP'")
+    def test_direct_insert_inactive_resource_rejected(self):
+        self.db.execute("UPDATE drivers SET active=0 WHERE id='d'")
+        with self.assertRaises(sqlite3.IntegrityError): self.trip(driver_id='d')
     def test_indexes_and_integrity(self):
         self.assertEqual(self.db.execute('PRAGMA integrity_check').fetchone()[0], 'ok')
         names = [r[1] for r in self.db.execute("PRAGMA index_list('trips')")]
@@ -53,8 +73,9 @@ class SchemaTests(unittest.TestCase):
         db.execute("INSERT INTO customers VALUES('legacy','Old record','','','2020-01-01T00:00:00Z','2020-01-01T00:00:00Z')")
         db.execute("INSERT INTO trips(id,customer_id,trip_date,trip_time,pickup,destination,passengers,status,created_at,updated_at) VALUES('legacy','legacy','2020-01-01','08:00','A','B',0,'COMPLETED','2020-01-01T00:00:00Z','2020-01-01T00:00:00Z')")
         before = db.execute('SELECT * FROM trips').fetchall()
-        db.executescript(Path('migrations/0002_integrity.sql').read_text())
-        self.assertEqual(before, db.execute('SELECT * FROM trips').fetchall())
+        for name in ['0002_integrity.sql','0003_assignment_guards.sql']:
+            db.executescript(Path('migrations',name).read_text())
+            self.assertEqual(before, db.execute('SELECT * FROM trips').fetchall())
         db.close()
 
 if __name__ == '__main__': unittest.main(verbosity=2)

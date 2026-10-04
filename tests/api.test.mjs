@@ -11,7 +11,7 @@ async function call(path, method = 'GET', data, extra = {}) {
 }
 let customer, driver, vehicle, trip;
 const valid = () => ({ customer_id: customer.id, trip_date: '2026-10-04', trip_time: '09:30', pickup: 'Stasiun', destination: 'Hotel', passengers: 3, price: 0, notes: 'Test synthetic' });
-async function expectStatus(result, code) { assert.equal(result.status, code, JSON.stringify(result.body)); return result.body.data; }
+async function expectStatus(result, code) { assert.equal(result.status, code, result.body.error || 'Unexpected HTTP status'); return result.body.data; }
 await test('API integration with real local Worker and D1', async t => {
   await t.test('unauthenticated API and assets rejected', async () => {
     for (const path of ['/api/trips', '/', '/app.js', '/app.css']) assert.equal((await fetch(base + path)).status, 401);
@@ -34,6 +34,22 @@ await test('API integration with real local Worker and D1', async t => {
   await t.test('inactive driver rejected', async () => { await call('drivers/' + driver.id, 'PATCH', { active: false }); await expectStatus(await call('trips/' + trip.id + '/assignment', 'PATCH', { driver_id: driver.id }), 409); await call('drivers/' + driver.id, 'PATCH', { active: true }); });
   await t.test('inactive vehicle rejected', async () => { await call('vehicles/' + vehicle.id, 'PATCH', { active: false }); await expectStatus(await call('trips/' + trip.id + '/assignment', 'PATCH', { vehicle_id: vehicle.id }), 409); await call('vehicles/' + vehicle.id, 'PATCH', { active: true }); });
   await t.test('assign driver alone stays confirmed', async () => { const r = await call('trips/' + trip.id + '/assignment', 'PATCH', { driver_id: driver.id }); assert.equal(r.body.data.driver_id, driver.id); assert.equal(r.body.data.status, 'CONFIRMED'); });
+  await t.test('retained inactive driver blocks completion and preserves partial assignment', async () => {
+    await call('drivers/' + driver.id, 'PATCH', { active: false });
+    try {
+      await expectStatus(await call('trips/' + trip.id + '/assignment', 'PATCH', { vehicle_id: vehicle.id }), 409);
+      const saved = (await call('trips/' + trip.id)).body.data;
+      assert.equal(saved.status, 'CONFIRMED'); assert.equal(saved.vehicle_id, null);
+    } finally { await call('drivers/' + driver.id, 'PATCH', { active: true }); }
+  });
+  await t.test('retained inactive vehicle blocks completion', async () => {
+    const separate = (await call('trips', 'POST', valid())).body.data;
+    await call('trips/' + separate.id, 'PATCH', { status: 'CONFIRMED' });
+    await call('trips/' + separate.id + '/assignment', 'PATCH', { vehicle_id: vehicle.id });
+    await call('vehicles/' + vehicle.id, 'PATCH', { active: false });
+    try { await expectStatus(await call('trips/' + separate.id + '/assignment', 'PATCH', { driver_id: driver.id }), 409); }
+    finally { await call('vehicles/' + vehicle.id, 'PATCH', { active: true }); await call('trips/' + separate.id, 'PATCH', { status: 'CANCELLED' }); }
+  });
   await t.test('assign vehicle completes assignment', async () => { const r = await call('trips/' + trip.id + '/assignment', 'PATCH', { vehicle_id: vehicle.id }); assert.equal(r.body.data.vehicle_id, vehicle.id); assert.equal(r.body.data.status, 'ASSIGNED'); });
   await t.test('cannot clear assigned driver', async () => { await expectStatus(await call('trips/' + trip.id + '/assignment', 'PATCH', { driver_id: null }), 409); });
   await t.test('cannot reverse status', async () => { await expectStatus(await call('trips/' + trip.id, 'PATCH', { status: 'PENDING' }), 409); });
@@ -55,6 +71,12 @@ await test('API integration with real local Worker and D1', async t => {
   await t.test('wrong content type rejected', async () => { await expectStatus(await call('trips', 'POST', valid(), { 'Content-Type': 'text/plain' }), 415); });
   await t.test('large body rejected', async () => { await expectStatus(await call('trips', 'POST', { ...valid(), notes: 'a'.repeat(17000) }), 413); });
   await t.test('invalid IDs rejected', async () => { await expectStatus(await call('trips/bad%27id', 'PATCH', { status: 'CONFIRMED' }), 400); });
+  await t.test('punctuation-only WhatsApp rejected', async () => {
+    for (const whatsapp of ['+', '---', '()']) await expectStatus(await call('customers', 'POST', { name: 'Invalid', whatsapp }), 400);
+  });
+  await t.test('blank optional WhatsApp accepted', async () => {
+    const saved = await expectStatus(await call('customers', 'POST', { name: 'Blank contact ' + nonce, whatsapp: '  ' }), 201); assert.equal(saved.whatsapp, '');
+  });
   await t.test('invalid WhatsApp rejected', async () => { await expectStatus(await call('customers', 'POST', { name: 'Invalid', whatsapp: 'letters' }), 400); });
   await t.test('SQL-safe input and literal search', async () => { const input = "Robert'); DROP TABLE customers; -- <img src=x onerror=alert(1)>"; const r = await call('customers', 'POST', { name: input }); await expectStatus(r, 201); assert.equal(r.body.data.name, input); await expectStatus(await call('customers'), 200); await expectStatus(await call('trips?q=' + encodeURIComponent("%' OR 1=1 --")), 200); });
   await t.test('cross origin writes rejected', async () => { await expectStatus(await call('customers', 'POST', { name: 'Bad' }, { Origin: 'https://evil.example' }), 403); });

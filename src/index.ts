@@ -44,8 +44,9 @@ function integer(value: unknown, label: string, min: number, max: number): numbe
   return value as number;
 }
 function phone(value: unknown): string {
-  let s = text(value, 'Nomor WhatsApp', 25).replace(/[ +()-]/g, '');
-  if (!s) return '';
+  const input = text(value, 'Nomor WhatsApp', 25);
+  if (!input) return '';
+  let s = input.replace(/[ +()-]/g, '');
   if (s.startsWith('0')) s = '62' + s.slice(1);
   if (!/^[1-9]\d{7,14}$/.test(s)) fail('Nomor WhatsApp tidak valid.');
   return s;
@@ -129,9 +130,15 @@ async function insert(env: Env, table: Table | 'trips', data: Row): Promise<stri
 }
 async function update(env: Env, table: Table | 'trips', id: string, data: Row, old: Row) {
   const fields = Object.keys(data); const stamp = new Date(Math.max(Date.now(), Date.parse(String(old.updated_at)) + 1)).toISOString();
-  const result = await env.DB.prepare(`UPDATE ${table} SET ${fields.map(k => `${k} = ?`).join(',')}, updated_at = ? WHERE id = ? AND updated_at = ?`)
-    .bind(...Object.values(data), stamp, id, old.updated_at).run();
-  if (!result.meta.changes) fail('Data telah berubah. Muat ulang lalu coba lagi.', 409);
+  try {
+    const result = await env.DB.prepare(`UPDATE ${table} SET ${fields.map(k => `${k} = ?`).join(',')}, updated_at = ? WHERE id = ? AND updated_at = ?`)
+      .bind(...Object.values(data), stamp, id, old.updated_at).run();
+    if (!result.meta.changes) fail('Data telah berubah. Muat ulang lalu coba lagi.', 409);
+  } catch (error) {
+    // Classify only this known guard; never expose the original database message.
+    if (error instanceof Error && error.message.includes('inactive_assignment')) fail('Driver / kendaraan tidak aktif. Muat ulang assignment.', 409);
+    throw error;
+  }
 }
 const tripSelect = `SELECT t.*, c.name AS customer_name, c.whatsapp AS customer_whatsapp,
   v.name AS vehicle_name, v.identifier AS vehicle_identifier, d.name AS driver_name, d.whatsapp AS driver_whatsapp
@@ -167,7 +174,7 @@ async function api(request: Request, env: Env): Promise<Response> {
   const table = match[1] as Table | 'trips'; const id = match[2] ? identifier(match[2]) : null; const action = match[3];
   if (action === 'trips' && table === 'customers' && id && method === 'GET') {
     await record(env, table, id); const [limit, offset] = paging(url);
-    const result = await env.DB.prepare(tripSelect + ' WHERE t.customer_id=? ORDER BY t.trip_date DESC,t.trip_time DESC LIMIT ? OFFSET ?').bind(id, limit + 1, offset).all();
+    const result = await env.DB.prepare(tripSelect + ' WHERE t.customer_id=? ORDER BY t.trip_date DESC,t.trip_time DESC,t.id DESC LIMIT ? OFFSET ?').bind(id, limit + 1, offset).all();
     return json({ data: result.results.slice(0, limit), has_more: result.results.length > limit });
   }
   if (action && !(action === 'assignment' && table === 'trips' && id && method === 'PATCH')) return json({ error: 'Endpoint tidak ditemukan.' }, 404);
@@ -214,12 +221,14 @@ async function api(request: Request, env: Env): Promise<Response> {
     for (const key of ['driver_id', 'vehicle_id']) {
       if (!(key in body)) continue;
       data[key] = body[key] === null ? null : identifier(body[key]);
-      if (data[key]) {
-        const related = await record(env, key === 'driver_id' ? 'drivers' : 'vehicles', String(data[key]));
-        if (!related.active) fail(`${key === 'driver_id' ? 'Driver' : 'Kendaraan'} tidak aktif.`, 409);
-      }
     }
     const merged = { ...old, ...data };
+    // Validate retained resources too: either may have been deactivated after a partial assignment.
+    for (const key of ['driver_id', 'vehicle_id']) {
+      if (!merged[key]) continue;
+      const related = await record(env, key === 'driver_id' ? 'drivers' : 'vehicles', String(merged[key]));
+      if (!related.active) fail(`${key === 'driver_id' ? 'Driver' : 'Kendaraan'} tidak aktif.`, 409);
+    }
     if (old!.status === 'ASSIGNED' && (!merged.driver_id || !merged.vehicle_id)) fail('Trip ASSIGNED wajib memiliki driver dan kendaraan.', 409);
     if (merged.driver_id && merged.vehicle_id) data.status = 'ASSIGNED';
     await update(env, 'trips', id!, data, old!);
