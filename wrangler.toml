@@ -5,11 +5,13 @@ compatibility_date = "2026-10-04"
 [assets]
 directory = "./public"
 binding = "ASSETS"
+run_worker_first = true
 
 [[d1_databases]]
 binding = "DB"
 database_name = "family-transport-manager"
-database_id = "REPLACE_WITH_D1_DATABASE_ID"
+database_id = "8a6f074a-ed68-47fa-9100-a8cc6baff7dc"
+migrations_dir = "migrations"
 
 [vars]
 APP_NAME = "Family Transport Manager"
